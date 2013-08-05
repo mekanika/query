@@ -1,0 +1,12 @@
+{
+  "devel":     true,
+
+  "trailing":  true,
+  "eqeqeq":    true,
+  "eqnull":    true,
+  "expr":      true,
+  "laxcomma":  false,
+  "laxbreak":  true,
+  "onecase":   true,
+  "sub":       true
+}
