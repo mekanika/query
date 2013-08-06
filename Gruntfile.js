@@ -21,17 +21,41 @@ module.exports = function( grunt ) {
     watch:
     {
       files: grunt.config.get('files'),
-      tasks: ['jshint:files']
+      tasks: ['jshint:files', 'uglify']
+    },
+
+    component_build: {
+      query: {
+        output: './build',
+        scripts: true,
+        styles: false,
+        standalone: true
+      }
+    },
+
+    uglify: {
+      build: {
+        options: {
+          sourceMap: 'build/query.source.map',
+          report: 'min',
+          mangle: { except:['Query'] },
+          banner: '/* <%= pkg.name %> v<%= pkg.version %> */\n'
+        },
+        files: { 'build/query.min.js': ['build/query.js'] }
+      }
     }
+
 
   });
 
   // Load plugins
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-component-build');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
   // Default task(s)
-  grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('default', ['jshint', 'component_build', 'uglify']);
   grunt.registerTask('lint', ['jshint']);
 
 };
