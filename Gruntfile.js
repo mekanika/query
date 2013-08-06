@@ -1,7 +1,9 @@
 module.exports = function( grunt ) {
 
+  grunt.config.set('files', [ 'lib/**/*.js' ]);
+
   // Project configuration
-  grunt.initConfig({
+  grunt.config.init({
 
     // Meta data from config file
     pkg: grunt.file.readJSON('package.json'),
@@ -12,13 +14,13 @@ module.exports = function( grunt ) {
       // Defaults
       options: grunt.file.readJSON('.jshintrc'),
       // Files to watch
-      files: { src: [ 'index.js', 'lib/**/*.js' ] }
+      files: { src: grunt.config.get('files') }
     },
 
     // Watch tasks to run on file changes
     watch:
     {
-      files: ['index.js', 'lib/**/*.js' ],
+      files: grunt.config.get('files'),
       tasks: ['jshint:files']
     }
 
