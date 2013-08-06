@@ -21,7 +21,14 @@ module.exports = function( grunt ) {
     watch:
     {
       files: grunt.config.get('files'),
-      tasks: ['jshint:files', 'uglify']
+      tasks: ['jshint:files', 'uglify'],
+
+      // To run tests on a watch, simply:
+      // $ grunt watch:test
+      test: {
+        files: ['test/**/*.js'].concat( grunt.config.get('files') ),
+        tasks: ['jshint:files', 'mochaTest']
+      }
     },
 
     component_build: {
@@ -43,6 +50,15 @@ module.exports = function( grunt ) {
         },
         files: { 'build/query.min.js': ['build/query.js'] }
       }
+    },
+
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'spec'
+        },
+        src: ['test/**/*.js']
+      }
     }
 
 
@@ -53,9 +69,11 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-component-build');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-mocha-test');
 
   // Default task(s)
   grunt.registerTask('default', ['jshint', 'component_build', 'uglify']);
   grunt.registerTask('lint', ['jshint']);
+  grunt.registerTask('test', ['mochaTest']);
 
 };
