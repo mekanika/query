@@ -12,7 +12,7 @@ describe('Action methods', function() {
         expect( res ).to.be( undefined );
         // Loosely check that the error message indicts "select"
         expect( err.message ).to.match( /select/ );
-      }
+      };
       query().create('record', cb);
     });
 
@@ -34,7 +34,7 @@ describe('Action methods', function() {
         expect( res ).to.not.be.empty();
         expect( res.action ).to.be( 'create' );
         expect( res.inputs[0] ).to.be( 'record' );
-      }
+      };
       query().select('something').create('record', cb);
     });
 
@@ -42,7 +42,7 @@ describe('Action methods', function() {
       var cb = function( err, res ) {
         expect( res.inputs.length ).to.be( 3 );
         expect( res.inputs ).to.eql(['a','b',3]);
-      }
+      };
       query().select('something').create(['a','b',3], cb);
     });
 
@@ -74,7 +74,7 @@ describe('Action methods', function() {
       // Check array of fields normalises to single array of fields
       q = query().find(['meep', 'moop'], 'boop');
       expect( q.fields ).to.have.length( 3 );
-    })
+    });
 
     it('should run a callback if one is passed', function() {
       var cb = function(err, res) {
@@ -84,7 +84,7 @@ describe('Action methods', function() {
         expect( res.fields ).to.contain( 'moop' );
         // Ensure the 'callback' wasn't added as a field
         expect( res.fields ).to.have.length( 1 );
-      }
+      };
       query().select('anything').find('moop', cb);
     });
 
@@ -94,7 +94,7 @@ describe('Action methods', function() {
         expect( res ).to.be( undefined );
         expect( err ).to.be.an( Error );
         expect( err.message ).to.match( /select/ );
-      }
+      };
       query().find('moop', cb);
     });
   });
@@ -129,7 +129,7 @@ describe('Action methods', function() {
         query().done();
       }
       catch( e ) {
-        err = e
+        err = e;
       }
       expect( err ).to.be.an( Error );
       expect( err.message ).to.match( /requires/ );

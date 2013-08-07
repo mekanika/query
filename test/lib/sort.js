@@ -15,6 +15,6 @@ describe('Sorting methods', function() {
 
   it('should set .order( index ) by', function() {
     expect( query().order('meep').criteria.sort.index ).to.be('meep');
-  })
+  });
 
 });

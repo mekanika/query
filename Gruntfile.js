@@ -14,7 +14,9 @@ module.exports = function( grunt ) {
       // Defaults
       options: grunt.file.readJSON('.jshintrc'),
       // Files to watch
-      files: { src: grunt.config.get('files') }
+      files: { src: grunt.config.get('files') },
+
+      tests: { src: ['test/**/*.js'] }
     },
 
     // Watch tasks to run on file changes
@@ -27,7 +29,7 @@ module.exports = function( grunt ) {
       // $ grunt watch:test
       test: {
         files: ['test/**/*.js'].concat( grunt.config.get('files') ),
-        tasks: ['jshint:files', 'mochaTest']
+        tasks: ['jshint', 'mochaTest']
       }
     },
 

@@ -2,7 +2,7 @@ var query = require('../../lib/index.js');
 var expect = require('expect.js');
 
 // Currently `query` expects an adapter() to return an `.exec()` method
-var adapterStub = function() { return { exec: function(){} }};
+var adapterStub = function() { return { exec: function(){} }; };
 
 
 it('should return a new query object with query()', function() {
