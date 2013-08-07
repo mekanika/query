@@ -16,6 +16,18 @@ describe('Action methods', function() {
       query().create('record', cb);
     });
 
+    it('should fail if callback not a function', function() {
+      var err;
+      try {
+        query().select('boop').create('payload', 'fakefunction');
+      }
+      catch( e ) {
+        err = e;
+      }
+      expect( err ).to.be.an( Error );
+      expect( err.message ).to.match( /requires.*Function/ );
+    });
+
     it('should callback with `query` object on success', function() {
       var cb = function( err, res ) {
         expect( err ).to.not.be.ok();
@@ -32,6 +44,12 @@ describe('Action methods', function() {
         expect( res.inputs ).to.eql(['a','b',3]);
       }
       query().select('something').create(['a','b',3], cb);
+    });
+
+    it('should return query object if no callback', function() {
+      var q = query().select('anything').create('hello');
+      expect( q ).to.not.be.empty();
+      expect( q.inputs[0] ).to.be( 'hello' );
     });
   });
 
