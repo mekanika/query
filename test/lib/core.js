@@ -4,6 +4,9 @@ var expect = require('expect.js');
 // Currently `query` expects an adapter() to return an `.exec()` method
 var adapterStub = function() { return { exec: function(){} }; };
 
+beforeEach( function(){
+  query.reset();
+});
 
 it('should return a new query object with query()', function() {
   var q1 = query();
@@ -13,7 +16,7 @@ it('should return a new query object with query()', function() {
   expect( q1 ).to.not.be.empty();
 });
 
-it('should enable setting an adapter', function() {
+it('should enable setting an adapter via query(\'adapter\')', function() {
   // Check the adapterClass method is available
   expect( query.adapterClass ).to.be.ok();
   // Attempt to instantiate the adapter stub (will fail if not ok)

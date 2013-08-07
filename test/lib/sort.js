@@ -3,6 +3,10 @@ var expect = require('expect.js');
 
 describe('Sorting methods', function() {
 
+  beforeEach( function(){
+    query.reset();
+  });
+
   it('should set .asc( index )', function() {
     expect( query().asc().criteria.sort.direction ).to.be( 'asc' );
     expect( query().asc('smoo').criteria.sort.index ).to.be( 'smoo' );

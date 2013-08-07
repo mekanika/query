@@ -3,6 +3,10 @@ var expect = require('expect.js');
 
 describe('Criteria methods', function() {
 
+  beforeEach( function(){
+    query.reset();
+  });
+
   it('should set .limit(num)', function() {
     var q = query().limit(10);
     expect( q.criteria.limit ).to.be( 10 );

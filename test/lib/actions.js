@@ -3,6 +3,10 @@ var expect = require('expect.js');
 
 describe('Action methods', function() {
 
+  beforeEach( function(){
+    query.reset();
+  });
+
   // ## .create( payload, cb )
   describe('.create( payload [, cb] )', function() {
 
