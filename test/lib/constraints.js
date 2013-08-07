@@ -12,7 +12,7 @@ describe('Constraints .where( field )', function() {
   it('should have constraint structure {field,operator,condition}', function(){
     var q = query().where('id');
     expect( q.constraints[0] )
-      .to.only.have.keys( 'field', 'operator','condition' );
+      .to.only.have.keys( 'field', 'operator','condition', 'type' );
   });
 
   it('should push default operator and condition for .where(field)', function(){
@@ -24,6 +24,13 @@ describe('Constraints .where( field )', function() {
   it('should support creating multiple .where() conditions', function() {
     var q = query().where('id').eq(100).where('name').eq('beep');
     expect( q.constraints ).to.have.length( 2 );
+  });
+
+  it('should enable .and(field) and .or(field) declarations', function() {
+    var q = query().where('drink').and('your').or('milkshake');
+    expect( q.constraints[0].type ).to.be( 'and' );
+    expect( q.constraints[1].type ).to.be( 'and' );
+    expect( q.constraints[2].type ).to.be( 'or' );
   });
 
 
