@@ -173,14 +173,26 @@ describe('Action methods', function() {
 
     it('should .exec( query, cb ) adapter if one provided', function() {
       // Stub adapter
-      var adapter = function(){};
-      adapter.has = function() { return true; }
+      var adapter = function(){
+        return {
+          exec:function(query,cb) {
+            expect( query ).to.not.be.empty();
+            expect( query.selects[0] ).to.be( 'anything' );
+            expect( cb ).to.be.ok();
+          }
+        };
+      };
 
-      var cb = function(err, res) {
-        // console.log('callbacked', res);
-      }
+      var cb = function(err, res) {};
+
+      // Set the adapter class to our stub
       query.adapterClass( adapter );
-      query('testadapter').select('anything').find('me').done(cb);
+      // Init the query
+      var q = query('testadapter').select('anything').find('me');
+      // Ensure the adapter is set
+      expect( q.adapter ).to.be.ok();
+      // Run the query through the adapter
+      q.done(cb);
     });
 
   });
