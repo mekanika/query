@@ -18,7 +18,7 @@ describe('query()', function(){
   require('./lib/core.js');
 
   require('./lib/actions.js');
-  require('./lib/criteria.js');
+  require('./lib/paging.js');
   require('./lib/constraints.js');
   require('./lib/sort.js');
 
