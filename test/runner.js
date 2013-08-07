@@ -1,3 +1,8 @@
+// Auto-instrumenting test coverage
+var blanket = require("blanket")({
+   "pattern": /query\/lib\/.*\.js/
+   });
+
 var query = require('../lib/index.js');
 var expect = require('expect.js');
 

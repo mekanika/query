@@ -58,6 +58,15 @@ module.exports = function( grunt ) {
           reporter: 'spec'
         },
         src: ['test/runner.js']
+      },
+      // Test coverage
+      coverage: {
+        options: {
+          reporter: 'html-cov',
+          quiet: true,
+          captureFile: 'coverage.html'
+        },
+        src: ['test/runner.js']
       }
     }
 
@@ -72,8 +81,9 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks('grunt-mocha-test');
 
   // Default task(s)
-  grunt.registerTask('default', ['jshint', 'component_build', 'uglify']);
+  grunt.registerTask('default', ['jshint', 'component_build', 'uglify', 'mochaTest:test']);
   grunt.registerTask('lint', ['jshint']);
-  grunt.registerTask('test', ['mochaTest']);
+  grunt.registerTask('test', ['mochaTest:test']);
+  grunt.registerTask('cover', ['mochaTest:coverage']);
 
 };

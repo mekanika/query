@@ -12,6 +12,7 @@
     "grunt-component-build": "~0.3.2",
     "mocha": "~1.12.0",
     "grunt-mocha-test": "~0.6.2",
-    "expect.js": "~0.2.0"
+    "expect.js": "~0.2.0",
+    "blanket": "~1.1.5"
   }
 }
