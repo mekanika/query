@@ -160,7 +160,29 @@ describe('Action methods', function() {
         expect( e ).to.be( undefined );
       }
     });
-  });
 
+    it('should callback with query object if no adapter', function() {
+      var cb = function( err, res ) {
+        expect( err ).to.not.be.ok();
+        expect( res ).to.not.be.empty();
+        expect( res.action ).to.be('create');
+      };
+
+      query().select('anything').create('obj').done( cb );
+    });
+
+    it('should .exec( query, cb ) adapter if one provided', function() {
+      // Stub adapter
+      var adapter = function(){};
+      adapter.has = function() { return true; }
+
+      var cb = function(err, res) {
+        // console.log('callbacked', res);
+      }
+      query.adapterClass( adapter );
+      query('testadapter').select('anything').find('me').done(cb);
+    });
+
+  });
 
 });
