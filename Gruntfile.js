@@ -87,5 +87,6 @@ module.exports = function( grunt ) {
   grunt.registerTask('lint', ['jshint']);
   grunt.registerTask('test', ['mochaTest:test']);
   grunt.registerTask('cover', ['mochaTest:coverage']);
+  grunt.registerTask('build', ['component_build', 'uglify']);
 
 };
