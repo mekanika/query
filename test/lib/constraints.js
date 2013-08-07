@@ -2,7 +2,7 @@ var query = require('../../lib/index.js');
 var expect = require('expect.js');
 
 
-describe('Conditions', function() {
+describe('Constraints', function() {
 
   it('should "dumb" push .where( constraint ) onto array', function() {
     var q = query().where('whatever');

@@ -43,3 +43,31 @@ it('should fail setting adapter if adapterClass not provided', function() {
   expect( err ).to.be.an( Error );
   expect( err.message ).to.match( /requires.*adapterClass/ );
 });
+
+
+describe('.select(fields)', function() {
+  it('should set single `fields` on .select(fields)', function() {
+    var q = query().select('id');
+    expect( q.fields ).to.have.length(1);
+    expect( q.fields[0] ).to.be( 'id' );
+  });
+
+  it('should fail .select(fields) if no fields passed', function() {
+    var err;
+    try {
+      var q = query().select();
+      expect(q).to.be( undefined );
+    }
+    catch(e) {
+      err = e;
+    }
+    expect( err ).to.be.an( Error );
+    expect( err.message ).to.match( /select.*fields/ );
+  });
+
+  it('should shallow decompose array and literal `fields`', function() {
+    var q = query().select( '1', ['2', '3'], ['4'] );
+    expect( q.fields ).to.have.length( 4 );
+    expect( q.fields ).to.eql( ['1', '2', '3', '4'] );
+  });
+});
