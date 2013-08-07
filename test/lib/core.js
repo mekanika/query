@@ -23,6 +23,12 @@ it('should enable setting an adapter via query(\'adapter\')', function() {
   query.adapterClass( adapterStub );
 });
 
+it('should set an adapter using .use(\'adapter\')', function() {
+  query.adapterClass( adapterStub );
+  var q = query().use('whatever');
+  expect( q.adapter ).to.be.ok();
+});
+
 it('should fail setting adapter if adapterClass not provided', function() {
   // Reset our adapter class
   query.adapterClass();
