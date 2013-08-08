@@ -2,11 +2,18 @@ var query = require('../../lib/index.js');
 var expect = require('expect.js');
 
 
-describe('Constraints .where( field )', function() {
+describe('Constraints .where( field [,val] )', function() {
 
   it('should push .where( field ) onto constraints array', function() {
     var q = query().where('whatever');
     expect( q.constraints ).to.have.length( 1 );
+  });
+
+  it('should set value when passed all .{where}(field,val)', function() {
+    var q = query().where('id', 10).and('yes', 5).or('no', 3);
+    expect( q.constraints[0].condition ).to.be( 10 );
+    expect( q.constraints[1].condition ).to.be( 5 );
+    expect( q.constraints[2].condition ).to.be( 3 );
   });
 
   it('should have constraint structure {field,operator,condition}', function(){
