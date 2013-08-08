@@ -50,6 +50,26 @@ it('should fail setting adapter if adapterClass not provided', function() {
 });
 
 
+describe('.from(resource)', function() {
+  it('should set the resource when provided', function() {
+    var q = query().from('icecream');
+    expect( q.resource ).to.be( 'icecream' );
+  });
+
+  it('should fail to set resource if not provided string', function() {
+    var err;
+    try {
+      var q = query().from( ['array'] );
+      expect(q).to.be( undefined );
+    }
+    catch( e ) { err = e; }
+
+    expect( err ).to.be.an( Error );
+    expect( err.message ).to.match( /resource.*string/ );
+  });
+});
+
+
 describe('.select(fields)', function() {
   it('should set single `fields` on .select(fields)', function() {
     var q = query().select('id');

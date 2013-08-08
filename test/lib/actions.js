@@ -189,7 +189,7 @@ describe('Action methods', function() {
         return {
           exec:function(query,cb) {
             expect( query ).to.not.be.empty();
-            expect( query.resource[0] ).to.be( 'anything' );
+            expect( query.resource ).to.be( 'anything' );
             expect( cb ).to.be.ok();
           }
         };
