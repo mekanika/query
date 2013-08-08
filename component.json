@@ -7,9 +7,16 @@
   "dependencies": {
   },
   "development": {
-
   },
   "main": "lib/index.js",
-  "scripts": ["lib/index.js"],
+  "scripts": [
+    "lib/Query.js",
+    "lib/proto/core.js",
+    "lib/proto/actions.js",
+    "lib/proto/constraints.js",
+    "lib/proto/paging.js",
+    "lib/proto/sort.js",
+    "lib/index.js"
+  ],
   "license": "MIT"
 }
