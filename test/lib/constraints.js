@@ -46,7 +46,9 @@ describe('Constraints .where( field [,val] )', function() {
     // Copied directly from source
     var operators = [
       'eq',  // ===
+      'is',  // Alias 'eq' (more fluent for non-numeric)
       'neq', // !==
+      'not', // Alias 'neq'
       'in',  // has
       'nin', // !has
       'lt',  // <
