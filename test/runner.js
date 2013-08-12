@@ -21,5 +21,6 @@ describe('query()', function(){
   require('./lib/paging.js');
   require('./lib/constraints.js');
   require('./lib/sort.js');
+  require('./lib/relations.js');
 
 });
