@@ -16,6 +16,7 @@
     "lib/proto/constraints.js",
     "lib/proto/paging.js",
     "lib/proto/sort.js",
+    "lib/proto/relations.js",
     "lib/index.js"
   ],
   "license": "MIT"
