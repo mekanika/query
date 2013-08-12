@@ -28,6 +28,11 @@ describe('Relations methods', function() {
       expect( q.includes ).to.have.length( 1 );
     });
 
+    it('should alias as .populate(fields...)', function() {
+      var q = query().from('me').include('skills');
+      expect( q.includes ).to.have.length( 1 );
+    });
+
     it('should push multiple if passed many includes', function() {
       var q = query().from('me').include( 'skills', 'friends' );
       expect( q.includes ).to.have.length( 2 );
