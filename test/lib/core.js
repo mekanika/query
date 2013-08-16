@@ -16,7 +16,12 @@ it('should return a new query object with query()', function() {
   expect( q1 ).to.not.be.empty();
 });
 
-it('should enable setting an adapter via query(\'adapter\')', function() {
+// This checks that our stub provides the methods required by our lib
+it('should provide an .exec() method on adapterClass', function() {
+  expect( adapterStub().exec ).to.be.a( Function );
+});
+
+it('should enable setting an .adapterClass( class )', function() {
   // Check the adapterClass method is available
   expect( query.adapterClass ).to.be.ok();
   // Attempt to instantiate the adapter stub (will fail if not ok)
@@ -31,10 +36,10 @@ it('should return query class on setting .adapterClass()', function() {
 it('should set an adapter using .use(\'adapter\')', function() {
   query.adapterClass( adapterStub );
   var q = query().use('whatever');
-  expect( q.adapter ).to.be.ok();
+  expect( q.adapter.exec ).to.be.a( Function );
 });
 
-it('should fail setting adapter if adapterClass not provided', function() {
+it('should fail to .use( adapterKey ) if no adapterClass', function() {
   // Reset our adapter class
   query.adapterClass();
   var err;
@@ -47,6 +52,16 @@ it('should fail setting adapter if adapterClass not provided', function() {
   }
   expect( err ).to.be.an( Error );
   expect( err.message ).to.match( /requires.*adapterClass/ );
+});
+
+it('should set an adapter if initialised as query( adapter )', function() {
+  var q = query( adapterStub );
+  expect( q.adapter ).to.be.ok();
+});
+
+it('should set an adapter if passed .setAdapter( adapter )', function() {
+  var q = query( adapterStub );
+  expect( q.adapter ).to.be.ok();
 });
 
 

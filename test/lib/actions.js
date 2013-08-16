@@ -184,10 +184,13 @@ describe('Action methods', function() {
     });
 
     it('should .exec( query, cb ) adapter if one provided', function() {
+      var gotCallback = false;
+
       // Stub adapter
       var adapter = function(){
         return {
           exec:function(query,cb) {
+            gotCallback = true;
             expect( query ).to.not.be.empty();
             expect( query.resource ).to.be( 'anything' );
             expect( cb ).to.be.ok();
@@ -205,6 +208,8 @@ describe('Action methods', function() {
       expect( q.adapter ).to.be.ok();
       // Run the query through the adapter
       q.done(cb);
+
+      expect( gotCallback ).to.be( true );
     });
 
   });
