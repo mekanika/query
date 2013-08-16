@@ -1,25 +1,25 @@
 # query
 
-A query-object builder
+  An isomorphic fluent interface query-object builder.
 
 ## Installation
 
-    npm install --production
+      npm install --production
 
 ## Tests
 
-Ensure you have installed the development dependencies:
+  Ensure you have installed the development dependencies:
 
-    npm install
+      npm install
 
-To run the tests:
+  To run the tests:
 
-    grunt test
+      grunt test
 
-Or to set tests to run on changes:
+  Or to set tests to run on changes:
 
-    grunt watch:test
+      grunt watch:test
 
 ## License
 
-MIT
+  MIT
