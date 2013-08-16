@@ -22,11 +22,15 @@ module.exports = function( grunt ) {
     // Watch tasks to run on file changes
     watch:
     {
-      files: grunt.config.get('files'),
-      tasks: ['jshint:files', 'uglify'],
+      // To watch without tests:
+      // $ grunt watch:notest
+      notest: {
+        files: grunt.config.get('files'),
+        tasks: ['jshint:files', 'uglify'],
+      },
 
       // To run tests on a watch, simply:
-      // $ grunt watch:test
+      // $ grunt watch
       test: {
         files: ['test/**/*.js'].concat( grunt.config.get('files') ),
         tasks: ['jshint', 'mochaTest']
