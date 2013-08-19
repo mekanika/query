@@ -112,23 +112,34 @@ describe('Action methods', function() {
   });
 
 
-  describe('.destroy(id [, cb])', function() {
+  describe('.destroy{|remove}([id , cb])', function() {
 
-    it('should fail if not passed an `id`', function() {
-      try {
-        var q = query().destroy();
-        expect(q).to.be( undefined );
-      }
-      catch(e) {
-        expect( e ).to.be.an( Error );
-        // Check the error message indicates a "requires"
-        expect( e.message ).to.match( /requires/ );
-      }
+    it('should only set delete action on .remove( undefined )', function() {
+      var q = query().destroy();
+      expect( q.constraints ).to.have.length( 0 );
+      expect( q.action ).to.be( 'delete' );
     });
 
-    it('should set the destroy action when passed `id`', function() {
+    it('should add an `id` as a new constraint', function() {
+      var q = query().destroy( '12345' );
+      expect( q.constraints ).to.have.length( 1 );
+      expect( q.constraints[0].field ).to.be( 'id' );
+      expect( q.constraints[0].condition ).to.be( '12345' );
+    });
+
+    it('should set the remove action to be \'delete\'', function() {
       var q = query().destroy('abc');
       expect( q.action ).to.be('delete');
+    });
+
+    it('should alias as .remove()', function() {
+      var q = query().remove();
+      expect( q.action ).to.be('delete');
+    });
+
+    it('should add multiple ids as multiple constraints', function() {
+      var q = query().remove( [1,2,3,4] );
+      expect( q.constraints ).to.have.length( 4 );
     });
   });
 
