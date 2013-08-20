@@ -21,4 +21,6 @@ describe('Sorting methods', function() {
     expect( query().order('meep').paging.sort[0].index ).to.be('meep');
   });
 
+  it('should support multiple support indeces');
+
 });

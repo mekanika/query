@@ -58,6 +58,14 @@ describe('Action methods', function() {
   });
 
 
+  // ## .update()
+  describe('.update( [ids, cb] )', function() {
+
+    it('should support setting an update query');
+
+  });
+
+
   // ## .find()
   describe('.find( [identifiers] [, cb] )', function() {
 
