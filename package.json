@@ -1,7 +1,25 @@
 {
-  "name": "query",
+  "name": "mekanika-query",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
+  "description": "Isomorphic fluent interface for building queries of services",
+  "keywords": [
+    "query",
+    "adapter",
+    "orm",
+    "resource",
+    "service",
+    "fluent",
+    "isomorphic"
+  ],
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mekanika/query.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mekanika/query/issues"
+  },
   "dependencies": {},
   "devDependencies": {
     "grunt": "0.4.x",
@@ -14,5 +32,6 @@
     "grunt-mocha-test": "~0.6.2",
     "expect.js": "~0.2.0",
     "blanket": "~1.1.5"
-  }
+  },
+  "license": "MIT"
 }
