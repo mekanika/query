@@ -1,6 +1,6 @@
 {
   "name": "mekanika-query",
-  "repo": "cayuu/query",
+  "repo": "mekanika/query",
   "description": "Query object component",
   "version": "0.0.0",
   "keywords": ["query"],
