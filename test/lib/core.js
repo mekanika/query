@@ -59,8 +59,8 @@ it('should set an adapter if initialised as query( adapter )', function() {
   expect( q.adapter ).to.be.ok();
 });
 
-it('should set an adapter if passed .setAdapter( adapter )', function() {
-  var q = query( adapterStub );
+it('should set an adapter if passed .useAdapter( adapter )', function() {
+  var q = query().useAdapter( adapterStub );
   expect( q.adapter ).to.be.ok();
 });
 
