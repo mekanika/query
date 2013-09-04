@@ -3,7 +3,12 @@ var expect = require('expect.js');
 
 describe('Relations methods', function() {
 
-  describe('.include(fields...)', function() {
+  describe('.include(fields,opts,cb)', function() {
+
+    it('should alias as .populate(fields...)', function() {
+      var q = query().from('me').include('skills');
+      expect( q.includes ).to.have.length( 1 );
+    });
 
     it('should fail to include if no .from(resource) set', function(){
       var err;
@@ -23,18 +28,13 @@ describe('Relations methods', function() {
       expect( q.includes ).to.have.length( 0 );
     });
 
-    it('should push a relation onto the query if passed', function() {
+    it('should push a single relation onto the query if provided', function() {
       var q = query().from('me').include('skills');
       expect( q.includes ).to.have.length( 1 );
     });
 
-    it('should alias as .populate(fields...)', function() {
-      var q = query().from('me').include('skills');
-      expect( q.includes ).to.have.length( 1 );
-    });
-
-    it('should push multiple if passed many includes', function() {
-      var q = query().from('me').include( 'skills', 'friends' );
+    it('should push multiple if passed includes as array', function() {
+      var q = query().from('me').include( ['skills', 'friends'] );
       expect( q.includes ).to.have.length( 2 );
     });
 
@@ -49,6 +49,10 @@ describe('Relations methods', function() {
       // Check that 'key' defaults to '{resource}_id'
       expect( q.includes[0].key ).to.be( resourceDemo + '_id' );
     });
+
+    it('should support an options argument to govern population');
+
+    it('should support executing populate on a set of models');
 
   });
 
