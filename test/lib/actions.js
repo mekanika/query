@@ -59,9 +59,44 @@ describe('Action methods', function() {
 
 
   // ## .update()
-  describe('.update( [ids, cb] )', function() {
+  describe('.update( [conditions], [update], [cb] )', function() {
 
-    it('should support setting an update query');
+    it('should set action and no-op if nothing passed', function() {
+      var q = query().from('me').update();
+      expect( q.action ).to.be( 'update' );
+    });
+
+    it('should set conditions as a single string id', function( done ) {
+      function cb( err, res ) {
+        expect( err ).to.be( null );
+        expect( res.constraints ).to.have.length( 1 );
+        expect( res.constraints[0].operator ).to.be( 'is' );
+        expect( res.constraints[0].condition ).to.be( '12345' );
+        done();
+      }
+      query().from('me').update( '12345', {name:'Jack'} ).done( cb );
+    });
+
+    it('should set conditions for array of string ids', function( done ) {
+      function cb( err, res ) {
+        expect( err ).to.be( null );
+        expect( res.constraints ).to.have.length( 1 );
+        expect( res.constraints[0].operator ).to.be( 'in' );
+        expect( res.constraints[0].condition ).to.have.length( 2 );
+
+        done();
+      }
+      query().from('me').update( ['1234','5671'], {name:'Jack'} ).done( cb );
+    });
+
+    it('should run a callback if one passed', function( done ) {
+      function cb( err, res ) {
+        expect( err ).to.be( null );
+        expect( res ).to.not.be.empty();
+        done();
+      }
+      query().from('me').update( '1234', {name:'Joe'}, cb );
+    });
 
   });
 
