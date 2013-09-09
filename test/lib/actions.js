@@ -58,6 +58,50 @@ describe('Action methods', function() {
   });
 
 
+  // ## .save()
+  describe('.save( records, cb )', function() {
+
+    it('should set action to `save`', function() {
+      var q = query().from('what').save( {a:1} );
+      expect( q.action ).to.be( 'save' );
+    });
+
+    it('should handle single and object array payload', function() {
+      // Test passing single objects
+      var q = query().from('what').save( {a:1} );
+      expect( q.inputs ).to.have.length( 1 );
+      q.save( {a:5} );
+      expect( q.inputs ).to.have.length( 2 );
+
+      // Test passing object arrays
+      q = query().from('what').save( [{a:1}, {a:5}] );
+      expect( q.inputs ).to.have.length( 2 );
+    });
+
+    it('should fail if `cb` is not a function', function() {
+      var err;
+      try {
+        var q = query().from('what').save( {}, 'notafunction' );
+        expect( q ).to.be( undefined );
+      }
+      catch( e ) { err = e; }
+      expect( err ).to.be.an( Error );
+      expect( err.message ).to.match( /save.*requires/ );
+    });
+
+    it('should run callback if passed', function( done ) {
+      var cb = function( err, res ) {
+        expect( err ).to.be( null );
+        expect( res.action ).to.be( 'save' );
+        expect( res.inputs[0].a ).to.be( 1 );
+        done();
+      };
+      query().from('what').save( {a:1}, cb );
+    });
+
+  });
+
+
   // ## .update()
   describe('.update( [conditions], [update], [cb] )', function() {
 
