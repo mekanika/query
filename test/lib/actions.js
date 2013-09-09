@@ -142,6 +142,17 @@ describe('Action methods', function() {
       query().from('me').update( '1234', {name:'Joe'}, cb );
     });
 
+    it('should fail if callback is passed but not a function', function() {
+      var err;
+      try {
+        var q = query().from('me').update( 1, 2, 'notafunction' );
+        expect( q ).to.be( undefined );
+      }
+      catch( e ) { err = e; }
+      expect( err ).to.be.an( Error );
+      expect( err.message ).to.match( /update.*function/ );
+    });
+
   });
 
 
@@ -227,6 +238,17 @@ describe('Action methods', function() {
     it('should add multiple ids as multiple constraints', function() {
       var q = query().remove( [1,2,3,4] );
       expect( q.constraints ).to.have.length( 4 );
+    });
+
+    it('should fail if callback is passed but not a function', function() {
+      var err;
+      try {
+        var q = query().from('me').remove( 1, 'notafunction' );
+        expect( q ).to.be( undefined );
+      }
+      catch( e ) { err = e; }
+      expect( err ).to.be.an( Error );
+      expect( err.message ).to.match( /remove.*function/ );
     });
   });
 
