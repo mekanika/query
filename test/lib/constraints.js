@@ -57,6 +57,15 @@ describe('Constraints .where( field [,val] )', function() {
       'gte'  // >=
     ];
 
+    // Ensure `query` normalises aliased operators
+    // No passing two different operators that mean the same thing.
+    it('should normalise aliases: not->neq and is->eq', function() {
+      var q = query().where('stop').is(1).and('go').not(1);
+
+      expect( q.constraints[0].operator ).to.be( 'eq' );
+      expect( q.constraints[1].operator ).to.be( 'neq' );
+    });
+
     it('should fail if no .where(field) declared', function() {
       var err;
       try {
@@ -76,8 +85,12 @@ describe('Constraints .where( field [,val] )', function() {
     it('should set operator and condition for all operators', function() {
       for (var i=0; i<operators.length; i++) {
         var q = query().where('foo')[operators[i]]( operators[i] );
-        expect( q.constraints[0].operator ).to.be( operators[i] );
-        expect( q.constraints[0].condition ).to.be( operators[i] );
+
+        // Skip normalised aliases (where 'is'->'eq' etc)
+        if (operators[i] !== 'is' && operators[i] !== 'not') {
+          expect( q.constraints[0].operator ).to.be( operators[i] );
+          expect( q.constraints[0].condition ).to.be( operators[i] );
+        }
       }
     });
 

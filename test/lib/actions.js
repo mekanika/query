@@ -114,7 +114,7 @@ describe('Action methods', function() {
       function cb( err, res ) {
         expect( err ).to.be( null );
         expect( res.constraints ).to.have.length( 1 );
-        expect( res.constraints[0].operator ).to.be( 'is' );
+        expect( res.constraints[0].operator ).to.be( 'eq' );
         expect( res.constraints[0].condition ).to.be( '12345' );
         done();
       }
