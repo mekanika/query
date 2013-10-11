@@ -19,6 +19,7 @@ describe('query()', function(){
 
   require('./lib/actions.js');
   require('./lib/paging.js');
+  require('./lib/selectors.js');
   require('./lib/modifiers.js');
   require('./lib/constraints.js');
   require('./lib/sort.js');
