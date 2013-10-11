@@ -2,15 +2,63 @@
 
   An isomorphic fluent interface query-object builder.
 
+  **Massive work in progress. DO NOT USE.**
+
+  Borrows heavily from Mongoose and ActiveRecord query interfaces.
+
+      query('service')         // The service to query
+        .from( 'user' )        // Resource to execute on
+        .includes( 'orders' )  // Associations to eager-load
+          .on( 'uid' )         //  - join key (defaults as `{resource}_id`)
+          .as( 'bookings' )    //  - return naming
+        .where( 'name' )       // Constraint field
+          .in( ['Tom','Bob'] ) //  - operator and conditions
+        .and( 'age' )          // AND constraint (also supports `.or()`)
+          .between( 12, 25 )   //  - operator and conditions
+        .limit( 20 )           // Number of results
+        .offset( 5 )           // Result offset (used for paging)
+        .done( callback );     // Execute and return `callback( err, res )`
+
 
 ## Installation
 
       npm install --production
 
 
-## Usage
+## Queries
 
-### Adapter
+  A query is initiated by calling `query()`, returning a `new Query`.
+
+  Calls can be chained to this `query#` instance and executed by calling:
+
+    query#.done( cb );
+    // `cb` is an optional callback, returning `cb( err, res )`
+
+### Setting criteria (selectors)
+
+  Criteria are set using the `.where( field ).<operator>( condition )` pattern.
+
+  The `field` is the named target to apply an `operator` (the criteria) and `condition` to. **Operators** include:
+
+  * **.eq(** value **)** - Equality (exact) match. Alias: `.is()`.
+  * **.neq(** value **)** - Not equal to. Alias `not()`.
+  * **.in(** array **)** - Where field value is in the array.
+  * **.nin(** array **)** - Where field value is _not_ in the array.
+  * **.lt(** number **)** - Less than number.
+  * **.gt(** number **)** - More (greater) than than number.
+  * **.lte(** number **)** - Less than or equal to number.
+  * **.gte(** number **)** - More (greater) than or equal to number.
+
+Examples:
+
+    query#.where( 'name' ).is( 'Mordecai' );
+    // Match any record with `{name: 'Mordecai'}`
+
+    query#.where( 'age' ).gte( 21 );
+    // Match records where `age` is 21 or higher
+
+
+## Adapter
 
   `query` can _optionally_ delegate execution to an adapter.
 
@@ -18,7 +66,7 @@
 
       query#adapter.exec( query, cb );
 
-#### Setting an adapter
+### Setting an adapter
 
   Simply pass an adapter reference in to the query directly:
 
@@ -29,9 +77,9 @@
 
       query().useAdapter( myadapter );
 
-  See [https://github.com/cayuu/adapter](https://github.com/cayuu/adapter) for more details on adapters.
+  See [https://github.com/mekanika/adapter](https://github.com/mekanika/adapter) for more details on adapters.
 
-#### Advanced: Custom adapter classes
+### Advanced: Custom adapter classes
 
   You may also specify a custom adapter class handler on the `query` class itself (note the lack of `query()` parentheses):
 
@@ -62,6 +110,14 @@
 
       grunt watch:test
 
+
+### Test Coverage
+To generate a `coverage.html` report, run:
+
+    grunt cover
+
+### Bugs
+If you [find a bug, report it](https://github.com/mekanika/query/issues).
 
 ## License
 
