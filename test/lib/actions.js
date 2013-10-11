@@ -135,6 +135,12 @@ describe('Action methods', function() {
         expect( res.constraints ).to.have.length( 1 );
         expect( res.constraints[0].operator ).to.be( 'eq' );
         expect( res.constraints[0].condition ).to.be( '12345' );
+
+        // Ensure update data is set
+        expect( res.inputs ).to.have.length( 1 );
+        expect( res.inputs[0] ).to.have.keys( 'name' );
+        expect( res.inputs[0].name ).to.be( 'Jack' );
+
         done();
       }
       query().from('me').update( '12345', {name:'Jack'} ).done( cb );
@@ -146,6 +152,11 @@ describe('Action methods', function() {
         expect( res.constraints ).to.have.length( 1 );
         expect( res.constraints[0].operator ).to.be( 'in' );
         expect( res.constraints[0].condition ).to.have.length( 2 );
+
+        // Ensure update data is set
+        expect( res.inputs ).to.have.length( 1 );
+        expect( res.inputs[0] ).to.have.keys( 'name' );
+        expect( res.inputs[0].name ).to.be( 'Jack' );
 
         done();
       }
