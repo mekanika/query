@@ -110,6 +110,25 @@ describe('Action methods', function() {
       expect( q.action ).to.be( 'update' );
     });
 
+    it('should accept single argument as input object', function( done ) {
+      function cb( err, res ) {
+        expect( err ).to.be( null );
+
+        // Ensure update data is set
+        expect( res.inputs ).to.have.length( 1 );
+        expect( res.inputs[0] ).to.have.keys( 'name' );
+        expect( res.inputs[0].name ).to.be( 'Jack' );
+
+        done();
+      }
+
+      var q = query().from('me').update( {name:'Jack'} );
+      // Ensure .update() returns a Query (or approximation thereof)
+      expect( q ).to.have.keys( 'resource', 'inputs' );
+
+      q.done( cb );
+    });
+
     it('should set conditions as a single string id', function( done ) {
       function cb( err, res ) {
         expect( err ).to.be( null );
