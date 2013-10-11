@@ -4,22 +4,9 @@ var expect = require('expect.js');
 
 describe('Modifiers', function() {
 
-  it('should support .count()');
-
-  it('should support .distinct()');
-
-  it('should support .max( field )');
-
-  it('should support .min( field )');
-
-  it('should enable .comment( msg ) pass-through');
-
-  it('should support passthrough of arbitrary data (inc. code)');
-
-  it('should support .take()');
-
-  it('should support .first()');
-
-  it('should support .last()');
+  it('should support modifiers as property on query#', function() {
+    var q = query();
+    expect( q.modifiers ).to.not.be( undefined );
+  });
 
 });
