@@ -4,9 +4,10 @@ var expect = require('expect.js');
 
 describe('Modifiers', function() {
 
-  it('should support modifiers as property on query#', function() {
+  it('should support modifiers array as property on query#', function() {
     var q = query();
     expect( q.modifiers ).to.not.be( undefined );
+    expect( q.modifiers ).to.be.an( Array );
   });
 
   describe('.set( field [, to ] )', function() {
