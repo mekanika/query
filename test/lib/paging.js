@@ -17,6 +17,11 @@ describe('Paging methods', function() {
     expect( q.paging.offset ).to.be( 250 );
   });
 
+  it('should alias .offset() as .skip()', function() {
+    var q = query().skip(150);
+    expect( q.paging.offset ).to.be( 150 );
+  });
+
   it('should support offset via .page(num)', function() {
 
     // Page 1 should return record 1 (ie. offset 0)
