@@ -34,6 +34,27 @@
     query#.done( cb );
     // `cb` is an optional callback, returning `cb( err, res )`
 
+  Default query type/action is `find`, which returns records matching **criteria**.
+
+### Query actions (Query#action)
+
+  The available actions supported by query are:
+
+  - **create**
+  - **save**
+  - **update**
+  - **delete**
+  - **find**
+
+
+### Query selectors
+
+  The more advanced _selector_ queries (modifiers on `find` results) are:
+
+  - **.distinct( field )**  
+    Sets the `Query#unique` property to `field`, instructing an adapter to apply this property to its `find` query.
+
+
 ### Setting criteria (selectors)
 
   Criteria are set using the `.where( field ).<operator>( condition )` pattern.

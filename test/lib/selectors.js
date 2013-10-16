@@ -5,8 +5,29 @@ var expect = require('expect.js');
 describe('Selectors', function() {
 
   it('should support .count()');
+  describe('.distinct( field )', function() {
 
-  it('should support .distinct()');
+    it('should exist as a function', function() {
+      expect( query().distinct ).to.be.a( Function );
+    });
+
+    it('should return the query object', function() {
+      expect( query().distinct('skillz') ).to.be.a( Query );
+    });
+
+    it('should fail if not provided a field', function() {
+      expect( query().distinct ).to.throwError( function(e) {
+        expect( e.message ).to.match( /distinct.*field/ );
+      });
+    });
+
+    it('should set the query#unique property to `field`', function() {
+      expect( query().distinct('moustache').unique ).to.be( 'moustache' );
+    });
+
+  });
+
+
 
   it('should support .max( field )');
 
