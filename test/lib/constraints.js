@@ -63,7 +63,8 @@ describe('Constraints .where( field [,val] )', function() {
       'lt',  // <
       'gt',  // >
       'lte', // <=
-      'gte'  // >=
+      'gte', // >=
+      'all'  // has every (tags:['action','adventure'])
     ];
 
     // Ensure `query` normalises aliased operators
