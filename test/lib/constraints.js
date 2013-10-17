@@ -94,12 +94,18 @@ describe('Constraints .where( field [,val] )', function() {
 
     it('should set operator and condition for all operators', function() {
       for (var i=0; i<operators.length; i++) {
-        var q = query().where('foo')[operators[i]]( operators[i] );
+        var q = query().where('foo');
+
+        var cond = ( /in$|^all/.test( operators[i]) )
+          ? [ operators[i] ]
+          : operators[i];
+
+        q[ operators[i] ]( cond );
 
         // Skip normalised aliases (where 'is'->'eq' etc)
         if (operators[i] !== 'is' && operators[i] !== 'not') {
           expect( q.constraints[0].operator ).to.be( operators[i] );
-          expect( q.constraints[0].condition ).to.be( operators[i] );
+          expect( q.constraints[0].condition ).to.be( cond );
         }
       }
     });
@@ -108,6 +114,24 @@ describe('Constraints .where( field [,val] )', function() {
       var q = query().where('id').eq('moo').neq('woof');
       expect( q.constraints[0].operator ).to.be( 'neq' );
       expect( q.constraints[0].condition ).to.be( 'woof' );
+    });
+
+    it('should only accept arrays for `in, nin, all`', function() {
+      var q = query().where('tags');
+
+      var ops = ['in', 'nin', 'all' ],
+          i = ops.length;
+
+      while ( i-- ) {
+        var err;
+        try {
+          err = undefined;
+          q[ ops[i] ]( 'action' );
+        }
+        catch( e ) { err = e; }
+        expect( err ).to.be.an( Error );
+        expect( err.message ).to.match( /array/ );
+      }
     });
   });
 
