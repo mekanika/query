@@ -40,6 +40,15 @@ describe('Constraints .where( field [,val] )', function() {
     expect( q.constraints[2].type ).to.be( 'or' );
   });
 
+  it('should prevent setting constraints if ids were set', function() {
+    var err, q;
+    try {
+      q = query().find(['1234', 4123]).where('smoo').is( true );
+    }
+    catch( e ) { err = e; }
+    expect( err ).to.be.an( Error );
+    expect( err.message ).to.match( /find.*id/ );
+  });
 
   describe('.{operator}( condition )', function() {
 
