@@ -1,4 +1,4 @@
-var query = require('../../lib/index.js');
+var query = require('../lib/index.js');
 var expect = require('expect.js');
 
 // Currently `query` expects an adapter() to return an `.exec()` method

@@ -1,4 +1,4 @@
-var query = require('../../lib/index.js');
+var query = require('../lib/index.js');
 var expect = require('expect.js');
 
 
@@ -49,6 +49,10 @@ describe('Constraints .where( field [,val] )', function() {
     expect( err ).to.be.an( Error );
     expect( err.message ).to.match( /find.*id/ );
   });
+
+  it('should have a .contains() operator');
+  it('should have a .startsWith() operator');
+  it('should have a .endsWith() operator');
 
   describe('.{operator}( condition )', function() {
 

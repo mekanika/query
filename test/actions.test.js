@@ -1,4 +1,4 @@
-var query = require('../../lib/index.js');
+var query = require('../lib/index.js');
 var expect = require('expect.js');
 
 describe('Action methods', function() {

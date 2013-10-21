@@ -1,5 +1,5 @@
 REPORTER = spec
-TESTFILES = ./test/runner.js
+TESTFILES = $(shell find test/ -name '*.test.js')
 
 install:
 	@echo "Installing production"

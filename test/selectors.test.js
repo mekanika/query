@@ -1,10 +1,10 @@
-var query = require('../../lib/index.js');
+var query = require('../lib/index.js');
+var Query = require('../lib/Query');
 var expect = require('expect.js');
 
 
 describe('Selectors', function() {
 
-  it('should support .count()');
   describe('.distinct( field )', function() {
 
     it('should exist as a function', function() {
@@ -28,6 +28,12 @@ describe('Selectors', function() {
   });
 
 
+  it('should support .count()', function() {
+    expect( query().count ).to.be.a( Function );
+    var q = query().count();
+    expect( q.action ).to.be( 'find' );
+    expect( q.selector ).to.be( 'count' );
+  });
 
   it('should support .max( field )');
 
