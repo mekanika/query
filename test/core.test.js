@@ -8,6 +8,10 @@ beforeEach( function(){
   query.reset();
 });
 
+it('exports the Query constructor as query.Query', function() {
+  expect( query.Query ).to.be.a( Function );
+});
+
 it('should return a new query object with query()', function() {
   var q1 = query();
   var q2 = query();
