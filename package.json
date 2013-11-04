@@ -24,7 +24,9 @@
   "bugs": {
     "url": "https://github.com/mekanika/query/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "mekanika-utils-map": "~1.0.1"
+  },
   "devDependencies": {
     "component": "~0.18.0",
     "uglify-js": "~2.3.6",
