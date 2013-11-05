@@ -76,4 +76,23 @@ describe('Middleware', function() {
     q.save().done( cb );
   });
 
+  it('post middleware mutates `err,res` parameters', function( done ) {
+    var q = query()
+      .post( 'save', function(err, res) {
+        err = new Error('Making bacon');
+        res = [{newthing: true}]
+        return [err, res];
+      });
+
+    function cb( err, res ) {
+      expect( err ).to.be.an( Error );
+      expect( err.message ).to.be( 'Making bacon' );
+      expect( res ).to.have.length( 1 );
+      expect( res[0].newthing ).to.be( true );
+      done();
+    }
+
+    q.save().done( cb );
+  });
+
 });
