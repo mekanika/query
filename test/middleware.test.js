@@ -9,8 +9,41 @@ var query = require('../lib/index.js'),
 
 describe('Middleware', function() {
 
+  it('is only applied when an adapter is present', function( done ) {
+    var ref = 0;
+    var q = query().pre( 'save', function() { return ref++; } );
+
+    expect( q.middleware.pre.save ).to.have.length( 1 );
+
+    function cb2( err, res ) {
+      expect( err ).to.be( null );
+      expect( res ).to.be( 'moo' );
+
+      // This time, the pre middleware should have fired
+      expect( ref ).to.be( 1 );
+      done();
+    }
+
+    function cb1( err, res ) {
+      // Check arguments are as expected
+      expect( err ).to.be(null);
+      expect( res ).to.be.a( query.Query );
+
+      // Then check that ref wasn't changed (no middleware executed)
+      expect( ref ).to.be( 0 );
+
+      // Setup an adapter
+      q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
+      q.save().done( cb2 );
+    }
+
+    q.from('woo').save().done( cb1 );
+  });
+
   it('registers a pre hook', function() {
-    var q = query().pre( 'save', function() { return true;  } );
+    var q = query()
+      .from('woo')
+      .pre( 'save', function() { return true;  } );
 
     expect( q.middleware.pre.save ).to.be.an( Array );
     expect( q.middleware.pre.save ).to.have.length( 1 );
@@ -32,7 +65,9 @@ describe('Middleware', function() {
       done();
     };
 
-    q.save().done( cb );
+    q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
+
+    q.from('woo').save().done( cb );
   });
 
   it('pre methods are passed Query# instance (query)', function( done ) {
@@ -44,7 +79,9 @@ describe('Middleware', function() {
       done();
     };
 
-    q.save().done( cb );
+    q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
+
+    q.from('woo').save().done( cb );
   });
 
   it('executes post middleware for a given action', function( done ) {
@@ -58,7 +95,9 @@ describe('Middleware', function() {
       done();
     };
 
-    q.save().done( cb );
+    q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
+
+    q.from('woo').save().done( cb );
   });
 
   it('post methods are passed (err, res)', function( done ) {
@@ -73,7 +112,9 @@ describe('Middleware', function() {
       done();
     };
 
-    q.save().done( cb );
+    q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
+
+    q.from('woo').save().done( cb );
   });
 
   it('post middleware mutates `err,res` parameters', function( done ) {
@@ -92,7 +133,9 @@ describe('Middleware', function() {
       done();
     }
 
-    q.save().done( cb );
+    q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
+
+    q.from('woo').save().done( cb );
   });
 
 });
