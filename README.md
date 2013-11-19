@@ -2,6 +2,8 @@
 
   An isomorphic fluent interface query-object builder.
 
+  [Code Climate](https://codeclimate.com/github/mekanika/query) [![Code Climate](https://codeclimate.com/github/mekanika/query.png)](https://codeclimate.com/github/mekanika/query)
+
   **Massive work in progress. DO NOT USE.**
 
   Borrows heavily from Mongoose and ActiveRecord query interfaces.
