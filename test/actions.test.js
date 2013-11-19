@@ -362,6 +362,20 @@ describe('Action methods', function() {
       expect( gotCallback ).to.be( true );
     });
 
+    it('appends `this` query to callback params', function() {
+      // Create a faux adapter that returns `cb( err, res )`
+      var a = {exec: function(q,cb) { cb('err', 'res'); } };
+      var q = query().useAdapter( a );
+
+      // Expect to get not just err + res back, but also q (a Query)
+      function cb( err, res, q ) {
+        expect( q ).to.be.a( query.Query );
+        expect( q.resource ).to.be( '!' );
+      }
+
+      q.from('!').find().done( cb );
+    });
+
   });
 
 });

@@ -2,7 +2,7 @@
 
   An isomorphic fluent interface query-object builder.
 
-  [Code Climate](https://codeclimate.com/github/mekanika/query) [![Code Climate](https://codeclimate.com/github/mekanika/query.png)](https://codeclimate.com/github/mekanika/query)
+  [![Code Climate](https://codeclimate.com/github/mekanika/query.png)](https://codeclimate.com/github/mekanika/query)
 
   **Massive work in progress. DO NOT USE.**
 
@@ -34,7 +34,7 @@
   Calls can be chained to this `query#` instance and executed by calling:
 
     query#.done( cb );
-    // `cb` is an optional callback, returning `cb( err, res )`
+    // `cb` is an optional callback, returning `cb( err, res, query )`
 
   Default query type/action is `find`, which returns records matching **criteria**.
 
@@ -127,17 +127,13 @@ Examples:
 
   To run the tests:
 
-      grunt test
-
-  Or to set tests to run on changes:
-
-      grunt watch:test
+      make test
 
 
 ### Test Coverage
 To generate a `coverage.html` report, run:
 
-    grunt cover
+    make cover
 
 ### Bugs
 If you [find a bug, report it](https://github.com/mekanika/query/issues).
