@@ -16,7 +16,7 @@ describe('query Core', function() {
     expect( query.Query ).to.be.a( Function );
   });
 
-  it('should return a new query object with query()', function() {
+  it('return a new query object with query()', function() {
     var q1 = query();
     var q2 = query();
     expect( q1 ).to.not.equal( q2 );
@@ -25,29 +25,29 @@ describe('query Core', function() {
   });
 
   // This checks that our stub provides the methods required by our lib
-  it('should provide an .exec() method on adapterClass', function() {
+  it('provides an .exec() method on adapterClass', function() {
     expect( adapterStub().exec ).to.be.a( Function );
   });
 
-  it('should enable setting an .adapterClass( class )', function() {
+  it('enables setting an .adapterClass( class )', function() {
     // Check the adapterClass method is available
     expect( query.adapterClass ).to.be.ok();
     // Attempt to instantiate the adapter stub (will fail if not ok)
     query.adapterClass( adapterStub );
   });
 
-  it('should return query class on setting .adapterClass()', function() {
+  it('returns query class on setting .adapterClass()', function() {
     var q = query.adapterClass( adapterStub );
     expect( q ).to.be.a( Function );
   });
 
-  it('should set an adapter using .use(\'adapter\')', function() {
+  it('sets an adapter using .use(\'adapter\')', function() {
     query.adapterClass( adapterStub );
     var q = query().use('whatever');
     expect( q.adapter.exec ).to.be.a( Function );
   });
 
-  it('should fail to .use( adapterKey ) if no adapterClass', function() {
+  it('fails to .use( adapterKey ) if no adapterClass', function() {
     // Reset our adapter class
     query.adapterClass();
     var err;
@@ -62,24 +62,24 @@ describe('query Core', function() {
     expect( err.message ).to.match( /requires.*adapterClass/ );
   });
 
-  it('should set an adapter if initialised as query( adapter )', function() {
+  it('sets an adapter if initialised as query( adapter )', function() {
     var q = query( adapterStub );
     expect( q.adapter ).to.be.ok();
   });
 
-  it('should set an adapter if passed .useAdapter( adapter )', function() {
+  it('sets an adapter if passed .useAdapter( adapter )', function() {
     var q = query().useAdapter( adapterStub );
     expect( q.adapter ).to.be.ok();
   });
 
 
   describe('.from(resource)', function() {
-    it('should set the resource when provided', function() {
+    it('sets the resource when provided', function() {
       var q = query().from('icecream');
       expect( q.resource ).to.be( 'icecream' );
     });
 
-    it('should fail to set resource if not provided string', function() {
+    it('fail to set resource if not provided string', function() {
       var err;
       try {
         var q = query().from( ['array'] );
@@ -94,13 +94,13 @@ describe('query Core', function() {
 
 
   describe('.select(fields)', function() {
-    it('should set single `fields` on .select(fields)', function() {
+    it('sets single `fields` on .select(fields)', function() {
       var q = query().select('id');
       expect( q.fields ).to.have.length(1);
       expect( q.fields[0] ).to.be( 'id' );
     });
 
-    it('should fail .select(fields) if no fields passed', function() {
+    it('fails .select(fields) if no fields passed', function() {
       var err;
       try {
         var q = query().select();
@@ -113,7 +113,7 @@ describe('query Core', function() {
       expect( err.message ).to.match( /select.*fields/ );
     });
 
-    it('should shallow decompose array and literal `fields`', function() {
+    it('shallow decomposes array and literal `fields`', function() {
       var q = query().select( '1', ['2', '3'], ['4'] );
       expect( q.fields ).to.have.length( 4 );
       expect( q.fields ).to.eql( ['1', '2', '3', '4'] );

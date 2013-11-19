@@ -7,20 +7,20 @@ describe('Sorting methods', function() {
     query.reset();
   });
 
-  it('should set .asc( index )', function() {
+  it('sets .asc( index )', function() {
     expect( query().asc().paging.sort[0].direction ).to.be( 'asc' );
     expect( query().asc('smoo').paging.sort[0].index ).to.be( 'smoo' );
   });
 
-  it('should set .desc( index )', function() {
+  it('sets .desc( index )', function() {
     expect( query().desc().paging.sort[0].direction ).to.be( 'desc' );
     expect( query().desc('smoo').paging.sort[0].index ).to.be( 'smoo' );
   });
 
-  it('should set .order( index ) by', function() {
+  it('sets .order( index ) by', function() {
     expect( query().order('meep').paging.sort[0].index ).to.be('meep');
   });
 
-  it('should support multiple support indeces');
+  it('supports multiple support indeces');
 
 });

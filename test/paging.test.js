@@ -7,22 +7,22 @@ describe('Paging methods', function() {
     query.reset();
   });
 
-  it('should set .limit(num)', function() {
+  it('sets .limit(num)', function() {
     var q = query().limit(10);
     expect( q.paging.limit ).to.be( 10 );
   });
 
-  it('should set .offset(num)', function() {
+  it('sets .offset(num)', function() {
     var q = query().offset(250);
     expect( q.paging.offset ).to.be( 250 );
   });
 
-  it('should alias .offset() as .skip()', function() {
+  it('aliases .offset() as .skip()', function() {
     var q = query().skip(150);
     expect( q.paging.offset ).to.be( 150 );
   });
 
-  it('should support offset via .page(num)', function() {
+  it('supports offset via .page(num)', function() {
 
     // Page 1 should return record 1 (ie. offset 0)
     var q = query().limit(10).page(1);
@@ -37,7 +37,7 @@ describe('Paging methods', function() {
     expect( q.paging.offset ).to.be( 20 );
   });
 
-  it('should fail to set page if limit not set first', function() {
+  it('fails to set page if limit not set first', function() {
     try {
       var q = query().page(1);
       expect( q ).to.be.empty();

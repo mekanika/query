@@ -10,7 +10,7 @@ describe('Action methods', function() {
   // ## .create( payload, cb )
   describe('.create( payload [, cb] )', function() {
 
-    it('should fail if no .from(model) is set', function() {
+    it('fails if no .from(model) is set', function() {
       var cb = function( err, res ) {
         expect( err ).to.be.an( Error );
         expect( res ).to.be( undefined );
@@ -20,7 +20,7 @@ describe('Action methods', function() {
       query().create('record', cb);
     });
 
-    it('should fail if callback not a function', function() {
+    it('fails if callback not a function', function() {
       var err;
       try {
         query().from('boop').create('payload', 'fakefunction');
@@ -32,7 +32,7 @@ describe('Action methods', function() {
       expect( err.message ).to.match( /requires.*Function/ );
     });
 
-    it('should callback with `query` object on success', function() {
+    it('callback passed `query` object on success', function() {
       var cb = function( err, res ) {
         expect( err ).to.not.be.ok();
         expect( res ).to.not.be.empty();
@@ -42,7 +42,7 @@ describe('Action methods', function() {
       query().from('something').create('record', cb);
     });
 
-    it('should store multiple payloads on create', function() {
+    it('stores multiple payloads on create', function() {
       var cb = function( err, res ) {
         expect( res.inputs.length ).to.be( 3 );
         expect( res.inputs ).to.eql(['a','b',3]);
@@ -50,7 +50,7 @@ describe('Action methods', function() {
       query().from('something').create(['a','b',3], cb);
     });
 
-    it('should return query object if no callback', function() {
+    it('returns query object if no callback', function() {
       var q = query().from('anything').create('hello');
       expect( q ).to.not.be.empty();
       expect( q.inputs[0] ).to.be( 'hello' );
@@ -61,12 +61,12 @@ describe('Action methods', function() {
   // ## .save()
   describe('.save( records, cb )', function() {
 
-    it('should set action to `save`', function() {
+    it('sets action to `save`', function() {
       var q = query().from('what').save( {a:1} );
       expect( q.action ).to.be( 'save' );
     });
 
-    it('should handle single and object array payload', function() {
+    it('handles single and object array payload', function() {
       // Test passing single objects
       var q = query().from('what').save( {a:1} );
       expect( q.inputs ).to.have.length( 1 );
@@ -78,7 +78,7 @@ describe('Action methods', function() {
       expect( q.inputs ).to.have.length( 2 );
     });
 
-    it('should fail if `cb` is not a function', function() {
+    it('fails if `cb` is not a function', function() {
       var err;
       try {
         var q = query().from('what').save( {}, 'notafunction' );
@@ -89,7 +89,7 @@ describe('Action methods', function() {
       expect( err.message ).to.match( /save.*requires/ );
     });
 
-    it('should run callback if passed', function( done ) {
+    it('runs callback if passed', function( done ) {
       var cb = function( err, res ) {
         expect( err ).to.be( null );
         expect( res.action ).to.be( 'save' );
@@ -105,12 +105,12 @@ describe('Action methods', function() {
   // ## .update()
   describe('.update( [conditions], [update], [cb] )', function() {
 
-    it('should set action and no-op if nothing passed', function() {
+    it('sets action and no-op if nothing passed', function() {
       var q = query().from('me').update();
       expect( q.action ).to.be( 'update' );
     });
 
-    it('should accept single argument as input object', function( done ) {
+    it('accepts single argument as input object', function( done ) {
       function cb( err, res ) {
         expect( err ).to.be( null );
 
@@ -129,7 +129,7 @@ describe('Action methods', function() {
       q.done( cb );
     });
 
-    it('should set conditions as a single string id', function( done ) {
+    it('sets conditions as a single string id', function( done ) {
       function cb( err, res ) {
         expect( err ).to.be( null );
         expect( res.constraints ).to.have.length( 1 );
@@ -146,7 +146,7 @@ describe('Action methods', function() {
       query().from('me').update( '12345', {name:'Jack'} ).done( cb );
     });
 
-    it('should set conditions for array of string ids', function( done ) {
+    it('sets conditions for array of string ids', function( done ) {
       function cb( err, res ) {
         expect( err ).to.be( null );
         expect( res.constraints ).to.have.length( 1 );
@@ -163,7 +163,7 @@ describe('Action methods', function() {
       query().from('me').update( ['1234','5671'], {name:'Jack'} ).done( cb );
     });
 
-    it('should run a callback if one passed', function( done ) {
+    it('runs a callback if one passed', function( done ) {
       function cb( err, res ) {
         expect( err ).to.be( null );
         expect( res ).to.not.be.empty();
@@ -172,7 +172,7 @@ describe('Action methods', function() {
       query().from('me').update( '1234', {name:'Joe'}, cb );
     });
 
-    it('should fail if callback is passed but not a function', function() {
+    it('fails if callback is passed but not a function', function() {
       var err;
       try {
         var q = query().from('me').update( 1, 2, 'notafunction' );
@@ -189,14 +189,14 @@ describe('Action methods', function() {
   // ## .find()
   describe('.find( [identifiers] [, cb] )', function() {
 
-    it('should return a `find` action query() if no params', function(){
+    it('returns a `find` action query() if no params', function(){
       var q = query().find();
       expect( q ).to.not.be.empty();
       expect( q.identifiers ).to.have.length( 0 );
       expect( q.action ).to.be( 'find' );
     });
 
-    it('should set find identifiers if passed', function() {
+    it('sets find identifiers if passed', function() {
       // Test literal is pushed onto .fields array
       var q = query().find('moop');
       expect( q.identifiers ).to.have.length( 1 );
@@ -205,7 +205,7 @@ describe('Action methods', function() {
       expect( q.identifiers ).to.have.length( 2 );
     });
 
-    it('should run a callback if one is passed', function() {
+    it('runs a callback if one is passed', function() {
       var cb = function(err, res) {
         // Check that no error was thrown
         expect( err ).to.not.be.ok();
@@ -217,7 +217,7 @@ describe('Action methods', function() {
       query().from('anything').find('moop', cb);
     });
 
-    it('should fail a callback find if no .from(model) set', function() {
+    it('fails a callback find if no .from(model) set', function() {
       var cb = function(err, res) {
         // Check that no error was thrown
         expect( res ).to.be( undefined );
@@ -227,7 +227,7 @@ describe('Action methods', function() {
       query().find('moop', cb);
     });
 
-    it('should fail if callback is passed but not a function', function() {
+    it('fails if callback is passed but not a function', function() {
       var err;
       try {
         var q = query().from('me').find( 'moo', 'moo2' );
@@ -242,35 +242,35 @@ describe('Action methods', function() {
 
   describe('.destroy{|remove}([id , cb])', function() {
 
-    it('should only set delete action on .remove( undefined )', function() {
+    it('only sets delete action on .remove( undefined )', function() {
       var q = query().destroy();
       expect( q.constraints ).to.have.length( 0 );
       expect( q.action ).to.be( 'delete' );
     });
 
-    it('should add an `id` as a new constraint', function() {
+    it('adds an `id` as a new constraint', function() {
       var q = query().destroy( '12345' );
       expect( q.constraints ).to.have.length( 1 );
       expect( q.constraints[0].field ).to.be( 'id' );
       expect( q.constraints[0].condition ).to.be( '12345' );
     });
 
-    it('should set the remove action to be \'delete\'', function() {
+    it('sets the remove action to be \'delete\'', function() {
       var q = query().destroy('abc');
       expect( q.action ).to.be('delete');
     });
 
-    it('should alias as .remove()', function() {
+    it('aliases as .remove()', function() {
       var q = query().remove();
       expect( q.action ).to.be('delete');
     });
 
-    it('should add multiple ids as multiple constraints', function() {
+    it('adds multiple ids as multiple constraints', function() {
       var q = query().remove( [1,2,3,4] );
       expect( q.constraints ).to.have.length( 4 );
     });
 
-    it('should fail if callback is passed but not a function', function() {
+    it('fails if callback is passed but not a function', function() {
       var err;
       try {
         var q = query().from('me').remove( 1, 'notafunction' );
@@ -285,7 +285,7 @@ describe('Action methods', function() {
 
   describe('.done(cb)', function() {
 
-    it('should fail if no callback provided', function() {
+    it('fails if no callback provided', function() {
       var err;
       try {
         query().done();
@@ -297,7 +297,7 @@ describe('Action methods', function() {
       expect( err.message ).to.match( /requires/ );
     });
 
-    it('should return an error if no .from(model) set', function() {
+    it('returns an error if no .from(model) set', function() {
       try {
         query().done( function(err){
           expect( err ).to.be.an( Error );
@@ -310,7 +310,7 @@ describe('Action methods', function() {
       }
     });
 
-    it('should return an error if no `action` set', function() {
+    it('returns an error if no `action` set', function() {
       try {
         query().from('anything').done( function(err){
           expect( err ).to.be.an( Error );
@@ -323,7 +323,7 @@ describe('Action methods', function() {
       }
     });
 
-    it('should callback with query object if no adapter', function() {
+    it('passes only the query object to callback if no adapter', function() {
       var cb = function( err, res ) {
         expect( err ).to.not.be.ok();
         expect( res ).to.not.be.empty();
@@ -333,7 +333,7 @@ describe('Action methods', function() {
       query().from('anything').create('obj').done( cb );
     });
 
-    it('should .exec( query, cb ) adapter if one provided', function() {
+    it('runs .exec( query, cb ) adapter if one provided', function() {
       var gotCallback = false;
 
       // Stub adapter
