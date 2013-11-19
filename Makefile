@@ -22,7 +22,7 @@ lint:
 	@echo "Linting..."
 	@./node_modules/jshint/bin/jshint \
 		--config .jshintrc \
-		lib/*.js test/*.js
+		lib/**/*.js test/*.js
 
 coverage:
 	@echo "Generating coverage report.."
