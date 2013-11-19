@@ -5,7 +5,7 @@
   "eqeqeq":    true,
   "eqnull":    true,
   "expr":      true,
-  "laxcomma":  false,
+  "laxcomma":  true,
   "laxbreak":  true,
   "onecase":   true,
   "sub":       true
