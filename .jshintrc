@@ -1,6 +1,5 @@
 {
   "devel":     true,
-
   "trailing":  true,
   "eqeqeq":    true,
   "eqnull":    true,
@@ -8,5 +7,8 @@
   "laxcomma":  true,
   "laxbreak":  true,
   "onecase":   true,
-  "sub":       true
+  "sub":       true,
+  "boss":      true,
+  "proto":     true,
+  "loopfunc":  true
 }
