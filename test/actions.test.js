@@ -13,7 +13,6 @@ describe('Action methods', function() {
     it('fails if no .from(model) is set', function() {
       var cb = function( err, res ) {
         expect( err ).to.be.an( Error );
-        expect( res ).to.be( undefined );
         // Loosely check that the error message indicts "select"
         expect( err.message ).to.match( /from/ );
       };
@@ -91,7 +90,7 @@ describe('Action methods', function() {
 
     it('runs callback if passed', function( done ) {
       var cb = function( err, res ) {
-        expect( err ).to.be( null );
+        expect( err ).to.not.be.ok();
         expect( res.action ).to.be( 'save' );
         expect( res.inputs[0].a ).to.be( 1 );
         done();
@@ -112,7 +111,7 @@ describe('Action methods', function() {
 
     it('accepts single argument as input object', function( done ) {
       function cb( err, res ) {
-        expect( err ).to.be( null );
+        expect( err ).to.not.be.ok();
 
         // Ensure update data is set
         expect( res.inputs ).to.have.length( 1 );
@@ -131,7 +130,7 @@ describe('Action methods', function() {
 
     it('sets conditions as a single string id', function( done ) {
       function cb( err, res ) {
-        expect( err ).to.be( null );
+        expect( err ).to.not.be.ok();
         expect( res.constraints ).to.have.length( 1 );
         expect( res.constraints[0].operator ).to.be( 'eq' );
         expect( res.constraints[0].condition ).to.be( '12345' );
@@ -148,7 +147,7 @@ describe('Action methods', function() {
 
     it('sets conditions for array of string ids', function( done ) {
       function cb( err, res ) {
-        expect( err ).to.be( null );
+        expect( err ).to.not.be.ok();
         expect( res.constraints ).to.have.length( 1 );
         expect( res.constraints[0].operator ).to.be( 'in' );
         expect( res.constraints[0].condition ).to.have.length( 2 );
@@ -165,7 +164,7 @@ describe('Action methods', function() {
 
     it('runs a callback if one passed', function( done ) {
       function cb( err, res ) {
-        expect( err ).to.be( null );
+        expect( err ).to.not.be.ok();
         expect( res ).to.not.be.empty();
         done();
       }
@@ -219,8 +218,6 @@ describe('Action methods', function() {
 
     it('fails a callback find if no .from(model) set', function() {
       var cb = function(err, res) {
-        // Check that no error was thrown
-        expect( res ).to.be( undefined );
         expect( err ).to.be.an( Error );
         expect( err.message ).to.match( /from/ );
       };

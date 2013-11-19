@@ -16,7 +16,7 @@ describe('Middleware', function() {
     expect( q.middleware.pre.save ).to.have.length( 1 );
 
     function cb2( err, res ) {
-      expect( err ).to.be( null );
+      expect( err ).to.not.be.ok();
       expect( res ).to.be( 'moo' );
 
       // This time, the pre middleware should have fired
@@ -26,7 +26,7 @@ describe('Middleware', function() {
 
     function cb1( err, res ) {
       // Check arguments are as expected
-      expect( err ).to.be(null);
+      expect( err ).to.not.be.ok();
       expect( res ).to.be.a( query.Query );
 
       // Then check that ref wasn't changed (no middleware executed)
