@@ -121,7 +121,7 @@ describe('Middleware', function() {
     var q = query()
       .post( 'save', function(err, res) {
         err = new Error('Making bacon');
-        res = [{newthing: true}]
+        res = [{newthing: true}];
         return [err, res];
       });
 
