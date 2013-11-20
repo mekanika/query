@@ -101,7 +101,7 @@ describe('Modifiers', function() {
       catch( e ) { err = e; }
 
       expect( err ).to.be.an( Error );
-      expect( err.message ).to.match( /query#rename.*string/ );
+      expect( err.message ).to.match( /field.*string/i );
     });
 
     it('fails .rename(...) if `to` not a string', function() {
@@ -110,7 +110,7 @@ describe('Modifiers', function() {
       catch( e ) { err = e; }
 
       expect( err ).to.be.an( Error );
-      expect( err.message ).to.match( /Renamed field.*string/ );
+      expect( err.message ).to.match( /type.*string/i );
     });
   });
 
@@ -150,7 +150,7 @@ describe('Modifiers', function() {
       catch( e ) { err = e; }
 
       expect( err ).to.be.an( Error );
-      expect( err.message ).to.match( /value.*number/ );
+      expect( err.message ).to.match( /type.*number/ );
     });
 
     it('sets amount with .by( amount )', function() {
