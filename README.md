@@ -6,21 +6,20 @@
 
   **Massive work in progress. DO NOT USE.**
 
-  Borrows heavily from Mongoose and ActiveRecord query interfaces.
-
-      query('service')         // The service to query
-        .from( 'user' )        // Resource to execute on
-        .includes( 'orders' )  // Associations to eager-load
-          .on( 'uid' )         //  - join key (defaults as `{resource}_id`)
-          .as( 'bookings' )    //  - return naming
-        .where( 'name' )       // Constraint field
-          .in( ['Tom','Bob'] ) //  - operator and conditions
-        .and( 'age' )          // AND constraint (also supports `.or()`)
-          .between( 12, 25 )   //  - operator and conditions
-        .limit( 20 )           // Number of results
-        .offset( 5 )           // Result offset (used for paging)
-        .done( callback );     // Execute and return `callback( err, res )`
-
+```js
+query('service')         // The service to query
+  .from( 'user' )        // Resource to execute on
+  .includes( 'orders' )  // Associations to eager-load
+    .on( 'uid' )         //  - join key (defaults as `{resource}_id`)
+    .as( 'bookings' )    //  - return naming
+  .where( 'name' )       // Constraint field
+    .in( ['Tom','Bob'] ) //  - operator and conditions
+  .and( 'age' )          // AND constraint (also supports `.or()`)
+    .between( 12, 25 )   //  - operator and conditions
+  .limit( 20 )           // Number of results
+  .offset( 5 )           // Result offset (used for paging)
+  .done( callback );     // Execute and return `callback( err, res )`
+```
 
 ## Installation
 
@@ -29,12 +28,27 @@
 
 ## Queries
 
-  A query is initiated by calling `query()`, returning a `new Query`.
+  Initiate a query:
 
-  Calls can be chained to this `query#` instance and executed by calling:
+```js
+  query()
+  // -> new Query
+```
 
-    query#.done( cb );
-    // `cb` is an optional callback, returning `cb( err, res, query )`
+Queries **require** setting:
+
+  - **.from( resource )** - the `resource` to query
+  - **.{action}(...)** - {action} to execute (find, save, etc)
+
+Execute a query with `.done( cb )`. Calls can be chained to this `query#` instance and executed by calling:
+
+```js
+  query()
+    .from( 'users' )
+    .find()
+    .done( cb );
+    // `cb` is required callback, passed `cb( err, res, query )`
+```
 
   Default query type/action is `find`, which returns records matching **criteria**.
 
@@ -74,11 +88,14 @@
 
 Examples:
 
-    query#.where( 'name' ).is( 'Mordecai' );
-    // Match any record with `{name: 'Mordecai'}`
+```js
+query#.where( 'name' ).is( 'Mordecai' );
+// Match any record with `{name: 'Mordecai'}`
 
-    query#.where( 'age' ).gte( 21 );
-    // Match records where `age` is 21 or higher
+query#.where( 'age' ).gte( 21 );
+// Match records where `age` is 21 or higher
+```
+
 
 
 ## Adapter
@@ -91,10 +108,12 @@ Examples:
 
 ### Setting an adapter
 
-  Simply pass an adapter reference in to the query directly:
+  Pass an adapter directly to each query:
 
-      var myadapter = require('my-adapter');
-      query( myadapter );
+```js
+  var myadapter = require('my-adapter');
+  query( myadapter );
+```
 
   This is syntactic sugar for the identical call:
 
@@ -119,11 +138,12 @@ Examples:
       query().use( 'adapterName' );
 
 
+
 ## Tests
 
   Ensure you have installed the development dependencies:
 
-      npm install
+      make install
 
   To run the tests:
 
@@ -133,7 +153,7 @@ Examples:
 ### Test Coverage
 To generate a `coverage.html` report, run:
 
-    make cover
+    make coverage
 
 ### Bugs
 If you [find a bug, report it](https://github.com/mekanika/query/issues).
