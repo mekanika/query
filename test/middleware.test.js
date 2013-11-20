@@ -179,7 +179,7 @@ describe('Middleware', function() {
         expect( arguments.length ).to.be( 3 );
         expect( arguments[2].constructor.name ).to.be( 'Query' );
         done();
-      };
+      }
 
       q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
       q.from('^_^').save().done( cb );
