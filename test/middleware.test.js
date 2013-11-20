@@ -100,7 +100,7 @@ describe('Middleware', function() {
     q.from('woo').save().done( cb );
   });
 
-  it('post methods are passed (err, res)', function( done ) {
+  it('post methods are passed (err, res, query)', function( done ) {
     var arity;
     var q = query()
       .post( 'save', function() {
@@ -108,7 +108,8 @@ describe('Middleware', function() {
       });
 
     var cb = function() {
-      expect( arity ).to.be( 2 );
+      expect( arity ).to.be( 3 );
+      expect( arguments[2].constructor.name ).to.be( 'Query' );
       done();
     };
 
@@ -136,6 +137,22 @@ describe('Middleware', function() {
     q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
 
     q.from('woo').save().done( cb );
+  });
+
+  it('post runs final callback with (err, res, query)', function( done ) {
+    var q = query()
+      .post( 'save', function() {
+        return [null, 1];
+      });
+
+    function cb() {
+      expect( arguments.length ).to.be( 3 );
+      expect( arguments[2].constructor.name ).to.be( 'Query' );
+      done();
+    };
+
+    q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
+    q.from('^_^').save().done( cb );
   });
 
 });
