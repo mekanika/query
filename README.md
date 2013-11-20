@@ -97,6 +97,64 @@ query#.where( 'age' ).gte( 21 );
 ```
 
 
+## Middleware
+
+  `query` supports _pre_ and _post_ processing middleware, and:
+
+  - is only executed **if an adapter is set**
+  - can add multiple methods to pre and post
+  - executes in the order it is added
+
+### Pre
+
+  Pre-processing middleware is executed **before** the query is handed to its adapter, and are passed  `fn( query )` with _this query_ as their only parameter.
+
+  This enables you to modify the query prior to adapter execution.
+
+  There are no special requirements for pre-middleware functions.
+
+```js
+  function preHandler( qry ) {
+    qry.resource += ':magic_suffix';
+    // Example modification of the query passed to the adapter
+  }
+
+  query().pre( preHandler );
+  // Adds `preHandler` to the pre-processing queue
+```
+
+Also supports adding multiple middleware methods
+
+```js
+  query().pre( fn1 ).pre( fn2 ); // etc
+```
+
+### Post
+
+  Post-processing middleware is run **after** the adapter execution is complete, and are passed `fn( err, res, query )`, where `err` and `res` are responses from the adapter, and `query` is _this query_.
+
+  This enables you to modify the results from the server.
+
+  Post middleware functions **must** return an `[error, results]` array, which will presumably include your modifications.
+
+```js
+  function postHandler( err, res, qry ) {
+    // MUST return [err, res] array
+    err = 'My modified error';
+    res = 'Custom results!';
+    return [err, res];
+  }
+
+  query().post( postHandler );
+  // Adds `postHandler` to post-processing queue
+```
+
+Also supports adding multiple middleware methods:
+
+```js
+  query().post( fn1 ).post( fn2 ); // etc
+```
+
 
 ## Adapter
 
