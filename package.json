@@ -25,7 +25,7 @@
     "url": "https://github.com/mekanika/query/issues"
   },
   "dependencies": {
-    "mekanika-utils-map": "~1.0.1"
+    "mekanika-utils-map": "~1.1.0"
   },
   "devDependencies": {
     "component": "~0.18.0",
