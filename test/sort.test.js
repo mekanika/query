@@ -49,7 +49,7 @@ describe('Sorting methods', function() {
       expect( q.sort ).to.have.length( 0 );
       expect( q.order('cool').sort ).to.have.length( 1 );
       expect( q.sort[0] ).to.not.have.keys( 'direction' );
-    })
+    });
 
   });
 
