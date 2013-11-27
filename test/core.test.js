@@ -94,7 +94,7 @@ describe('query Core', function() {
 
 
   describe('.select(fields)', function() {
-    it('sets single `fields` on .select(fields)', function() {
+    it('sets a single `fields` when passed a string', function() {
       var q = query().select('id');
       expect( q.fields ).to.have.length(1);
       expect( q.fields[0] ).to.be( 'id' );
@@ -113,10 +113,21 @@ describe('query Core', function() {
       expect( err.message ).to.match( /select.*fields/ );
     });
 
-    it('shallow decomposes array and literal `fields`', function() {
-      var q = query().select( '1', ['2', '3'], ['4'] );
-      expect( q.fields ).to.have.length( 4 );
-      expect( q.fields ).to.eql( ['1', '2', '3', '4'] );
+    it('applies an array of fields to `this.fields`', function() {
+      var q = query().select( [1,2,3] );
+      expect( q.fields ).to.have.length( 3 );
+      expect( q.fields ).to.only.contain( 1,2,3 );
+    });
+
+    it('applies space separated string as multiple fields', function() {
+      var q = query().select( '1 2 3' );
+      expect( q.fields ).to.have.length( 3 );
+      expect( q.fields ).to.only.contain( '1','2','3' );
+    });
+
+    it('applies negative strings as excludes', function() {
+      expect( query().select( '-hi' ).excludeFields ).to.only.contain( 'hi' );
+      expect( query().select( 'sup -hi' ).excludeFields ).to.only.contain( 'hi' );
     });
 
     it('sets to null if passed null (special case)', function() {
