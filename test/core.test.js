@@ -157,6 +157,14 @@ describe('query Core', function() {
       expect( q.excludeFields ).to.contain( 'name', '!' );
     });
 
+    it('throws error if not provided Array or String', function() {
+      var err;
+      try {
+        query().exclude( 123 );
+      }
+      catch( e ) { err = e; }
+      expect( err ).to.be.an( Error );
+    });
   });
 
 
