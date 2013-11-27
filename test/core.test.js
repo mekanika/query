@@ -118,6 +118,11 @@ describe('query Core', function() {
       expect( q.fields ).to.have.length( 4 );
       expect( q.fields ).to.eql( ['1', '2', '3', '4'] );
     });
+
+    it('sets to null if passed null (special case)', function() {
+      var q = query().select( null );
+      expect( q.fields ).to.be( null );
+    });
   });
 
 
