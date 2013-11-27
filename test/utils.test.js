@@ -52,4 +52,24 @@ describe('Utils', function() {
 
   });
 
+
+  describe('has( arr, val )', function() {
+
+    it('returns true if val is in arr', function() {
+      expect( utils.has( [1,'2', 4], '2' ) ).to.be( true );
+    });
+
+    it('returns false if val is not in arr', function() {
+      expect( utils.has( [1,'2', 4], 2 ) ).to.be( false );
+    });
+
+    it('falls back if no .indexOf', function() {
+      var a = [1,2,3];
+      a.indexOf = undefined;
+      expect( utils.has( a, 2 ) ).to.be( true );
+      expect( utils.has( a, ':)' ) ).to.be( false );
+    });
+
+  });
+
 });
