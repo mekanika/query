@@ -126,4 +126,27 @@ describe('query Core', function() {
   });
 
 
+  describe('.exclude( fields )', function() {
+
+    it('applies array of fields to .excludeFields array', function() {
+      var q = query().exclude( ['name', '!'] );
+      expect( q.excludeFields ).to.have.length( 2 );
+      expect( q.excludeFields ).to.contain( 'name', '!' );
+    });
+
+    it('passes single string onto excludes', function() {
+      var q = query().exclude( 'name' );
+      expect( q.excludeFields ).to.have.length( 1 );
+      expect( q.excludeFields ).to.contain( 'name' );
+    });
+
+    it('applies space separated string as multiple onto excludes', function() {
+      var q = query().exclude( 'name !' );
+      expect( q.excludeFields ).to.have.length( 2 );
+      expect( q.excludeFields ).to.contain( 'name', '!' );
+    });
+
+  });
+
+
 });
