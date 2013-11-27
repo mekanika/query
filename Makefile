@@ -6,12 +6,7 @@ install:
 	@npm install --production
 	@echo "Install complete"
 
-build: lint test component
-
-component:
-	@echo "\nCreating component..."
-	@component build --verbose --name mekanika-query --standalone query
-	@echo "Done: ./build/mekanika-query.js\n"
+build: lint test
 
 test:
 	@NODE_ENV=test ./node_modules/.bin/mocha \
@@ -32,4 +27,4 @@ coverage:
 		--reporter html-cov > coverage.html
 	@echo "Done: ./coverage.html"
 
-.PHONY: install build test lint component coverage
+.PHONY: install build test lint coverage

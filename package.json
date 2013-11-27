@@ -28,7 +28,6 @@
     "mekanika-utils-map": "~1.1.0"
   },
   "devDependencies": {
-    "component": "~0.18.0",
     "uglify-js": "~2.3.6",
     "mocha": "~1.12.0",
     "expect.js": "~0.2.0",
