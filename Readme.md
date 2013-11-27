@@ -1,6 +1,6 @@
 # query
 
-  An isomorphic fluent interface query-object builder.
+  `query` is an isomorphic interface for building [Query Objects](https://github.com/mekanika/query/blob/master/docs/object.reference.md).
 
   [![Code Climate](https://codeclimate.com/github/mekanika/query.png)](https://codeclimate.com/github/mekanika/query)
 
