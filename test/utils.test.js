@@ -31,4 +31,25 @@ describe('Utils', function() {
 
   });
 
+
+  describe('isEmpty( arr )', function() {
+
+    it('returns false if element is not an array', function() {
+      expect( utils.isEmpty() ).to.be( false );
+      expect( utils.isEmpty( 'str' ) ).to.be( false );
+      expect( utils.isEmpty( true ) ).to.be( false );
+      expect( utils.isEmpty( 1 ) ).to.be( false );
+      expect( utils.isEmpty( null ) ).to.be( false );
+    });
+
+    it('returns true if array is empty', function() {
+      expect( utils.isEmpty( [] ) ).to.be( true );
+    });
+
+    it('returns false if array has length', function() {
+      expect( utils.isEmpty( [1] ) ).to.be( false );
+    });
+
+  });
+
 });
