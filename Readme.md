@@ -2,20 +2,17 @@
 
   `query` is an isomorphic interface for building [Query Objects](https://github.com/mekanika/query/blob/master/docs/object.reference.md).
 
+  **Alpha release version**
+
   [![Code Climate](https://codeclimate.com/github/mekanika/query.png)](https://codeclimate.com/github/mekanika/query)
 
-  **Massive work in progress. DO NOT USE.**
-
 ```js
-query('service')         // The service to query
+query()                  // Create query
   .from( 'user' )        // Resource to execute on
-  .includes( 'orders' )  // Associations to eager-load
-    .on( 'uid' )         //  - join key (defaults as `{resource}_id`)
-    .as( 'bookings' )    //  - return naming
   .where( 'name' )       // Constraint field
     .in( ['Tom','Bob'] ) //  - operator and conditions
   .and( 'age' )          // AND constraint (also supports `.or()`)
-    .between( 12, 25 )   //  - operator and conditions
+    .gt( 25 )            //  - operator and conditions
   .limit( 20 )           // Number of results
   .offset( 5 )           // Result offset (used for paging)
   .done( callback );     // Execute and return `callback( err, res )`
@@ -37,7 +34,6 @@ query('service')         // The service to query
 
 Queries **require** setting:
 
-  - **.from( resource )** - the `resource` to query
   - **.{action}(...)** - {action} to execute (find, save, etc)
 
 Execute a query with `.done( cb )`. Calls can be chained to this `query#` instance and executed by calling:
@@ -50,8 +46,6 @@ Execute a query with `.done( cb )`. Calls can be chained to this `query#` instan
     // `cb` is required callback, passed `cb( err, res, query )`
 ```
 
-  Default query type/action is `find`, which returns records matching **criteria**.
-
 ### Query actions (Query#action)
 
   The available actions supported by query are:
@@ -59,40 +53,33 @@ Execute a query with `.done( cb )`. Calls can be chained to this `query#` instan
   - **create**
   - **save**
   - **update**
-  - **delete**
+  - **remove**
   - **find**
 
 
-### Query selectors
+### Setting match constraints
 
-  The more advanced _selector_ queries (modifiers on `find` results) are:
-
-  - **.distinct( field )**  
-    Sets the `Query#unique` property to `field`, instructing an adapter to apply this property to its `find` query.
-
-
-### Setting criteria (selectors)
-
-  Criteria are set using the `.where( field ).<operator>( condition )` pattern.
+  Constraints are set using the `.where( field ).<operator>( condition )` pattern.
 
   The `field` is the named target to apply an `operator` (the criteria) and `condition` to. **Operators** include:
 
-  * **.eq(** value **)** - Equality (exact) match. Alias: `.is()`.
-  * **.neq(** value **)** - Not equal to. Alias `not()`.
-  * **.in(** array **)** - Where field value is in the array.
-  * **.nin(** array **)** - Where field value is _not_ in the array.
-  * **.lt(** number **)** - Less than number.
-  * **.gt(** number **)** - More (greater) than than number.
-  * **.lte(** number **)** - Less than or equal to number.
-  * **.gte(** number **)** - More (greater) than or equal to number.
+  - **.eq(** value **)** - Equality (exact) match. Alias: `.is()`.
+  - **.neq(** value **)** - Not equal to. Alias `not()`.
+  - **.in(** array **)** - Where field value is in the array.
+  - **.nin(** array **)** - Where field value is _not_ in the array.
+  - **.all(** array **)** - everything in the list
+  - **.lt(** number **)** - Less than number.
+  - **.gt(** number **)** - More (greater) than than number.
+  - **.lte(** number **)** - Less than or equal to number.
+  - **.gte(** number **)** - More (greater) than or equal to number.
 
 Examples:
 
 ```js
-query#.where( 'name' ).is( 'Mordecai' );
+query().where( 'name' ).is( 'Mordecai' );
 // Match any record with `{name: 'Mordecai'}`
 
-query#.where( 'age' ).gte( 21 );
+query().where( 'age' ).gte( 21 );
 // Match records where `age` is 21 or higher
 ```
 
