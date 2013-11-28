@@ -36,15 +36,15 @@ describe('Action methods', function() {
         expect( err ).to.not.be.ok();
         expect( res ).to.not.be.empty();
         expect( res.action ).to.be( 'create' );
-        expect( res.inputs[0] ).to.be( 'record' );
+        expect( res.content[0] ).to.be( 'record' );
       };
       query().from('something').create('record', cb);
     });
 
     it('stores multiple payloads on create', function() {
       var cb = function( err, res ) {
-        expect( res.inputs.length ).to.be( 3 );
-        expect( res.inputs ).to.eql(['a','b',3]);
+        expect( res.content.length ).to.be( 3 );
+        expect( res.content ).to.eql(['a','b',3]);
       };
       query().from('something').create(['a','b',3], cb);
     });
@@ -52,7 +52,7 @@ describe('Action methods', function() {
     it('returns query object if no callback', function() {
       var q = query().from('anything').create('hello');
       expect( q ).to.not.be.empty();
-      expect( q.inputs[0] ).to.be( 'hello' );
+      expect( q.content[0] ).to.be( 'hello' );
     });
   });
 
@@ -68,13 +68,13 @@ describe('Action methods', function() {
     it('handles single and object array payload', function() {
       // Test passing single objects
       var q = query().from('what').save( {a:1} );
-      expect( q.inputs ).to.have.length( 1 );
+      expect( q.content ).to.have.length( 1 );
       q.save( {a:5} );
-      expect( q.inputs ).to.have.length( 2 );
+      expect( q.content ).to.have.length( 2 );
 
       // Test passing object arrays
       q = query().from('what').save( [{a:1}, {a:5}] );
-      expect( q.inputs ).to.have.length( 2 );
+      expect( q.content ).to.have.length( 2 );
     });
 
     it('fails if `cb` is not a function', function() {
@@ -92,7 +92,7 @@ describe('Action methods', function() {
       var cb = function( err, res ) {
         expect( err ).to.not.be.ok();
         expect( res.action ).to.be( 'save' );
-        expect( res.inputs[0].a ).to.be( 1 );
+        expect( res.content[0].a ).to.be( 1 );
         done();
       };
       query().from('what').save( {a:1}, cb );
@@ -114,16 +114,15 @@ describe('Action methods', function() {
         expect( err ).to.not.be.ok();
 
         // Ensure update data is set
-        expect( res.inputs ).to.have.length( 1 );
-        expect( res.inputs[0] ).to.have.keys( 'name' );
-        expect( res.inputs[0].name ).to.be( 'Jack' );
+        expect( res.content ).to.have.length( 1 );
+        expect( res.content[0] ).to.have.keys( 'name' );
+        expect( res.content[0].name ).to.be( 'Jack' );
 
         done();
       }
 
       var q = query().from('me').update( {name:'Jack'} );
-      // Ensure .update() returns a Query (or approximation thereof)
-      expect( q ).to.have.keys( 'resource', 'inputs' );
+      expect( q ).to.be.a( query.Query );
 
       q.done( cb );
     });
@@ -136,9 +135,9 @@ describe('Action methods', function() {
         expect( res.constraints[0].condition ).to.be( '12345' );
 
         // Ensure update data is set
-        expect( res.inputs ).to.have.length( 1 );
-        expect( res.inputs[0] ).to.have.keys( 'name' );
-        expect( res.inputs[0].name ).to.be( 'Jack' );
+        expect( res.content ).to.have.length( 1 );
+        expect( res.content[0] ).to.have.keys( 'name' );
+        expect( res.content[0].name ).to.be( 'Jack' );
 
         done();
       }
@@ -153,9 +152,9 @@ describe('Action methods', function() {
         expect( res.constraints[0].condition ).to.have.length( 2 );
 
         // Ensure update data is set
-        expect( res.inputs ).to.have.length( 1 );
-        expect( res.inputs[0] ).to.have.keys( 'name' );
-        expect( res.inputs[0].name ).to.be( 'Jack' );
+        expect( res.content ).to.have.length( 1 );
+        expect( res.content[0] ).to.have.keys( 'name' );
+        expect( res.content[0].name ).to.be( 'Jack' );
 
         done();
       }

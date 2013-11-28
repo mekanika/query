@@ -38,7 +38,7 @@ Adapter query objects comprise:
 
   - **.action** - _String_ (required): `create`, `find`, `update`, `remove`, etc
   - **.resource** - _String_ : model `key` to query
-  - **.data** - _Array_: Data to process
+  - **.content** - _Array_: Data to process
   - **.identifiers** - _Array_: `ids`
   - **.fields** - _Array_: select `fields` to return
   - **.excludeFields** - _Array_: select `fields` to exclude
@@ -253,19 +253,19 @@ The constraint operators are:
 - **gte** - Greater than or equal to `>=`
 
 
-### .data
+### .content
 
 Type: **Array** of data payloads
 
 Data payloads are usually Objects of arbitrary structure.
 
-`.data` is **always** an Array, even when your payload is only one object. Usually requires applying the action to each object in the array.
+`.content` is **always** an Array, even when your payload is only one object. Usually requires applying the action to each object in the array.
 
 ```js
 {
   action: 'create',
   resource: 'guitars',
-  data: [
+  content: [
     {label:'Fender Stratocaster', price:450.75},
     {label:'Parker Fly', price:399.00}
   ]
