@@ -40,6 +40,7 @@ Adapter query objects comprise:
   - **.resource** - _String_ : model `key` to query
   - **.content** - _Array_: Data to process
   - **.identifiers** - _Array_: `ids`
+  - **.idField** - _String_ : name id field (often used with `idenfifiers`)
   - **.fields** - _Array_: select `fields` to return
   - **.excludeFields** - _Array_: select `fields` to exclude
   - **.display** - _Object_ how results return:
@@ -100,6 +101,23 @@ A simple array of entity IDs to which the `.action` should apply the `.data` or 
   identifiers: ['554120', '841042']
 }
 ```
+
+
+###.idField
+
+Type: **String**
+
+Used to specify the name of the id field used for the `.identifiers`. If not specified, it should be left to the adapter to make a 'best guess' (usually something like `'id'` or `'_id`.
+
+```js
+{
+  action: 'find',
+  resource: 'players',
+  identifiers: ['12345'],
+  idField: 'special_id'
+}
+```
+
 
 ### .fields
 
