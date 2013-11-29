@@ -11,6 +11,13 @@ var expect = require( 'expect.js' )
 
 describe('.toObject()', function() {
 
+  it('converts ID constraints as identifiers', function () {
+    var qo = query().where('id', 1).toObject();
+    expect( qo ).to.have.keys( 'identifiers' );
+    expect( qo.identifiers ).to.contain( 1 );
+    expect( qo ).to.not.have.keys( 'constraints' );
+  });
+
   it('converts query object to plain js object', function() {
     expect( query().toObject() ).to.not.be.a( query.Query );
   });
