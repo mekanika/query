@@ -205,4 +205,4 @@ If you [find a bug, report it](https://github.com/mekanika/query/issues).
 
 ## License
 
-  MIT
+  GNU Lesser General Public License, either version 3 of the License, or (at your option) any later version ([LGPL3+](https://www.gnu.org/licenses/lgpl.html)). See the `License.` files for full details.
