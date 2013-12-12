@@ -1,8 +1,15 @@
-# Query object
+# **Qo** - Query objects
 
-Query objects form the structure requests to adapters.
+Query objects _(Qo)_ seek to:
 
-An example query:
+- provide a _standardised_ description for arbitrary requests
+- abstract API 'calls' into discrete transform objects
+- act as _control messages_ for your _Qo_-aware API
+- describe the 'what', leaving the 'how' to you
+
+_Qo_ are drivers for APIs. They do not _do_ anything - they are consumed by _Qo_-aware APIs and used to instruct actions.
+
+An example _Qo_:
 
 ```js
 {
@@ -18,13 +25,15 @@ An example query:
   ],
   fields: [ 'id' ]
 }
-/* Update all users outside of California who have 100 or more followers to 'platinum' status, add 25 credits to their balance, and return only their ids. */
+/* Update all users outside of California who have 100
+or more followers to 'platinum' status, add 25 credits
+to their balance, and return only their ids. */
 ```
 
 
 ## Structure
 
-The only required parameter in a query is the `action`. As such the simplest query object would be:
+The only required parameter in a query is the `action`. As such the simplest _Qo_ would be:
 
 ```js
 { action: 'special' }
@@ -32,9 +41,13 @@ The only required parameter in a query is the `action`. As such the simplest que
 
 All other parameters are optional and should be handled as such.
 
+### Serialisation
+
+All examples in this document are shown as Javascript Objects. Serialising _Qo_ as JSON is acceptable.
+
 ### Parameters
 
-Adapter query objects comprise:
+Query objects comprise:
 
   - **.action** - _String_ (required): `create`, `find`, `update`, `remove`, etc
   - **.resource** - _String_ : model `key` to query
@@ -61,7 +74,7 @@ Adapter query objects comprise:
 
 Type: **String**
 
-The `action` maps to the adapter method that is invoked.
+The `action` usually maps to the method that is invoked, but generally describes what "to do".
 
 ```js
 {
@@ -107,7 +120,7 @@ A simple array of entity IDs to which the `.action` should apply the `.data` or 
 
 Type: **String**
 
-Used to specify the name of the id field used for the `.identifiers`. If not specified, it should be left to the adapter to make a 'best guess' (usually something like `'id'` or `'_id`.
+Used to specify the name of the id field used for the `.identifiers`. If not specified, it should be left to the API consuming the _Qo_ to make a 'best guess' (usually something like `'id'` or `'_id`).
 
 ```js
 {
@@ -159,7 +172,7 @@ Type: **Array** of modifier objects
 
 Modifier object format: `{ $type: $field [, value: $val ] }`
 
-Modifiers are explicit _update_ instructions that inform changes to specific _fields_ in a resource. All modifiers set the `action` to `update`.
+Modifiers are explicit _update_ instructions that inform changes to specific _fields_ in a resource. If `.modifiers` is present, the _Qo_ `action` should be `update`.
 
 Example:
 ```js
@@ -182,7 +195,7 @@ Example:
 {set:'name', value:'Slash'}
 ```
 
-- **unset** : remove any value from `field` (similar to `set` to `undefined`, but may be implemented differently per adapter)
+- **unset** : remove any value from `field` (similar to `set` to `undefined`, but may be implemented differently by various _Qo_-aware APIs)
 ```js
 {unset:'secret'}
 ```
@@ -228,7 +241,7 @@ As such, the following are valid:
 { order: [ {index: 'country'} ] }
 ```
 
-Queries can request a sorting order by specifying a direction (`asc` or `desc`) on a specific `index`.
+_Qo_ can request a sorting order by specifying a direction (`asc` or `desc`) on a specific `index`.
 
 Multiple ordering objects in the `.order` array should apply sub sorting, in the order of declaration in the array.
 
@@ -243,6 +256,8 @@ Multiple ordering objects in the `.order` array should apply sub sorting, in the
 
 
 ### .constraints
+
+> **Warning:** this section is under review and may introduce breaking changes in future versions
 
 Type: **Array** of constraint objects
 
@@ -289,3 +304,7 @@ Data payloads are usually Objects of arbitrary structure.
   ]
 }
 ```
+
+## License
+
+GNU Lesser General Public License, either version 3 of the License, or (at your option) any later version ([LGPL3+](https://www.gnu.org/licenses/lgpl.html)).
