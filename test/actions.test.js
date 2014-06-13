@@ -236,29 +236,24 @@ describe('Action methods', function() {
   });
 
 
-  describe('.destroy{|remove}([id , cb])', function() {
+  describe('.remove([id , cb])', function() {
 
-    it('only sets delete action on .remove( undefined )', function() {
-      var q = query().destroy();
+    it('only sets `remove` action on .remove( undefined )', function() {
+      var q = query().remove();
       expect( q.constraints ).to.have.length( 0 );
-      expect( q.action ).to.be( 'delete' );
+      expect( q.action ).to.be( 'remove' );
     });
 
     it('adds an `id` as a new constraint', function() {
-      var q = query().destroy( '12345' );
+      var q = query().remove( '12345' );
       expect( q.constraints ).to.have.length( 1 );
       expect( q.constraints[0].field ).to.be( 'id' );
       expect( q.constraints[0].condition ).to.be( '12345' );
     });
 
-    it('sets the remove action to be \'delete\'', function() {
-      var q = query().destroy('abc');
-      expect( q.action ).to.be('delete');
-    });
-
-    it('aliases as .remove()', function() {
-      var q = query().remove();
-      expect( q.action ).to.be('delete');
+    it('sets the remove action to be \'remove\'', function() {
+      var q = query().remove('abc');
+      expect( q.action ).to.be('remove');
     });
 
     it('adds multiple ids as multiple constraints', function() {
