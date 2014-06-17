@@ -28,11 +28,11 @@
     "mekanika-utils-map": "~1.1.0"
   },
   "devDependencies": {
-    "uglify-js": "~2.3.6",
-    "mocha": "~1.12.0",
-    "expect.js": "~0.2.0",
-    "jshint": "~2.1.10",
-    "blanket": "~1.1.5"
+    "uglify-js": "~2.4.14",
+    "mocha": "~1.20.1",
+    "expect.js": "~0.3.1",
+    "jshint": "~2.5.1",
+    "blanket": "~1.1.6"
   },
   "license": "LGPL3+"
 }
