@@ -1,7 +1,6 @@
 {
   "name": "mekanika-query",
-  "version": "0.2.0",
-  "private": false,
+  "version": "0.3.0",
   "description": "Isomorphic fluent interface for building query objects",
   "keywords": [
     "query",
