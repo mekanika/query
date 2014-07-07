@@ -1,3 +1,21 @@
+0.4.0 - 7 July 2014
+=====
+
+Added:
+
+- Support for `all` action middleware. eg. `pre( fn )` applies hook to all actions.
+
+Removed:
+
+- `mekanika-utils.map` dependency. Using Array#map
+
+Internal:
+
+- Switched over to Chai.expect for test suite
+- Removed blanket from npm scripts
+
+
+
 0.3.0 - 17 June 2014
 =====
 
