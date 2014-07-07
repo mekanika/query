@@ -9,6 +9,7 @@ var query = require('../lib/index.js'),
 
 describe('Middleware', function() {
 
+  var fauxAdapter = {exec: function(q,cb) { cb(null,'moo'); }};
 
   describe('core initialisation', function() {
 
@@ -59,6 +60,17 @@ describe('Middleware', function() {
       expect( q.middleware.post.save ).to.have.length( 1 );
     });
 
+    it('registers hooks with no action as `all`', function () {
+      var q = query()
+        .pre( function() {return 1;} )
+        .post( function() {return 2;} );
+
+      expect( q.middleware.post.all ).to.be.an( Array );
+      expect( q.middleware.post.all ).to.have.length( 1 );
+      expect( q.middleware.pre.all ).to.be.an( Array );
+      expect( q.middleware.pre.all ).to.have.length( 1 );
+    });
+
   });
 
 
@@ -74,8 +86,19 @@ describe('Middleware', function() {
         done();
       };
 
-      q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
+      q.useAdapter( fauxAdapter );
+      q.from('woo').save().done( cb );
+    });
 
+    it('executes pre hooks for `all`', function (done) {
+      var ref = 0;
+      var q = query().pre( function () { return ref++; } );
+
+      var cb = function () {
+        expect( ref ).to.be( 1 );
+        done();
+      };
+      q.useAdapter( fauxAdapter );
       q.from('woo').save().done( cb );
     });
 
@@ -88,7 +111,7 @@ describe('Middleware', function() {
         done();
       };
 
-      q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
+      q.useAdapter( fauxAdapter );
 
       q.from('woo').save().done( cb );
     });
@@ -103,7 +126,7 @@ describe('Middleware', function() {
         done();
       };
 
-      q.useAdapter( {exec: function(q,cb) { cb(null,1); }});
+      q.useAdapter( fauxAdapter );
 
       q.from('woo').save().done( cb );
     });
@@ -125,8 +148,22 @@ describe('Middleware', function() {
         done();
       };
 
-      q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
+      q.useAdapter( fauxAdapter );
+      q.from('woo').save().done( cb );
+    });
 
+    it('executes post hooks for `all`', function (done) {
+      var ref = 0;
+      var q = query()
+        .post( function() { ref=ref+3; })
+        .post( function() { ref=ref+2; });
+
+      var cb = function() {
+        expect( ref ).to.be( 5 );
+        done();
+      };
+
+      q.useAdapter( fauxAdapter );
       q.from('woo').save().done( cb );
     });
 
@@ -143,7 +180,7 @@ describe('Middleware', function() {
         done();
       };
 
-      q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
+      q.useAdapter( fauxAdapter );
 
       q.from('woo').save().done( cb );
     });
@@ -164,7 +201,7 @@ describe('Middleware', function() {
         done();
       }
 
-      q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
+      q.useAdapter( fauxAdapter );
 
       q.from('woo').save().done( cb );
     });
@@ -181,7 +218,7 @@ describe('Middleware', function() {
         done();
       }
 
-      q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
+      q.useAdapter( fauxAdapter );
       q.from('^_^').save().done( cb );
     });
 
