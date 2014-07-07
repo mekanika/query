@@ -1,5 +1,5 @@
 var query = require('../lib/index.js');
-var expect = require('expect.js');
+var expect = require('chai').expect;
 
 describe('Sorting methods', function() {
 
@@ -11,8 +11,8 @@ describe('Sorting methods', function() {
   describe('.asc( index )', function() {
 
     it('adds an ascending sort object', function() {
-      expect( query().asc().sort[0].direction ).to.be( 'asc' );
-      expect( query().asc('smoo').sort[0].index ).to.be( 'smoo' );
+      expect( query().asc().sort[0].direction ).to.equal( 'asc' );
+      expect( query().asc('smoo').sort[0].index ).to.equal( 'smoo' );
     });
 
     it('optionally uses index', function() {
@@ -24,8 +24,8 @@ describe('Sorting methods', function() {
   describe('.desc( index )', function() {
 
     it('adds a descending sort object', function() {
-      expect( query().desc().sort[0].direction ).to.be( 'desc' );
-      expect( query().desc('smoo').sort[0].index ).to.be( 'smoo' );
+      expect( query().desc().sort[0].direction ).to.equal( 'desc' );
+      expect( query().desc('smoo').sort[0].index ).to.equal( 'smoo' );
     });
 
     it('optionally uses index', function() {
@@ -41,7 +41,7 @@ describe('Sorting methods', function() {
       var q = query().asc();
       expect( q.sort[0] ).to.not.have.keys( 'index' );
       q.order('name');
-      expect( q.sort[0].index ).to.be( 'name' );
+      expect( q.sort[0].index ).to.equal( 'name' );
     });
 
     it('creates a sort object with `index` if none existing', function() {

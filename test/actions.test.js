@@ -1,5 +1,5 @@
 var query = require('../lib/index.js');
-var expect = require('expect.js');
+var expect = require('chai').expect;
 
 describe('Action methods', function() {
 
@@ -12,7 +12,7 @@ describe('Action methods', function() {
 
     it('fails if no .from(model) is set', function() {
       var cb = function( err, res ) {
-        expect( err ).to.be.an( Error );
+        expect( err ).to.be.an.instanceof( Error );
         // Loosely check that the error message indicts "select"
         expect( err.message ).to.match( /from/ );
       };
@@ -27,23 +27,23 @@ describe('Action methods', function() {
       catch( e ) {
         err = e;
       }
-      expect( err ).to.be.an( Error );
+      expect( err ).to.be.an.instanceof( Error );
       expect( err.message ).to.match( /requires.*Function/ );
     });
 
     it('callback passed `query` object on success', function() {
       var cb = function( err, res ) {
-        expect( err ).to.not.be.ok();
-        expect( res ).to.not.be.empty();
-        expect( res.action ).to.be( 'create' );
-        expect( res.content[0] ).to.be( 'record' );
+        expect( err ).to.not.be.ok;
+        expect( res ).to.not.be.empty;
+        expect( res.action ).to.equal( 'create' );
+        expect( res.content[0] ).to.equal( 'record' );
       };
       query().from('something').create('record', cb);
     });
 
     it('stores multiple payloads on create', function() {
       var cb = function( err, res ) {
-        expect( res.content.length ).to.be( 3 );
+        expect( res.content.length ).to.equal( 3 );
         expect( res.content ).to.eql(['a','b',3]);
       };
       query().from('something').create(['a','b',3], cb);
@@ -51,8 +51,8 @@ describe('Action methods', function() {
 
     it('returns query object if no callback', function() {
       var q = query().from('anything').create('hello');
-      expect( q ).to.not.be.empty();
-      expect( q.content[0] ).to.be( 'hello' );
+      expect( q ).to.not.be.empty;
+      expect( q.content[0] ).to.equal( 'hello' );
     });
   });
 
@@ -62,7 +62,7 @@ describe('Action methods', function() {
 
     it('sets action to `save`', function() {
       var q = query().from('what').save( {a:1} );
-      expect( q.action ).to.be( 'save' );
+      expect( q.action ).to.equal( 'save' );
     });
 
     it('handles single and object array payload', function() {
@@ -81,18 +81,18 @@ describe('Action methods', function() {
       var err;
       try {
         var q = query().from('what').save( {}, 'notafunction' );
-        expect( q ).to.be( undefined );
+        expect( q ).to.equal( undefined );
       }
       catch( e ) { err = e; }
-      expect( err ).to.be.an( Error );
+      expect( err ).to.be.an.instanceof( Error );
       expect( err.message ).to.match( /save.*requires/ );
     });
 
     it('runs callback if passed', function( done ) {
       var cb = function( err, res ) {
-        expect( err ).to.not.be.ok();
-        expect( res.action ).to.be( 'save' );
-        expect( res.content[0].a ).to.be( 1 );
+        expect( err ).to.not.be.ok;
+        expect( res.action ).to.equal( 'save' );
+        expect( res.content[0].a ).to.equal( 1 );
         done();
       };
       query().from('what').save( {a:1}, cb );
@@ -106,38 +106,38 @@ describe('Action methods', function() {
 
     it('sets action and no-op if nothing passed', function() {
       var q = query().from('me').update();
-      expect( q.action ).to.be( 'update' );
+      expect( q.action ).to.equal( 'update' );
     });
 
     it('accepts single argument as input object', function( done ) {
       function cb( err, res ) {
-        expect( err ).to.not.be.ok();
+        expect( err ).to.not.be.ok;
 
         // Ensure update data is set
         expect( res.content ).to.have.length( 1 );
         expect( res.content[0] ).to.have.keys( 'name' );
-        expect( res.content[0].name ).to.be( 'Jack' );
+        expect( res.content[0].name ).to.equal( 'Jack' );
 
         done();
       }
 
       var q = query().from('me').update( {name:'Jack'} );
-      expect( q ).to.be.a( query.Query );
+      expect( q ).to.be.an.instanceof( query.Query );
 
       q.done( cb );
     });
 
     it('sets conditions as a single string id', function( done ) {
       function cb( err, res ) {
-        expect( err ).to.not.be.ok();
+        expect( err ).to.not.be.ok;
         expect( res.constraints ).to.have.length( 1 );
-        expect( res.constraints[0].operator ).to.be( 'eq' );
-        expect( res.constraints[0].condition ).to.be( '12345' );
+        expect( res.constraints[0].operator ).to.equal( 'eq' );
+        expect( res.constraints[0].condition ).to.equal( '12345' );
 
         // Ensure update data is set
         expect( res.content ).to.have.length( 1 );
         expect( res.content[0] ).to.have.keys( 'name' );
-        expect( res.content[0].name ).to.be( 'Jack' );
+        expect( res.content[0].name ).to.equal( 'Jack' );
 
         done();
       }
@@ -146,15 +146,15 @@ describe('Action methods', function() {
 
     it('sets conditions for array of string ids', function( done ) {
       function cb( err, res ) {
-        expect( err ).to.not.be.ok();
+        expect( err ).to.not.be.ok;
         expect( res.constraints ).to.have.length( 1 );
-        expect( res.constraints[0].operator ).to.be( 'in' );
+        expect( res.constraints[0].operator ).to.equal( 'in' );
         expect( res.constraints[0].condition ).to.have.length( 2 );
 
         // Ensure update data is set
         expect( res.content ).to.have.length( 1 );
         expect( res.content[0] ).to.have.keys( 'name' );
-        expect( res.content[0].name ).to.be( 'Jack' );
+        expect( res.content[0].name ).to.equal( 'Jack' );
 
         done();
       }
@@ -163,8 +163,8 @@ describe('Action methods', function() {
 
     it('runs a callback if one passed', function( done ) {
       function cb( err, res ) {
-        expect( err ).to.not.be.ok();
-        expect( res ).to.not.be.empty();
+        expect( err ).to.not.be.ok;
+        expect( res ).to.not.be.empty;
         done();
       }
       query().from('me').update( '1234', {name:'Joe'}, cb );
@@ -174,10 +174,10 @@ describe('Action methods', function() {
       var err;
       try {
         var q = query().from('me').update( 1, 2, 'notafunction' );
-        expect( q ).to.be( undefined );
+        expect( q ).to.equal( undefined );
       }
       catch( e ) { err = e; }
-      expect( err ).to.be.an( Error );
+      expect( err ).to.be.an.instanceof( Error );
       expect( err.message ).to.match( /update.*function/ );
     });
 
@@ -189,9 +189,9 @@ describe('Action methods', function() {
 
     it('returns a `find` action query() if no params', function(){
       var q = query().find();
-      expect( q ).to.not.be.empty();
+      expect( q ).to.not.be.empty;
       expect( q.identifiers ).to.have.length( 0 );
-      expect( q.action ).to.be( 'find' );
+      expect( q.action ).to.equal( 'find' );
     });
 
     it('sets find identifiers if passed', function() {
@@ -206,8 +206,8 @@ describe('Action methods', function() {
     it('runs a callback if one is passed', function() {
       var cb = function(err, res) {
         // Check that no error was thrown
-        expect( err ).to.not.be.ok();
-        expect( res ).to.not.be.empty();
+        expect( err ).to.not.be.ok;
+        expect( res ).to.not.be.empty;
         expect( res.identifiers ).to.contain( 'moop' );
         // Ensure the 'callback' wasn't added as a field
         expect( res.identifiers ).to.have.length( 1 );
@@ -217,7 +217,7 @@ describe('Action methods', function() {
 
     it('fails a callback find if no .from(model) set', function() {
       var cb = function(err, res) {
-        expect( err ).to.be.an( Error );
+        expect( err ).to.be.an.instanceof( Error );
         expect( err.message ).to.match( /from/ );
       };
       query().find('moop', cb);
@@ -227,10 +227,10 @@ describe('Action methods', function() {
       var err;
       try {
         var q = query().from('me').find( 'moo', 'moo2' );
-        expect( q ).to.be( undefined );
+        expect( q ).to.equal( undefined );
       }
       catch( e ) { err = e; }
-      expect( err ).to.be.an( Error );
+      expect( err ).to.be.an.instanceof( Error );
       expect( err.message ).to.match( /find.*function/ );
     });
   });
@@ -241,19 +241,19 @@ describe('Action methods', function() {
     it('only sets `remove` action on .remove( undefined )', function() {
       var q = query().remove();
       expect( q.constraints ).to.have.length( 0 );
-      expect( q.action ).to.be( 'remove' );
+      expect( q.action ).to.equal( 'remove' );
     });
 
     it('adds an `id` as a new constraint', function() {
       var q = query().remove( '12345' );
       expect( q.constraints ).to.have.length( 1 );
-      expect( q.constraints[0].field ).to.be( 'id' );
-      expect( q.constraints[0].condition ).to.be( '12345' );
+      expect( q.constraints[0].field ).to.equal( 'id' );
+      expect( q.constraints[0].condition ).to.equal( '12345' );
     });
 
     it('sets the remove action to be \'remove\'', function() {
       var q = query().remove('abc');
-      expect( q.action ).to.be('remove');
+      expect( q.action ).to.equal('remove');
     });
 
     it('adds multiple ids as multiple constraints', function() {
@@ -265,10 +265,10 @@ describe('Action methods', function() {
       var err;
       try {
         var q = query().from('me').remove( 1, 'notafunction' );
-        expect( q ).to.be( undefined );
+        expect( q ).to.equal( undefined );
       }
       catch( e ) { err = e; }
-      expect( err ).to.be.an( Error );
+      expect( err ).to.be.an.instanceof( Error );
       expect( err.message ).to.match( /remove.*function/ );
     });
   });
@@ -284,41 +284,41 @@ describe('Action methods', function() {
       catch( e ) {
         err = e;
       }
-      expect( err ).to.be.an( Error );
+      expect( err ).to.be.an.instanceof( Error );
       expect( err.message ).to.match( /requires/ );
     });
 
     it('returns an error if no .from(model) set', function() {
       try {
         query().done( function(err){
-          expect( err ).to.be.an( Error );
+          expect( err ).to.be.an.instanceof( Error );
           expect( err.message ).to.match( /from/ );
         });
       }
       catch( e ) {
         // Should never get here. Make sure of that.
-        expect( e ).to.be( undefined );
+        expect( e ).to.equal( undefined );
       }
     });
 
     it('returns an error if no `action` set', function() {
       try {
         query().from('anything').done( function(err){
-          expect( err ).to.be.an( Error );
+          expect( err ).to.be.an.instanceof( Error );
           expect( err.message ).to.match( /action/ );
         });
       }
       catch( e ) {
         // Should never get here. Make sure of that.
-        expect( e ).to.be( undefined );
+        expect( e ).to.equal( undefined );
       }
     });
 
     it('passes only the query object to callback if no adapter', function() {
       var cb = function( err, res ) {
-        expect( err ).to.not.be.ok();
-        expect( res ).to.not.be.empty();
-        expect( res.action ).to.be('create');
+        expect( err ).to.not.be.ok;
+        expect( res ).to.not.be.empty;
+        expect( res.action ).to.equal('create');
       };
 
       query().from('anything').create('obj').done( cb );
@@ -332,9 +332,9 @@ describe('Action methods', function() {
         return {
           exec:function(query,cb) {
             gotCallback = true;
-            expect( query ).to.not.be.empty();
-            expect( query.resource ).to.be( 'anything' );
-            expect( cb ).to.be.ok();
+            expect( query ).to.not.be.empty;
+            expect( query.resource ).to.equal( 'anything' );
+            expect( cb ).to.be.ok;
           }
         };
       };
@@ -346,11 +346,11 @@ describe('Action methods', function() {
       // Init the query
       var q = query('testadapter').from('anything').find('me');
       // Ensure the adapter is set
-      expect( q.adapter ).to.be.ok();
+      expect( q.adapter ).to.be.ok;
       // Run the query through the adapter
       q.done(cb);
 
-      expect( gotCallback ).to.be( true );
+      expect( gotCallback ).to.equal( true );
     });
 
     it('appends `this` query to callback params', function() {
@@ -360,8 +360,8 @@ describe('Action methods', function() {
 
       // Expect to get not just err + res back, but also q (a Query)
       function cb( err, res, q ) {
-        expect( q ).to.be.a( query.Query );
-        expect( q.resource ).to.be( '!' );
+        expect( q ).to.be.an.instanceof( query.Query );
+        expect( q.resource ).to.equal( '!' );
       }
 
       q.from('!').find().done( cb );

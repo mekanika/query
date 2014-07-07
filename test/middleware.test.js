@@ -4,7 +4,7 @@
  */
 
 var query = require('../lib/index.js'),
-    expect = require('expect.js');
+    expect = require('chai').expect;
 
 
 describe('Middleware', function() {
@@ -20,21 +20,21 @@ describe('Middleware', function() {
       expect( q.middleware.pre.save ).to.have.length( 1 );
 
       function cb2( err, res ) {
-        expect( err ).to.not.be.ok();
-        expect( res ).to.be( 'moo' );
+        expect( err ).to.not.be.ok;
+        expect( res ).to.equal( 'moo' );
 
         // This time, the pre middleware should have fired
-        expect( ref ).to.be( 1 );
+        expect( ref ).to.equal( 1 );
         done();
       }
 
       function cb1( err, res ) {
         // Check arguments are as expected
-        expect( err ).to.not.be.ok();
-        expect( res ).to.be.a( query.Query );
+        expect( err ).to.not.be.ok;
+        expect( res ).to.be.an.instanceof( query.Query );
 
         // Then check that ref wasn't changed (no middleware executed)
-        expect( ref ).to.be( 0 );
+        expect( ref ).to.equal( 0 );
 
         // Setup an adapter
         q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
@@ -49,14 +49,14 @@ describe('Middleware', function() {
         .from('woo')
         .pre( 'save', function() { return true;  } );
 
-      expect( q.middleware.pre.save ).to.be.an( Array );
+      expect( q.middleware.pre.save ).to.be.an.instanceof( Array );
       expect( q.middleware.pre.save ).to.have.length( 1 );
     });
 
     it('registers a post hook', function() {
       var q = query().post( 'save', function() { return true;  } );
 
-      expect( q.middleware.post.save ).to.be.an( Array );
+      expect( q.middleware.post.save ).to.be.an.instanceof( Array );
       expect( q.middleware.post.save ).to.have.length( 1 );
     });
 
@@ -65,9 +65,9 @@ describe('Middleware', function() {
         .pre( function() {return 1;} )
         .post( function() {return 2;} );
 
-      expect( q.middleware.post.all ).to.be.an( Array );
+      expect( q.middleware.post.all ).to.be.an.instanceof( Array );
       expect( q.middleware.post.all ).to.have.length( 1 );
-      expect( q.middleware.pre.all ).to.be.an( Array );
+      expect( q.middleware.pre.all ).to.be.an.instanceof( Array );
       expect( q.middleware.pre.all ).to.have.length( 1 );
     });
 
@@ -82,7 +82,7 @@ describe('Middleware', function() {
       var q = query().pre( 'save', function() { return ref++; } );
 
       var cb = function() {
-        expect( ref ).to.be( 1 );
+        expect( ref ).to.equal( 1 );
         done();
       };
 
@@ -95,7 +95,7 @@ describe('Middleware', function() {
       var q = query().pre( function () { return ref++; } );
 
       var cb = function () {
-        expect( ref ).to.be( 1 );
+        expect( ref ).to.equal( 1 );
         done();
       };
       q.useAdapter( fauxAdapter );
@@ -107,7 +107,7 @@ describe('Middleware', function() {
       var q = query().pre( 'save', function( qi ) { ref = qi; } );
 
       var cb = function() {
-        expect( ref ).to.be.a( query.Query );
+        expect( ref ).to.be.an.instanceof( query.Query );
         done();
       };
 
@@ -122,7 +122,7 @@ describe('Middleware', function() {
       });
 
       var cb = function(e,r,qry) {
-        expect( qry.action ).to.be( '^_^' );
+        expect( qry.action ).to.equal( '^_^' );
         done();
       };
 
@@ -144,7 +144,7 @@ describe('Middleware', function() {
         .post( 'save', function() { ref=ref+2; });
 
       var cb = function() {
-        expect( ref ).to.be( 5 );
+        expect( ref ).to.equal( 5 );
         done();
       };
 
@@ -159,7 +159,7 @@ describe('Middleware', function() {
         .post( function() { ref=ref+2; });
 
       var cb = function() {
-        expect( ref ).to.be( 5 );
+        expect( ref ).to.equal( 5 );
         done();
       };
 
@@ -175,8 +175,8 @@ describe('Middleware', function() {
         });
 
       var cb = function() {
-        expect( arity ).to.be( 3 );
-        expect( arguments[2].constructor.name ).to.be( 'Query' );
+        expect( arity ).to.equal( 3 );
+        expect( arguments[2].constructor.name ).to.equal( 'Query' );
         done();
       };
 
@@ -194,10 +194,10 @@ describe('Middleware', function() {
         });
 
       function cb( err, res ) {
-        expect( err ).to.be.an( Error );
-        expect( err.message ).to.be( 'Making bacon' );
+        expect( err ).to.be.an.instanceof( Error );
+        expect( err.message ).to.equal( 'Making bacon' );
         expect( res ).to.have.length( 1 );
-        expect( res[0].newthing ).to.be( true );
+        expect( res[0].newthing ).to.equal( true );
         done();
       }
 
@@ -213,8 +213,8 @@ describe('Middleware', function() {
         });
 
       function cb() {
-        expect( arguments.length ).to.be( 3 );
-        expect( arguments[2].constructor.name ).to.be( 'Query' );
+        expect( arguments.length ).to.equal( 3 );
+        expect( arguments[2].constructor.name ).to.equal( 'Query' );
         done();
       }
 

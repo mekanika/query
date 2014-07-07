@@ -3,7 +3,7 @@
  * Dependencies
  */
 
-var expect = require( 'expect.js' )
+var expect = require( 'chai' ).expect
   , query = require( '../lib/index' )
   , convert = require( '../lib/convertids' ).convertIdConstraints;
 
@@ -19,27 +19,27 @@ describe('.toObject()', function() {
   });
 
   it('converts query object to plain js object', function() {
-    expect( query().toObject() ).to.not.be.a( query.Query );
+    expect( query().toObject() ).to.not.be.an.instanceof( query.Query );
   });
 
   it('only populates non-empty Query properties', function() {
-    expect( query().toObject() ).to.be.empty();
-    expect( query().from(':)').toObject() ).to.only.have.keys( 'resource' );
+    expect( query().toObject() ).to.be.empty;
+    expect( query().from(':)').toObject() ).to.have.key( 'resource' );
   });
 
   describe('removes', function() {
 
     it('all references to middleware', function() {
       var q = query();
-      expect( q.middleware ).to.not.be.empty();
-      expect( q.toObject ).to.not.have.keys( 'middleware' );
+      expect( q.middleware ).to.not.be.empty;
+      expect( q.toObject ).to.not.have.key( 'middleware' );
     });
 
     it('all references to adapter', function() {
       var q = query();
       q.adapter = {whatever:true};
-      expect( q.adapter ).to.not.be.empty();
-      expect( q.toObject ).to.not.have.keys( 'adapter' );
+      expect( q.adapter ).to.not.be.empty;
+      expect( q.toObject ).to.not.have.key( 'adapter' );
     });
 
   });
@@ -49,17 +49,17 @@ describe('.toObject()', function() {
     it('removes .display if no limit or offset', function() {
       var q = query();
       expect( q.display ).to.have.keys( 'limit', 'offset' );
-      expect( q.toObject() ).to.not.have.keys( 'display' );
+      expect( q.toObject() ).to.not.have.key( 'display' );
     });
 
     it('removes display prop if set to 0', function() {
       var lim = query().limit(1).toObject();
-      expect( lim.display ).to.have.keys( 'limit' );
-      expect( lim.display ).to.not.have.keys( 'offset' );
+      expect( lim.display ).to.have.key( 'limit' );
+      expect( lim.display ).to.not.have.key( 'offset' );
 
       var skip = query().offset(1).toObject();
-      expect( skip.display ).to.not.have.keys( 'limit' );
-      expect( skip.display ).to.have.keys( 'offset' );
+      expect( skip.display ).to.not.have.key( 'limit' );
+      expect( skip.display ).to.have.key( 'offset' );
     });
 
   });
@@ -70,7 +70,7 @@ describe('.toObject()', function() {
 describe('Convert ID constraints', function () {
 
   it('method throws if !this.constraints (must .call(query))', function () {
-    expect( convert ).to.throwError();
+    expect( convert ).to.throw();
   });
 
   it('converts single id.is() constraint', function () {
@@ -78,7 +78,7 @@ describe('Convert ID constraints', function () {
     expect( q.constraints ).to.have.length( 1 );
 
     convert.call( q );
-    expect( q.identifiers ).to.only.contain( 'abc' );
+    expect( q.identifiers ).to.contain( 'abc' );
 
     // Removes the 'id' constraint
     expect( q.constraints ).to.have.length( 0 );
@@ -89,7 +89,7 @@ describe('Convert ID constraints', function () {
     expect( q.constraints ).to.have.length( 1 );
 
     convert.call( q );
-    expect( q.identifiers ).to.only.contain( 'abc','def' );
+    expect( q.identifiers ).to.contain( 'abc','def' );
 
     // Removes the 'id' constraint
     expect( q.constraints ).to.have.length( 0 );
@@ -103,7 +103,7 @@ describe('Convert ID constraints', function () {
 
     convert.call( q );
     expect( q.constraints ).to.have.length( 2 );
-    expect( q.identifiers ).to.only.contain( '123' );
+    expect( q.identifiers ).to.contain( '123' );
   });
 
   it('uses query.idField or `id` as constraint field', function () {
