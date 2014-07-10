@@ -274,18 +274,11 @@ describe('Action methods', function() {
   });
 
 
-  describe('.done(cb)', function() {
+  describe('.done([cb])', function() {
 
-    it('fails if no callback provided', function() {
-      var err;
-      try {
-        query().done();
-      }
-      catch( e ) {
-        err = e;
-      }
-      expect( err ).to.be.an.instanceof( Error );
-      expect( err.message ).to.match( /requires/ );
+    it('callback is optional', function(done) {
+      query().done();
+      done();
     });
 
     it('returns an error if no .from(model) set', function() {
