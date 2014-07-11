@@ -118,18 +118,27 @@ Also supports adding multiple middleware methods
 
 ### Post
 
-  Post-processing middleware is run **after** the adapter execution is complete, and are passed `fn( err, res, query )`, where `err` and `res` are responses from the adapter, and `query` is _this query_.
+  Post middleware hooks are functions that accept `(err, res, query)` and **must** return either `[err, res]` array OR an `Error` object to throw. Failing to return either of these will cause the query to throw an `Error` and halt processing.
 
-  This enables you to modify the results from the server.
+  Posts run asynchronously **after** the adapter execution is complete, and are passed the the `err` and `res` responses from the adapter, and `query` is _this query_.
 
-  Post middleware functions **must** return an `[error, results]` array, which will presumably include your modifications.
+  **A note on Exceptions**: Post middleware runs _asynchronously_, which means if your post middleware generates an exception, _it will crash the process_ and the final query callback will fail to excute (or be caught). You **should** wrap your middleware in a `try-catch` block and handle errors appropriately.
+
+  You may optionally modify the results from the server. Or simply return the no-op `[err, res]` array if your processing has nothing
+
 
 ```js
   function postHandler( err, res, qry ) {
-    // MUST return [err, res] array
-    err = 'My modified error';
-    res = 'Custom results!';
-    return [err, res];
+    try {
+      // MUST return [err, res] array
+      err = 'My modified error';
+      res = 'Custom results!';
+      return [err, res];
+    }
+    catch (e) {
+      return e; // Cause query to throw this Error
+    }
+
   }
 
   query().post( postHandler );

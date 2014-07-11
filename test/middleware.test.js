@@ -4,6 +4,7 @@
  */
 
 var query = require('../lib/index.js'),
+    posthook = require('../lib/proto/actions').posthook,
     expect = require('chai').expect;
 
 
@@ -140,8 +141,8 @@ describe('Middleware', function() {
     it('executes post middleware for a given action', function( done ) {
       var ref = 0;
       var q = query()
-        .post( 'save', function() { ref=ref+3; })
-        .post( 'save', function() { ref=ref+2; });
+        .post( 'save', function(e,r) { ref=ref+3; return [e,r]; })
+        .post( 'save', function(e,r) { ref=ref+2; return [e,r]; });
 
       var cb = function() {
         expect( ref ).to.equal( 5 );
@@ -155,8 +156,8 @@ describe('Middleware', function() {
     it('executes post hooks for `all`', function (done) {
       var ref = 0;
       var q = query()
-        .post( function() { ref=ref+3; })
-        .post( function() { ref=ref+2; });
+        .post( function(e,r) { ref=ref+3; return [e,r]; })
+        .post( function(e,r) { ref=ref+2; return [e,r]; });
 
       var cb = function() {
         expect( ref ).to.equal( 5 );
@@ -167,11 +168,55 @@ describe('Middleware', function() {
       q.from('woo').save().done( cb );
     });
 
+    it('throws user returned Errors', function (done) {
+      var post = [ function(e,r) {
+        return new Error('sucka');
+      } ];
+
+      try {
+        posthook( post, function() {}, query() )();
+      }
+      catch (e) {
+        expect(e.message).to.equal('sucka');
+        done();
+      }
+    });
+
+    it('throws on hook failing to return [err,res] or Error', function (done) {
+      var post = [ function(e,r) {
+        return undefined;
+      } ];
+
+      try {
+        posthook( post, function() {}, query() )();
+      }
+      catch (e) {
+        expect(e.message).to.match( /failed/ig );
+        done();
+      }
+    });
+
+    it('blocks callback execution if post hooks threw', function (done) {
+      var post = [ function(e,r) {
+        return undefined;
+      } ];
+
+      var callbackRan = false;
+      try {
+        posthook( post, function() { callbackRan = true; }, query() )();
+      }
+      catch (e) {
+        expect(callbackRan).to.be.false;
+        done();
+      }
+    });
+
     it('post methods are passed (err, res, query)', function( done ) {
       var arity;
       var q = query()
-        .post( 'save', function() {
+        .post( 'save', function(e,r) {
           arity = arguments.length;
+          return [e,r];
         });
 
       var cb = function() {
