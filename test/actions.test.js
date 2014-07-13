@@ -246,9 +246,8 @@ describe('Action methods', function() {
 
     it('adds an `id` as a new constraint', function() {
       var q = query().remove( '12345' );
-      expect( q.constraints ).to.have.length( 1 );
-      expect( q.constraints[0].field ).to.equal( 'id' );
-      expect( q.constraints[0].condition ).to.equal( '12345' );
+      expect( q.identifiers ).to.have.length( 1 );
+      expect( q.identifiers[0] ).to.equal( '12345' );
     });
 
     it('sets the remove action to be \'remove\'', function() {
@@ -258,7 +257,7 @@ describe('Action methods', function() {
 
     it('adds multiple ids as multiple constraints', function() {
       var q = query().remove( [1,2,3,4] );
-      expect( q.constraints ).to.have.length( 4 );
+      expect( q.identifiers ).to.have.length( 4 );
     });
 
     it('fails if callback is passed but not a function', function() {
