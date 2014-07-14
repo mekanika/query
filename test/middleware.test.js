@@ -31,7 +31,8 @@ describe('Middleware', function() {
 
       function cb1( err, res ) {
         // Check arguments are as expected
-        expect( err ).to.not.be.ok;
+        expect( err ).to.exist;
+        expect( err ).to.match( /no adapter/ig );
         expect( res ).to.be.an.instanceof( query.Query );
 
         // Then check that ref wasn't changed (no middleware executed)

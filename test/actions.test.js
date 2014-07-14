@@ -12,9 +12,9 @@ describe('Action methods', function() {
 
     it('fails if no .from(model) is set', function() {
       var cb = function( err, res ) {
-        expect( err ).to.be.an.instanceof( Error );
+        expect( err ).to.exist;;
         // Loosely check that the error message indicts "select"
-        expect( err.message ).to.match( /from/ );
+        expect( err ).to.match( /from.*?action/ig );
       };
       query().create('record', cb);
     });
@@ -33,7 +33,6 @@ describe('Action methods', function() {
 
     it('callback passed `query` object on success', function() {
       var cb = function( err, res ) {
-        expect( err ).to.not.be.ok;
         expect( res ).to.not.be.empty;
         expect( res.action ).to.equal( 'create' );
         expect( res.content[0] ).to.equal( 'record' );
@@ -90,7 +89,6 @@ describe('Action methods', function() {
 
     it('runs callback if passed', function( done ) {
       var cb = function( err, res ) {
-        expect( err ).to.not.be.ok;
         expect( res.action ).to.equal( 'save' );
         expect( res.content[0].a ).to.equal( 1 );
         done();
@@ -111,8 +109,6 @@ describe('Action methods', function() {
 
     it('accepts single argument as input object', function( done ) {
       function cb( err, res ) {
-        expect( err ).to.not.be.ok;
-
         // Ensure update data is set
         expect( res.content ).to.have.length( 1 );
         expect( res.content[0] ).to.have.keys( 'name' );
@@ -129,7 +125,6 @@ describe('Action methods', function() {
 
     it('sets conditions as a single string id', function( done ) {
       function cb( err, res ) {
-        expect( err ).to.not.be.ok;
         expect( res.constraints ).to.have.length( 1 );
         expect( res.constraints[0].operator ).to.equal( 'eq' );
         expect( res.constraints[0].condition ).to.equal( '12345' );
@@ -146,7 +141,6 @@ describe('Action methods', function() {
 
     it('sets conditions for array of string ids', function( done ) {
       function cb( err, res ) {
-        expect( err ).to.not.be.ok;
         expect( res.constraints ).to.have.length( 1 );
         expect( res.constraints[0].operator ).to.equal( 'in' );
         expect( res.constraints[0].condition ).to.have.length( 2 );
@@ -163,7 +157,6 @@ describe('Action methods', function() {
 
     it('runs a callback if one passed', function( done ) {
       function cb( err, res ) {
-        expect( err ).to.not.be.ok;
         expect( res ).to.not.be.empty;
         done();
       }
@@ -206,7 +199,6 @@ describe('Action methods', function() {
     it('runs a callback if one is passed', function() {
       var cb = function(err, res) {
         // Check that no error was thrown
-        expect( err ).to.not.be.ok;
         expect( res ).to.not.be.empty;
         expect( res.identifiers ).to.contain( 'moop' );
         // Ensure the 'callback' wasn't added as a field
@@ -217,8 +209,7 @@ describe('Action methods', function() {
 
     it('fails a callback find if no .from(model) set', function() {
       var cb = function(err, res) {
-        expect( err ).to.be.an.instanceof( Error );
-        expect( err.message ).to.match( /from/ );
+        expect( err ).to.match( /from/ );
       };
       query().find('moop', cb);
     });
@@ -283,8 +274,8 @@ describe('Action methods', function() {
     it('returns an error if no .from(model) set', function() {
       try {
         query().done( function(err){
-          expect( err ).to.be.an.instanceof( Error );
-          expect( err.message ).to.match( /from/ );
+          expect( err ).to.exist;
+          expect( err ).to.match( /from/ );
         });
       }
       catch( e ) {
@@ -296,8 +287,8 @@ describe('Action methods', function() {
     it('returns an error if no `action` set', function() {
       try {
         query().from('anything').done( function(err){
-          expect( err ).to.be.an.instanceof( Error );
-          expect( err.message ).to.match( /action/ );
+          expect( err ).to.exist;
+          expect( err ).to.match( /action/ );
         });
       }
       catch( e ) {
@@ -308,7 +299,6 @@ describe('Action methods', function() {
 
     it('passes only the query object to callback if no adapter', function() {
       var cb = function( err, res ) {
-        expect( err ).to.not.be.ok;
         expect( res ).to.not.be.empty;
         expect( res.action ).to.equal('create');
       };
