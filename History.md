@@ -1,3 +1,15 @@
+0.5.0 - 14 July 2014 (The "No Zalgo" release)
+=====
+
+Changed:
+
+- **NO ZALGO**: Delegate callback is always async. Th͏e Da҉rk Pońy Lo͘r͠d HE ́C͡OM̴E̸S
+- Callback parameter in `.done(cb)` delegate is now optional
+- `.remove(ids)` action uses identifiers field rather than constraints
+- Executing `.done(cb)` with no adapter now includes an error in `cb(err, qry)`
+
+
+
 0.4.0 - 7 July 2014
 =====
 
@@ -36,6 +48,7 @@ Updated:
 - Constraints related to ids are converted prior to query
 - `utils.isEmpty` checks objects as well as arrays
 - License update to LGPL3+
+
 
 0.1.0
 =====
