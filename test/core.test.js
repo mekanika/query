@@ -43,6 +43,10 @@ describe('query Core', function() {
 
 
   describe('.from(resource)', function() {
+    it('aliases as .resource()', function () {
+      expect( query().resource('jam').qo.resource ).to.equal('jam');
+    });
+
     it('sets the resource when provided', function() {
       var q = query().from('icecream');
       expect( q.qo.resource ).to.equal( 'icecream' );

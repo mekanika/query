@@ -8,7 +8,7 @@
 
 ```js
 query()                  // Create query
-  .from( 'user' )        // Resource to execute on
+  .resource( 'user' )    // Resource to execute on
   .where( 'name' )       // Constraint field
     .in( ['Tom','Bob'] ) //  - operator and conditions
   .and( 'age' )          // AND constraint (also supports `.or()`)
