@@ -33,7 +33,7 @@ describe('Middleware', function() {
         // Check arguments are as expected
         expect( err ).to.exist;
         expect( err ).to.match( /no adapter/ig );
-        expect( res ).to.be.an.instanceof( query.Query );
+        expect( res ).to.include.keys('action');
 
         // Then check that ref wasn't changed (no middleware executed)
         expect( ref ).to.equal( 0 );
@@ -104,12 +104,12 @@ describe('Middleware', function() {
       q.from('woo').save().done( cb );
     });
 
-    it('pre methods are passed Query# instance (query)', function( done ) {
+    it('pre methods are passed the Qo', function( done ) {
       var ref = 0;
       var q = query().pre( 'save', function( qi ) { ref = qi; } );
 
       var cb = function() {
-        expect( ref ).to.be.an.instanceof( query.Query );
+        expect( ref ).to.include.keys('action','resource');
         done();
       };
 
@@ -222,7 +222,7 @@ describe('Middleware', function() {
 
       var cb = function() {
         expect( arity ).to.equal( 3 );
-        expect( arguments[2].constructor.name ).to.equal( 'Query' );
+        expect( arguments[2] ).to.include.keys( 'action', 'resource' );
         done();
       };
 
@@ -260,7 +260,7 @@ describe('Middleware', function() {
 
       function cb() {
         expect( arguments.length ).to.equal( 3 );
-        expect( arguments[2].constructor.name ).to.equal( 'Query' );
+        expect( arguments[2] ).to.include.keys( 'action', 'resource' );
         done();
       }
 

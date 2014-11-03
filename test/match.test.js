@@ -2,42 +2,42 @@ var query = require('../lib/index.js');
 var expect = require('chai').expect;
 
 
-describe('Constraints .where( field [,val] )', function() {
+describe('Match .where( field [,val] )', function() {
 
   it('pushes .where( field ) onto constraints array', function() {
     var q = query().where('whatever');
-    expect( q.constraints ).to.have.length( 1 );
+    expect( q.qo.match ).to.have.length( 1 );
   });
 
   it('sets value when passed all .{where}(field,val)', function() {
     var q = query().where('id', 10).and('yes', 5).or('no', 3);
-    expect( q.constraints[0].condition ).to.equal( 10 );
-    expect( q.constraints[1].condition ).to.equal( 5 );
-    expect( q.constraints[2].condition ).to.equal( 3 );
+    expect( q.qo.match[0].condition ).to.equal( 10 );
+    expect( q.qo.match[1].condition ).to.equal( 5 );
+    expect( q.qo.match[2].condition ).to.equal( 3 );
   });
 
   it('has constraint structure {field,operator,condition}', function(){
     var q = query().where('id');
-    expect( q.constraints[0] )
+    expect( q.qo.match[0] )
       .to.have.keys( 'field', 'operator','condition', 'type' );
   });
 
   it('pushes default operator and condition for .where(field)', function(){
     var q = query().where('id');
-    expect( q.constraints[0].operator ).to.equal( 'eq' );
-    expect( q.constraints[0].condition ).to.equal( true );
+    expect( q.qo.match[0].operator ).to.equal( 'eq' );
+    expect( q.qo.match[0].condition ).to.equal( true );
   });
 
   it('supports creating multiple .where() conditions', function() {
     var q = query().where('id').eq(100).where('name').eq('beep');
-    expect( q.constraints ).to.have.length( 2 );
+    expect( q.qo.match ).to.have.length( 2 );
   });
 
   it('enables .and(field) and .or(field) declarations', function() {
     var q = query().where('drink').and('your').or('milkshake');
-    expect( q.constraints[0].type ).to.equal( 'and' );
-    expect( q.constraints[1].type ).to.equal( 'and' );
-    expect( q.constraints[2].type ).to.equal( 'or' );
+    expect( q.qo.match[0].type ).to.equal( 'and' );
+    expect( q.qo.match[1].type ).to.equal( 'and' );
+    expect( q.qo.match[2].type ).to.equal( 'or' );
   });
 
   it('prevents setting constraints if ids were set', function() {
@@ -49,10 +49,6 @@ describe('Constraints .where( field [,val] )', function() {
     expect( err ).to.be.an.instanceof( Error );
     expect( err.message ).to.match( /find.*id/ );
   });
-
-  it('has a .contains() operator');
-  it('has a .startsWith() operator');
-  it('has a .endsWith() operator');
 
   describe('.{operator}( condition )', function() {
 
@@ -76,8 +72,8 @@ describe('Constraints .where( field [,val] )', function() {
     it('normalises aliases: not->neq and is->eq', function() {
       var q = query().where('stop').is(1).and('go').not(1);
 
-      expect( q.constraints[0].operator ).to.equal( 'eq' );
-      expect( q.constraints[1].operator ).to.equal( 'neq' );
+      expect( q.qo.match[0].operator ).to.equal( 'eq' );
+      expect( q.qo.match[1].operator ).to.equal( 'neq' );
     });
 
     it('fails if no .where(field) declared', function() {
@@ -108,16 +104,16 @@ describe('Constraints .where( field [,val] )', function() {
 
         // Skip normalised aliases (where 'is'->'eq' etc)
         if (operators[i] !== 'is' && operators[i] !== 'not') {
-          expect( q.constraints[0].operator ).to.equal( operators[i] );
-          expect( q.constraints[0].condition ).to.equal( cond );
+          expect( q.qo.match[0].operator ).to.equal( operators[i] );
+          expect( q.qo.match[0].condition ).to.equal( cond );
         }
       }
     });
 
     it('overwrites the last operator if multiple declared', function() {
       var q = query().where('id').eq('moo').neq('woof');
-      expect( q.constraints[0].operator ).to.equal( 'neq' );
-      expect( q.constraints[0].condition ).to.equal( 'woof' );
+      expect( q.qo.match[0].operator ).to.equal( 'neq' );
+      expect( q.qo.match[0].condition ).to.equal( 'woof' );
     });
 
     it('only accepts arrays for `in, nin, all`', function() {

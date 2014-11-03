@@ -7,60 +7,20 @@ describe('Sorting methods', function() {
     query.reset();
   });
 
-
-  describe('.asc( index )', function() {
-
-    it('adds an ascending sort object', function() {
-      expect( query().asc().sort[0].direction ).to.equal( 'asc' );
-      expect( query().asc('smoo').sort[0].index ).to.equal( 'smoo' );
-    });
-
-    it('optionally uses index', function() {
-      expect( query().asc().sort ).to.not.have.keys( 'index' );
-    });
+  it('sets up sort keys as an array', function () {
+    var q = query().sort("name");
+    expect( q.qo.sort ).to.be.an.instanceof( Array );
+    expect( q.qo.sort[0] ).to.equal( 'name' );
   });
 
-
-  describe('.desc( index )', function() {
-
-    it('adds a descending sort object', function() {
-      expect( query().desc().sort[0].direction ).to.equal( 'desc' );
-      expect( query().desc('smoo').sort[0].index ).to.equal( 'smoo' );
-    });
-
-    it('optionally uses index', function() {
-      expect( query().desc().sort ).to.not.have.keys( 'index' );
-    });
-
+  it('splits space separated keys into array', function () {
+    var q = query().sort("name -age");
+    expect( q.qo.sort ).to.have.length( 2 );
+    expect( q.qo.sort[1] ).to.equal( '-age' );
   });
 
-
-  describe('.order( index )', function() {
-
-    it('sets the most recent sort object index', function() {
-      var q = query().asc();
-      expect( q.sort[0] ).to.not.have.keys( 'index' );
-      q.order('name');
-      expect( q.sort[0].index ).to.equal( 'name' );
-    });
-
-    it('creates a sort object with `index` if none existing', function() {
-      var q = query();
-      expect( q.sort ).to.have.length( 0 );
-      expect( q.order('cool').sort ).to.have.length( 1 );
-      expect( q.sort[0] ).to.not.have.keys( 'direction' );
-    });
-
-  });
-
-
-  describe('multiple indeces', function() {
-
-    it('methods should add to sort queue', function() {
-      var q = query().asc('name').desc('price');
-      expect( q.sort ).to.have.length( 2 );
-    });
-
+  it('chains .sort()', function () {
+    expect( query().sort('!') ).to.be.an.instanceof( query.Query );
   });
 
 });

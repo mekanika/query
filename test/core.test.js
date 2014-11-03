@@ -72,15 +72,11 @@ describe('query Core', function() {
     expect( q.adapter ).to.be.ok;
   });
 
-  it('exports a Qo using .toQo()', function () {
-    expect( query().toQo ).to.be.an.instanceof( Object );
-  });
-
 
   describe('.from(resource)', function() {
     it('sets the resource when provided', function() {
       var q = query().from('icecream');
-      expect( q.resource ).to.equal( 'icecream' );
+      expect( q.qo.resource ).to.equal( 'icecream' );
     });
 
     it('fail to set resource if not provided string', function() {
@@ -98,16 +94,16 @@ describe('query Core', function() {
 
 
   describe('.select(fields)', function() {
-    it('sets a single `fields` when passed a string', function() {
+    it('sets `include` when passed a string', function() {
       var q = query().select('id');
-      expect( q.fields ).to.have.length(1);
-      expect( q.fields[0] ).to.equal( 'id' );
+      expect( q.qo.include ).to.have.length(1);
+      expect( q.qo.include[0] ).to.equal( 'id' );
     });
 
-    it('fails .select(fields) if no fields passed', function() {
+    it('throws if not passed a string', function() {
       var err;
       try {
-        var q = query().select();
+        var q = query().select( ['hello']);
         expect(q).to.equal( undefined );
       }
       catch(e) {
@@ -117,48 +113,26 @@ describe('query Core', function() {
       expect( err.message ).to.match( /select.*fields/ );
     });
 
-    it('applies an array of fields to `this.fields`', function() {
-      var q = query().select( [1,2,3] );
-      expect( q.fields ).to.have.length( 3 );
-      expect( q.fields ).to.contain( 1,2,3 );
-    });
-
     it('applies space separated string as multiple fields', function() {
       var q = query().select( '1 2 3' );
-      expect( q.fields ).to.have.length( 3 );
-      expect( q.fields ).to.contain( '1','2','3' );
-    });
-
-    it('applies negative strings as excludes', function() {
-      expect( query().select( '-hi' ).excludeFields ).to.contain( 'hi' );
-      expect( query().select( 'sup -hi' ).excludeFields ).to.contain( 'hi' );
-    });
-
-    it('sets to null if passed null (special case)', function() {
-      var q = query().select( null );
-      expect( q.fields ).to.equal( null );
+      expect( q.qo.include ).to.have.length( 3 );
+      expect( q.qo.include ).to.contain( '1','2','3' );
     });
   });
 
 
   describe('.exclude( fields )', function() {
 
-    it('applies array of fields to .excludeFields array', function() {
-      var q = query().exclude( ['name', '!'] );
-      expect( q.excludeFields ).to.have.length( 2 );
-      expect( q.excludeFields ).to.contain( 'name', '!' );
-    });
-
-    it('passes single string onto excludes', function() {
+    it('sets `exclude` when passed a string', function() {
       var q = query().exclude( 'name' );
-      expect( q.excludeFields ).to.have.length( 1 );
-      expect( q.excludeFields ).to.contain( 'name' );
+      expect( q.qo.exclude ).to.have.length( 1 );
+      expect( q.qo.exclude ).to.contain( 'name' );
     });
 
     it('applies space separated string as multiple onto excludes', function() {
       var q = query().exclude( 'name !' );
-      expect( q.excludeFields ).to.have.length( 2 );
-      expect( q.excludeFields ).to.contain( 'name', '!' );
+      expect( q.qo.exclude ).to.have.length( 2 );
+      expect( q.qo.exclude ).to.contain( 'name', '!' );
     });
 
     it('throws error if not provided Array or String', function() {
