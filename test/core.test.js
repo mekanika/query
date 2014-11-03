@@ -72,6 +72,10 @@ describe('query Core', function() {
     expect( q.adapter ).to.be.ok;
   });
 
+  it('exports a Qo using .toQo()', function () {
+    expect( query().toQo ).to.be.an.instanceof( Object );
+  });
+
 
   describe('.from(resource)', function() {
     it('sets the resource when provided', function() {
