@@ -12,7 +12,7 @@ describe('Action methods', function() {
 
     it('fails if no .from(model) is set', function() {
       var cb = function( err, res ) {
-        expect( err ).to.exist;;
+        expect( err ).to.exist;
         // Loosely check that the error message indicts "select"
         expect( err ).to.match( /from.*?action/ig );
       };
