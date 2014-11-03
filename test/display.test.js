@@ -3,10 +3,6 @@ var expect = require('chai').expect;
 
 describe('Display methods', function() {
 
-  beforeEach( function(){
-    query.reset();
-  });
-
   it('sets .limit(num)', function() {
     var q = query().limit(10);
     expect( q.qo.limit ).to.equal( 10 );

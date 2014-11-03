@@ -3,10 +3,6 @@ var expect = require('chai').expect;
 
 describe('Action methods', function() {
 
-  beforeEach( function(){
-    query.reset();
-  });
-
   // ## .create( payload, cb )
   describe('.create( payload [, cb] )', function() {
 
@@ -311,8 +307,7 @@ describe('Action methods', function() {
       var gotCallback = false;
 
       // Stub adapter
-      var adapter = function(){
-        return {
+      var testadapter = {
           exec:function(query,cb) {
             gotCallback = true;
             expect( query ).to.not.be.empty;
@@ -320,14 +315,12 @@ describe('Action methods', function() {
             expect( cb ).to.be.ok;
           }
         };
-      };
 
       var cb = function(err, res) {};
 
-      // Set the adapter class to our stub
-      query.adapterClass( adapter );
+
       // Init the query
-      var q = query('testadapter').from('anything').find('me');
+      var q = query( testadapter ).from('anything').find('me');
       // Ensure the adapter is set
       expect( q.adapter ).to.be.ok;
       // Run the query through the adapter

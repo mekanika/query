@@ -3,10 +3,6 @@ var expect = require('chai').expect;
 
 describe('Sorting methods', function() {
 
-  beforeEach( function(){
-    query.reset();
-  });
-
   it('sets up sort keys as an array', function () {
     var q = query().sort("name");
     expect( q.qo.sort ).to.be.an.instanceof( Array );

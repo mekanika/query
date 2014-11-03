@@ -2,15 +2,10 @@ var query = require('../lib/index.js');
 var expect = require('chai').expect;
 
 // Currently `query` expects an adapter() to return an `.exec()` method
-var adapterStub = function() { return { exec: function(){} }; };
+var adapterStub = { exec: function(){} };
 
 
 describe('query Core', function() {
-
-
-  beforeEach( function(){
-    query.reset();
-  });
 
   it('exports the Query constructor as query.Query', function() {
     expect( query.Query ).to.be.an.instanceof( Function );
@@ -24,44 +19,6 @@ describe('query Core', function() {
     expect( q1 ).to.not.be.empty;
   });
 
-  // This checks that our stub provides the methods required by our lib
-  it('provides an .exec() method on adapterClass', function() {
-    expect( adapterStub().exec ).to.be.an.instanceof( Function );
-  });
-
-  it('enables setting an .adapterClass( class )', function() {
-    // Check the adapterClass method is available
-    expect( query.adapterClass ).to.be.ok;
-    // Attempt to instantiate the adapter stub (will fail if not ok)
-    query.adapterClass( adapterStub );
-  });
-
-  it('returns query class on setting .adapterClass()', function() {
-    var q = query.adapterClass( adapterStub );
-    expect( q ).to.be.an.instanceof( Function );
-  });
-
-  it('sets an adapter using .use(\'adapter\')', function() {
-    query.adapterClass( adapterStub );
-    var q = query().use('whatever');
-    expect( q.adapter.exec ).to.be.an.instanceof( Function );
-  });
-
-  it('fails to .use( adapterKey ) if no adapterClass', function() {
-    // Reset our adapter class
-    query.adapterClass();
-    var err;
-    try {
-      var q = query('someinterface');
-      expect(q).to.equal( undefined );
-    }
-    catch( e ) {
-      err = e;
-    }
-    expect( err ).to.be.an.instanceof( Error );
-    expect( err.message ).to.match( /requires.*adapterClass/ );
-  });
-
   it('sets an adapter if initialised as query( adapter )', function() {
     var q = query( adapterStub );
     expect( q.adapter ).to.be.ok;
@@ -70,6 +27,18 @@ describe('query Core', function() {
   it('sets an adapter if passed .useAdapter( adapter )', function() {
     var q = query().useAdapter( adapterStub );
     expect( q.adapter ).to.be.ok;
+  });
+
+  it('throws if .useAdapter(adapter) has no .exec method', function() {
+    var err;
+    try {
+      var q = query('someinterface');
+    }
+    catch( e ) {
+      err = e;
+    }
+    expect( err ).to.be.an.instanceof( Error );
+    expect( err.message ).to.match( /invalid.*adapter/i );
   });
 
 
