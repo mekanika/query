@@ -31,19 +31,21 @@ describe('Action methods', function() {
       expect( err.message ).to.match( /requires.*Function/ );
     });
 
-    it('callback passed `query` object on success', function() {
+    it('callback passed `query` object on success', function(done) {
       var cb = function( err, res ) {
         expect( res ).to.not.be.empty;
         expect( res.action ).to.equal( 'create' );
         expect( res.body[0] ).to.equal( 'record' );
+        done();
       };
       query().from('something').create('record', cb);
     });
 
-    it('stores multiple payloads on create', function() {
+    it('stores multiple payloads on create', function(done) {
       var cb = function( err, res ) {
         expect( res.body.length ).to.equal( 3 );
         expect( res.body ).to.eql(['a','b',3]);
+        done();
       };
       query().from('something').create(['a','b',3], cb);
     });
@@ -183,7 +185,6 @@ describe('Action methods', function() {
     it('returns a `find` action query() if no params', function(){
       var q = query().find();
       expect( q ).to.not.be.empty;
-      expect( q.qo.ids ).to.have.length( 0 );
       expect( q.qo.action ).to.equal( 'find' );
     });
 
