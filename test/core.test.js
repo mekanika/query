@@ -93,9 +93,9 @@ describe('query Core', function() {
   });
 
 
-  describe('.select(fields)', function() {
+  describe('.include(fields)', function() {
     it('sets `include` when passed a string', function() {
-      var q = query().select('id');
+      var q = query().include('id');
       expect( q.qo.include ).to.have.length(1);
       expect( q.qo.include[0] ).to.equal( 'id' );
     });
@@ -103,18 +103,18 @@ describe('query Core', function() {
     it('throws if not passed a string', function() {
       var err;
       try {
-        var q = query().select( ['hello']);
+        var q = query().include( ['hello']);
         expect(q).to.equal( undefined );
       }
       catch(e) {
         err = e;
       }
       expect( err ).to.be.an.instanceof( Error );
-      expect( err.message ).to.match( /select.*fields/ );
+      expect( err.message ).to.match( /include.*fields/ );
     });
 
     it('applies space separated string as multiple fields', function() {
-      var q = query().select( '1 2 3' );
+      var q = query().include( '1 2 3' );
       expect( q.qo.include ).to.have.length( 3 );
       expect( q.qo.include ).to.contain( '1','2','3' );
     });
