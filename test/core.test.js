@@ -120,4 +120,20 @@ describe('query Core', function() {
   });
 
 
+  describe('.meta(obj)', function () {
+
+    it('sets up a new meta field on first instantiation', function () {
+      var q = query().meta({a:1});
+      expect( q.qo.meta ).to.be.an.instanceof( Object );
+      expect( q.qo.meta.a ).to.equal(1);
+    });
+
+    it('adds subsequent hashes to the meta field', function () {
+      var q = query().meta({a:1}).meta({b:2,c:3});
+      expect( q.qo.meta ).to.have.keys( 'a', 'b', 'c' );
+    })
+
+  });
+
+
 });
