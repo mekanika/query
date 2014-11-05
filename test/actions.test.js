@@ -98,7 +98,7 @@ describe('Action methods', function() {
 
 
   // ## .update()
-  describe('.update( [conditions], [update], [cb] )', function() {
+  describe('.update( [ids], [update], [cb] )', function() {
 
     it('sets action and no-op if nothing passed', function() {
       var q = query().from('me').update();
@@ -121,36 +121,28 @@ describe('Action methods', function() {
       q.done( cb );
     });
 
-    it('sets conditions as a single string id', function( done ) {
-      function cb( err, res ) {
-        expect( res.match ).to.have.length( 1 );
-        expect( res.match[0].op ).to.equal( 'eq' );
-        expect( res.match[0].value ).to.equal( '12345' );
+    it('sets single string ids param', function () {
+      var q = query().from('me').update( '12345', {name:'Jack'} );
 
-        // Ensure update data is set
-        expect( res.body ).to.have.length( 1 );
-        expect( res.body[0] ).to.have.keys( 'name' );
-        expect( res.body[0].name ).to.equal( 'Jack' );
+      expect( q.qo.ids ).to.have.length( 1 );
+      expect( q.qo.ids[0] ).to.equal( '12345' );
 
-        done();
-      }
-      query().from('me').update( '12345', {name:'Jack'} ).done( cb );
+      // Ensure update data is set
+      expect( q.qo.body ).to.have.length( 1 );
+      expect( q.qo.body[0] ).to.have.keys( 'name' );
+      expect( q.qo.body[0].name ).to.equal( 'Jack' );
     });
 
-    it('sets conditions for array of string ids', function( done ) {
-      function cb( err, res ) {
-        expect( res.match ).to.have.length( 1 );
-        expect( res.match[0].op ).to.equal( 'in' );
-        expect( res.match[0].value ).to.have.length( 2 );
+    it('sets conditions for array of string ids', function () {
+      var q = query().from('me').update( ['1234','5671'], {name:'Jack'} );
 
-        // Ensure update data is set
-        expect( res.body ).to.have.length( 1 );
-        expect( res.body[0] ).to.have.keys( 'name' );
-        expect( res.body[0].name ).to.equal( 'Jack' );
+      expect( q.qo.ids ).to.have.length( 2 );
+      expect( q.qo.ids[1] ).to.equal('5671');
 
-        done();
-      }
-      query().from('me').update( ['1234','5671'], {name:'Jack'} ).done( cb );
+      // Ensure update data is set
+      expect( q.qo.body ).to.have.length( 1 );
+      expect( q.qo.body[0] ).to.have.keys( 'name' );
+      expect( q.qo.body[0].name ).to.equal( 'Jack' );
     });
 
     it('runs a callback if one passed', function( done ) {
