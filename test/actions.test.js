@@ -6,15 +6,6 @@ describe('Action methods', function() {
   // ## .create( payload, cb )
   describe('.create( payload [, cb] )', function() {
 
-    it('fails if no .from(model) is set', function() {
-      var cb = function( err, res ) {
-        expect( err ).to.exist;
-        // Loosely check that the error message indicts "select"
-        expect( err ).to.match( /from.*?action/ig );
-      };
-      query().create('record', cb);
-    });
-
     it('fails if callback not a function', function() {
       var err;
       try {
@@ -196,13 +187,6 @@ describe('Action methods', function() {
       query().from('anything').find('moop', cb);
     });
 
-    it('fails a callback find if no .from(model) set', function() {
-      var cb = function(err, res) {
-        expect( err ).to.match( /from/ );
-      };
-      query().find('moop', cb);
-    });
-
     it('fails if callback is passed but not a function', function() {
       var err;
       try {
@@ -258,32 +242,6 @@ describe('Action methods', function() {
     it('callback is optional', function(done) {
       query().done();
       done();
-    });
-
-    it('returns an error if no .from(model) set', function() {
-      try {
-        query().done( function(err){
-          expect( err ).to.exist;
-          expect( err ).to.match( /from/ );
-        });
-      }
-      catch( e ) {
-        // Should never get here. Make sure of that.
-        expect( e ).to.equal( undefined );
-      }
-    });
-
-    it('returns an error if no `action` set', function() {
-      try {
-        query().from('anything').done( function(err){
-          expect( err ).to.exist;
-          expect( err ).to.match( /action/ );
-        });
-      }
-      catch( e ) {
-        // Should never get here. Make sure of that.
-        expect( e ).to.equal( undefined );
-      }
     });
 
     it('passes only the query object to callback if no adapter', function() {
