@@ -16,9 +16,9 @@ describe('Middleware', function() {
 
     it('is only applied when an adapter is present', function( done ) {
       var ref = 0;
-      var q = query().pre( 'save', function() { return ref++; } );
+      var q = query().pre( 'find', function() { return ref++; } );
 
-      expect( q.middleware.pre.save ).to.have.length( 1 );
+      expect( q.middleware.pre.find ).to.have.length( 1 );
 
       function cb2( err, res ) {
         expect( err ).to.not.be.ok;
@@ -40,26 +40,26 @@ describe('Middleware', function() {
 
         // Setup an adapter
         q.useAdapter( {exec: function(q,cb) { cb(null,'moo'); }});
-        q.save().done( cb2 );
+        q.find().done( cb2 );
       }
 
-      q.from('woo').save().done( cb1 );
+      q.from('woo').find().done( cb1 );
     });
 
     it('registers a pre hook', function() {
       var q = query()
         .from('woo')
-        .pre( 'save', function() { return true;  } );
+        .pre( 'find', function() { return true;  } );
 
-      expect( q.middleware.pre.save ).to.be.an.instanceof( Array );
-      expect( q.middleware.pre.save ).to.have.length( 1 );
+      expect( q.middleware.pre.find ).to.be.an.instanceof( Array );
+      expect( q.middleware.pre.find ).to.have.length( 1 );
     });
 
     it('registers a post hook', function() {
-      var q = query().post( 'save', function() { return true;  } );
+      var q = query().post( 'find', function() { return true;  } );
 
-      expect( q.middleware.post.save ).to.be.an.instanceof( Array );
-      expect( q.middleware.post.save ).to.have.length( 1 );
+      expect( q.middleware.post.find ).to.be.an.instanceof( Array );
+      expect( q.middleware.post.find ).to.have.length( 1 );
     });
 
     it('registers hooks with no action as `all`', function () {
@@ -81,7 +81,7 @@ describe('Middleware', function() {
 
     it('executes pre middleware for a given action', function(done) {
       var ref = 0;
-      var q = query().pre( 'save', function() { return ref++; } );
+      var q = query().pre( 'find', function() { return ref++; } );
 
       var cb = function() {
         expect( ref ).to.equal( 1 );
@@ -89,7 +89,7 @@ describe('Middleware', function() {
       };
 
       q.useAdapter( fauxAdapter );
-      q.from('woo').save().done( cb );
+      q.from('woo').find().done( cb );
     });
 
     it('executes pre hooks for `all`', function (done) {
@@ -101,12 +101,12 @@ describe('Middleware', function() {
         done();
       };
       q.useAdapter( fauxAdapter );
-      q.from('woo').save().done( cb );
+      q.from('woo').find().done( cb );
     });
 
     it('pre methods are passed the Qo', function( done ) {
       var ref = 0;
-      var q = query().pre( 'save', function( qi ) { ref = qi; } );
+      var q = query().pre( 'find', function( qi ) { ref = qi; } );
 
       var cb = function() {
         expect( ref ).to.include.keys('action','resource');
@@ -115,11 +115,11 @@ describe('Middleware', function() {
 
       q.useAdapter( fauxAdapter );
 
-      q.from('woo').save().done( cb );
+      q.from('woo').find().done( cb );
     });
 
     it('can modify this query in pre', function( done ) {
-      var q = query().pre( 'save', function( qry ) {
+      var q = query().pre( 'find', function( qry ) {
         qry.action = '^_^';
       });
 
@@ -130,7 +130,7 @@ describe('Middleware', function() {
 
       q.useAdapter( fauxAdapter );
 
-      q.from('woo').save().done( cb );
+      q.from('woo').find().done( cb );
     });
 
   });
@@ -142,8 +142,8 @@ describe('Middleware', function() {
     it('executes post middleware for a given action', function( done ) {
       var ref = 0;
       var q = query()
-        .post( 'save', function(e,r) { ref=ref+3; return [e,r]; })
-        .post( 'save', function(e,r) { ref=ref+2; return [e,r]; });
+        .post( 'find', function(e,r) { ref=ref+3; return [e,r]; })
+        .post( 'find', function(e,r) { ref=ref+2; return [e,r]; });
 
       var cb = function() {
         expect( ref ).to.equal( 5 );
@@ -151,7 +151,7 @@ describe('Middleware', function() {
       };
 
       q.useAdapter( fauxAdapter );
-      q.from('woo').save().done( cb );
+      q.from('woo').find().done( cb );
     });
 
     it('executes post hooks for `all`', function (done) {
@@ -166,7 +166,7 @@ describe('Middleware', function() {
       };
 
       q.useAdapter( fauxAdapter );
-      q.from('woo').save().done( cb );
+      q.from('woo').find().done( cb );
     });
 
     it('throws user returned Errors', function (done) {
@@ -215,7 +215,7 @@ describe('Middleware', function() {
     it('post methods are passed (err, res, query)', function( done ) {
       var arity;
       var q = query()
-        .post( 'save', function(e,r) {
+        .post( 'find', function(e,r) {
           arity = arguments.length;
           return [e,r];
         });
@@ -228,12 +228,12 @@ describe('Middleware', function() {
 
       q.useAdapter( fauxAdapter );
 
-      q.from('woo').save().done( cb );
+      q.from('woo').find().done( cb );
     });
 
     it('post middleware mutates `err,res` parameters', function( done ) {
       var q = query()
-        .post( 'save', function(err, res) {
+        .post( 'find', function(err, res) {
           err = new Error('Making bacon');
           res = [{newthing: true}];
           return [err, res];
@@ -249,12 +249,12 @@ describe('Middleware', function() {
 
       q.useAdapter( fauxAdapter );
 
-      q.from('woo').save().done( cb );
+      q.from('woo').find().done( cb );
     });
 
     it('post runs final callback with (err, res, query)', function( done ) {
       var q = query()
-        .post( 'save', function() {
+        .post( 'find', function() {
           return [null, 1];
         });
 
@@ -265,7 +265,7 @@ describe('Middleware', function() {
       }
 
       q.useAdapter( fauxAdapter );
-      q.from('^_^').save().done( cb );
+      q.from('^_^').find().done( cb );
     });
 
   });
