@@ -124,8 +124,8 @@ describe('Action methods', function() {
     it('sets conditions as a single string id', function( done ) {
       function cb( err, res ) {
         expect( res.match ).to.have.length( 1 );
-        expect( res.match[0].operator ).to.equal( 'eq' );
-        expect( res.match[0].condition ).to.equal( '12345' );
+        expect( res.match[0].op ).to.equal( 'eq' );
+        expect( res.match[0].value ).to.equal( '12345' );
 
         // Ensure update data is set
         expect( res.body ).to.have.length( 1 );
@@ -140,8 +140,8 @@ describe('Action methods', function() {
     it('sets conditions for array of string ids', function( done ) {
       function cb( err, res ) {
         expect( res.match ).to.have.length( 1 );
-        expect( res.match[0].operator ).to.equal( 'in' );
-        expect( res.match[0].condition ).to.have.length( 2 );
+        expect( res.match[0].op ).to.equal( 'in' );
+        expect( res.match[0].value ).to.have.length( 2 );
 
         // Ensure update data is set
         expect( res.body ).to.have.length( 1 );
