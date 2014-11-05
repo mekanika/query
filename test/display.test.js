@@ -13,11 +13,6 @@ describe('Display methods', function() {
     expect( q.qo.offset ).to.equal( 250 );
   });
 
-  it('aliases .offset() as .skip()', function() {
-    var q = query().skip(150);
-    expect( q.qo.offset ).to.equal( 150 );
-  });
-
   it('supports offset via .page(num)', function() {
 
     // Page 1 should return record 1 (ie. offset 0)
