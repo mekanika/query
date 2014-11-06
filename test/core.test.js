@@ -42,20 +42,17 @@ describe('query Core', function() {
   });
 
 
-  describe('.from(resource)', function() {
-    it('aliases as .resource()', function () {
-      expect( query().resource('jam').qo.resource ).to.equal('jam');
-    });
+  describe('.on(resource)', function() {
 
     it('sets the resource when provided', function() {
-      var q = query().from('icecream');
-      expect( q.qo.resource ).to.equal( 'icecream' );
+      var q = query().on('icecream');
+      expect( q.qo.on ).to.equal( 'icecream' );
     });
 
     it('fail to set resource if not provided string', function() {
       var err;
       try {
-        var q = query().from( ['array'] );
+        var q = query().on( ['array'] );
         expect(q).to.equal( undefined );
       }
       catch( e ) { err = e; }
