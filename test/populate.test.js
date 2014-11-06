@@ -19,37 +19,50 @@ describe('Populate', function() {
     expect( q.qo ).to.include.key( 'populate' );
   });
 
-  it('uses a blank subquery `{}` if none provided', function () {
-    var q = query().from('me').populate('posts');
-    expect( q.qo.populate.posts ).to.eql( {} );
+  it('adheres to {$field [,$key] ,[$query]} structure', function () {
+    var q = query().from('me').populate('posts', 'id', {});
+    expect( q.qo.populate[0] ).to.have.keys( 'field', 'key', 'query');
   });
 
-  it('attaches subqo when passed', function () {
-    var q = query().from('me').populate('posts', {resource:'whatever'});
-    expect( q.qo.populate.posts.resource ).to.equal('whatever');
+  it('supports passing ONLY a `field`', function () {
+    var q = query().from('me').populate('posts');
+    expect( q.qo.populate[0] ).to.have.key( 'field' );
+  });
+
+  it('supports passing a field and a key', function () {
+    var q = query().from('me').populate('posts', 'id');
+    expect( q.qo.populate[0] ).to.have.keys( 'field', 'key' );
+    expect( q.qo.populate[0].key ).to.equal('id');
+  });
+
+  it('supports passing a field and a qo', function () {
+    var q = query().from('me').populate('posts', {resource:'wat'});
+    expect( q.qo.populate[0] ).to.have.keys( 'field', 'query' );
+    expect( q.qo.populate[0].query ).to.eql( {resource:'wat'} );
+  });
+
+  it('overwrites existing populate fields', function () {
+    var q = query().from('me').populate('posts', 'come at me');
+    expect( q.qo.populate[0].key ).to.equal('come at me');
+    q.populate('posts', 'bro');
+    expect( q.qo.populate ).to.have.length(1);
+    expect( q.qo.populate[0].key ).to.equal('bro');
   });
 
   it('throws if subqo is not a clean "find" Qo', function (done) {
-    // Woo nesting!
     try {
-      query().from('me').populate('x', {action:'create'});
+      query().from('me').populate('x', {updates:[]});
     }
     catch (e) {
       expect( e.message ).to.match( /invalid/i );
       try {
-        query().from('me').populate('x', {updates:[]});
+        query().from('me').populate('x', {body:[]});
       }
       catch (e) {
         expect( e.message ).to.match( /invalid/i );
-        try {
-          query().from('me').populate('x', {body:[]});
-        }
-        catch (e) {
-          expect( e.message ).to.match( /invalid/i );
-          done();
-        }
+        done();
       }
-    };
+    }
   });
 
 
