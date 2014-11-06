@@ -46,7 +46,7 @@ describe('query Core', function() {
 
     it('sets the resource when provided', function() {
       var q = query().on('icecream');
-      expect( q.qo.on ).to.equal( 'icecream' );
+      expect( q.qe.on ).to.equal( 'icecream' );
     });
 
     it('fail to set resource if not provided string', function() {
@@ -66,8 +66,8 @@ describe('query Core', function() {
   describe('.include(fields)', function() {
     it('sets `include` when passed a string', function() {
       var q = query().include('id');
-      expect( q.qo.include ).to.have.length(1);
-      expect( q.qo.include[0] ).to.equal( 'id' );
+      expect( q.qe.include ).to.have.length(1);
+      expect( q.qe.include[0] ).to.equal( 'id' );
     });
 
     it('throws if not passed a string', function() {
@@ -85,8 +85,8 @@ describe('query Core', function() {
 
     it('applies space separated string as multiple fields', function() {
       var q = query().include( '1 2 3' );
-      expect( q.qo.include ).to.have.length( 3 );
-      expect( q.qo.include ).to.contain( '1','2','3' );
+      expect( q.qe.include ).to.have.length( 3 );
+      expect( q.qe.include ).to.contain( '1','2','3' );
     });
   });
 
@@ -95,14 +95,14 @@ describe('query Core', function() {
 
     it('sets `exclude` when passed a string', function() {
       var q = query().exclude( 'name' );
-      expect( q.qo.exclude ).to.have.length( 1 );
-      expect( q.qo.exclude ).to.contain( 'name' );
+      expect( q.qe.exclude ).to.have.length( 1 );
+      expect( q.qe.exclude ).to.contain( 'name' );
     });
 
     it('applies space separated string as multiple onto excludes', function() {
       var q = query().exclude( 'name !' );
-      expect( q.qo.exclude ).to.have.length( 2 );
-      expect( q.qo.exclude ).to.contain( 'name', '!' );
+      expect( q.qe.exclude ).to.have.length( 2 );
+      expect( q.qe.exclude ).to.contain( 'name', '!' );
     });
 
     it('throws error if not provided Array or String', function() {
@@ -121,13 +121,13 @@ describe('query Core', function() {
 
     it('sets up a new meta field on first instantiation', function () {
       var q = query().meta({a:1});
-      expect( q.qo.meta ).to.be.an.instanceof( Object );
-      expect( q.qo.meta.a ).to.equal(1);
+      expect( q.qe.meta ).to.be.an.instanceof( Object );
+      expect( q.qe.meta.a ).to.equal(1);
     });
 
     it('adds subsequent hashes to the meta field', function () {
       var q = query().meta({a:1}).meta({b:2,c:3});
-      expect( q.qo.meta ).to.have.keys( 'a', 'b', 'c' );
+      expect( q.qe.meta ).to.have.keys( 'a', 'b', 'c' );
     })
 
   });

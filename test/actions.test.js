@@ -50,7 +50,7 @@ describe('Action methods', function() {
 
     it('sets action and no-op if nothing passed', function() {
       var q = query().on('me').update();
-      expect( q.qo.do ).to.equal( 'update' );
+      expect( q.qe.do ).to.equal( 'update' );
     });
 
     it('accepts single argument as input object', function( done ) {
@@ -72,25 +72,25 @@ describe('Action methods', function() {
     it('sets single string ids param', function () {
       var q = query().on('me').update( '12345', {name:'Jack'} );
 
-      expect( q.qo.ids ).to.have.length( 1 );
-      expect( q.qo.ids[0] ).to.equal( '12345' );
+      expect( q.qe.ids ).to.have.length( 1 );
+      expect( q.qe.ids[0] ).to.equal( '12345' );
 
       // Ensure update data is set
-      expect( q.qo.body ).to.have.length( 1 );
-      expect( q.qo.body[0] ).to.have.keys( 'name' );
-      expect( q.qo.body[0].name ).to.equal( 'Jack' );
+      expect( q.qe.body ).to.have.length( 1 );
+      expect( q.qe.body[0] ).to.have.keys( 'name' );
+      expect( q.qe.body[0].name ).to.equal( 'Jack' );
     });
 
     it('sets conditions for array of string ids', function () {
       var q = query().on('me').update( ['1234','5671'], {name:'Jack'} );
 
-      expect( q.qo.ids ).to.have.length( 2 );
-      expect( q.qo.ids[1] ).to.equal('5671');
+      expect( q.qe.ids ).to.have.length( 2 );
+      expect( q.qe.ids[1] ).to.equal('5671');
 
       // Ensure update data is set
-      expect( q.qo.body ).to.have.length( 1 );
-      expect( q.qo.body[0] ).to.have.keys( 'name' );
-      expect( q.qo.body[0].name ).to.equal( 'Jack' );
+      expect( q.qe.body ).to.have.length( 1 );
+      expect( q.qe.body[0] ).to.have.keys( 'name' );
+      expect( q.qe.body[0].name ).to.equal( 'Jack' );
     });
 
     it('runs a callback if one passed', function( done ) {
@@ -121,16 +121,16 @@ describe('Action methods', function() {
     it('returns a `find` action query() if no params', function(){
       var q = query().find();
       expect( q ).to.not.be.empty;
-      expect( q.qo.do ).to.equal( 'find' );
+      expect( q.qe.do ).to.equal( 'find' );
     });
 
     it('sets find ids if passed', function() {
       // Test literal is pushed onto .fields array
       var q = query().find('moop');
-      expect( q.qo.ids ).to.have.length( 1 );
+      expect( q.qe.ids ).to.have.length( 1 );
       // Check item array
       q = query().find(['moop','smee']);
-      expect( q.qo.ids ).to.have.length( 2 );
+      expect( q.qe.ids ).to.have.length( 2 );
     });
 
     it('runs a callback if one is passed', function() {
@@ -161,24 +161,24 @@ describe('Action methods', function() {
 
     it('only sets `remove` action on .remove( undefined )', function() {
       var q = query().remove();
-      expect( q.qo ).to.have.key( 'do' );
-      expect( q.qo.do ).to.equal( 'remove' );
+      expect( q.qe ).to.have.key( 'do' );
+      expect( q.qe.do ).to.equal( 'remove' );
     });
 
     it('adds an `id` as a new constraint', function() {
       var q = query().remove( '12345' );
-      expect( q.qo.ids ).to.have.length( 1 );
-      expect( q.qo.ids[0] ).to.equal( '12345' );
+      expect( q.qe.ids ).to.have.length( 1 );
+      expect( q.qe.ids[0] ).to.equal( '12345' );
     });
 
     it('sets the remove action to be \'remove\'', function() {
       var q = query().remove('abc');
-      expect( q.qo.do ).to.equal('remove');
+      expect( q.qe.do ).to.equal('remove');
     });
 
     it('adds multiple ids as multiple matches', function() {
       var q = query().remove( [1,2,3,4] );
-      expect( q.qo.ids ).to.have.length( 4 );
+      expect( q.qe.ids ).to.have.length( 4 );
     });
 
     it('fails if callback is passed but not a function', function() {

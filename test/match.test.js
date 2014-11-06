@@ -6,29 +6,29 @@ describe('Match .where( field [,val] )', function() {
 
   it('pushes .where( field ) onto constraints array', function() {
     var q = query().where('whatever');
-    expect( q.qo.match ).to.have.length( 1 );
+    expect( q.qe.match ).to.have.length( 1 );
   });
 
   it('sets value when passed all .where(field,val)', function() {
     var q = query().where('id', 10);
-    expect( q.qo.match[0].value ).to.equal( 10 );
+    expect( q.qe.match[0].value ).to.equal( 10 );
   });
 
   it('has constraint structure {field,op,value}', function(){
     var q = query().where('id');
-    expect( q.qo.match[0] )
+    expect( q.qe.match[0] )
       .to.have.keys( 'field', 'op','value' );
   });
 
   it('pushes default operator and value for .where(field)', function(){
     var q = query().where('id');
-    expect( q.qo.match[0].op ).to.equal( 'eq' );
-    expect( q.qo.match[0].value ).to.equal( true );
+    expect( q.qe.match[0].op ).to.equal( 'eq' );
+    expect( q.qe.match[0].value ).to.equal( true );
   });
 
   it('supports creating multiple .where() conditions', function() {
     var q = query().where('id').eq(100).where('name').eq('beep');
-    expect( q.qo.match ).to.have.length( 2 );
+    expect( q.qe.match ).to.have.length( 2 );
   });
 
   it('prevents setting constraints if ids were set', function() {
@@ -63,8 +63,8 @@ describe('Match .where( field [,val] )', function() {
     it('normalises aliases: not->neq and is->eq', function() {
       var q = query().where('stop').is(1).where('go').not(1);
 
-      expect( q.qo.match[0].op ).to.equal( 'eq' );
-      expect( q.qo.match[1].op ).to.equal( 'neq' );
+      expect( q.qe.match[0].op ).to.equal( 'eq' );
+      expect( q.qe.match[1].op ).to.equal( 'neq' );
     });
 
     it('fails if no .where(field) declared', function() {
@@ -95,16 +95,16 @@ describe('Match .where( field [,val] )', function() {
 
         // Skip normalised aliases (where 'is'->'eq' etc)
         if (operators[i] !== 'is' && operators[i] !== 'not') {
-          expect( q.qo.match[0].op ).to.equal( operators[i] );
-          expect( q.qo.match[0].value ).to.equal( cond );
+          expect( q.qe.match[0].op ).to.equal( operators[i] );
+          expect( q.qe.match[0].value ).to.equal( cond );
         }
       }
     });
 
     it('overwrites the last operator if multiple declared', function() {
       var q = query().where('id').eq('moo').neq('woof');
-      expect( q.qo.match[0].op ).to.equal( 'neq' );
-      expect( q.qo.match[0].value ).to.equal( 'woof' );
+      expect( q.qe.match[0].op ).to.equal( 'neq' );
+      expect( q.qe.match[0].value ).to.equal( 'woof' );
     });
 
     it('only accepts arrays for `in, nin, all`', function() {
