@@ -1,3 +1,43 @@
+0.6.0 - 6 November 2014
+=====
+
+Massive update to support changes in latest Qo spec and to simplify library
+
+Changed:
+
+- Query object core naming and features to match Qo 0.3.0 conventions
+  - `content` to `body`
+  - `identifiers` to `ids`
+  - `display` object flattened out to `limit` and `offset` at root level
+  - `fields` to `include`
+  - `excludeFields` to `exclude`
+  - `modifiers` to `update`
+  - `constraints` to `match`
+  - `order` to `sort`
+  - Sorting is done by strings (not objects) eg. "-age name"
+  - removed `idField` descriptor
+  - removed `rename` modifier/update type
+- Match and Update object structures to match Qo 0.5.0 conventions
+  - `{$field:{$op:$value}}`
+- Qo is stored as `.qo` property on each `query#` instance
+- Adapters and middleware are passed a POJO `Qo` rather than a query# instance
+- Blank Qo is now valid (Qo 0.4.0)
+
+Added:
+
+- `.meta(obj)` for adding to meta field
+- `.populate( field, key, query )` support (Qo 0.5.0)
+
+Removed:
+
+- `save` as a supported action
+- `.skip()` alias for offset
+- `.select()` in favour of the new `.include`
+- `.use( adapterString )` to "lookup" adapters from an "adapterClass"
+- `.adapterClass( acl )` previously used as an 'adapter accessor'
+
+
+
 0.5.0 - 14 July 2014 (The "No Zalgo" release)
 =====
 
@@ -42,12 +82,14 @@ Updated:
 - Module dependencies
 
 
+
 0.2.0 - 9 December 2013
 =====
 
 - Constraints related to ids are converted prior to query
 - `utils.isEmpty` checks objects as well as arrays
 - License update to LGPL3+
+
 
 
 0.1.0
