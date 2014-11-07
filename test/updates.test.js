@@ -17,7 +17,7 @@ describe('Updates', function() {
 
       it('sets operator to `'+op+'`', function () {
         var q = query()[op]('skill', 1);
-        expect( q.qe.updates[0].op ).to.equal( op );
+        expect( q.qe.updates[0].skill ).to.have.key( op );
       });
 
       it('throws if field not a string', function (done) {
@@ -30,7 +30,9 @@ describe('Updates', function() {
 
       it('sets update object', function () {
         var q = query()[op]('skill', 1);
-        expect( q.qe.updates[0] ).to.eql( {field:'skill', op:op, value:1} );
+        var mod = {}; mod[op] = 1;
+        var uo = {skill: mod};
+        expect( q.qe.updates[0] ).to.eql( uo );
       });
 
     });
@@ -41,8 +43,8 @@ describe('Updates', function() {
 
     it('sets update as `op:inc, value:-val`', function() {
       var q = query().dec( 'skill', 5 );
-      expect( q.qe.updates[0].op ).to.equal( 'inc' );
-      expect( q.qe.updates[0].value ).to.equal( -5 );
+      expect( q.qe.updates[0].skill ).to.have.key( 'inc' );
+      expect( q.qe.updates[0].skill.inc ).to.equal( -5 );
     });
 
   });
