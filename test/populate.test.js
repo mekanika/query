@@ -3,7 +3,7 @@ var expect = require('chai').expect;
 
 describe('Populate', function() {
 
-  it('fails to populate if no .resource set', function(){
+  it('fails to populate if no .on set', function(){
     var err;
     try {
       var q = query().populate('demo');
@@ -11,45 +11,42 @@ describe('Populate', function() {
     catch( e ) { err = e; }
 
     expect( err ).to.be.an.instanceof( Error );
-    expect( err.message ).to.match( /populate.*resource/ );
+    expect( err.message ).to.match( /populate.*on/ );
   });
 
-  it('sets up a qo.populate field', function () {
+  it('sets up a qe.populate field', function () {
     var q = query().on('me').populate('posts');
     expect( q.qe ).to.include.key( 'populate' );
   });
 
-  it('adheres to {$field [,$key] ,[$query]} structure', function () {
+  it('adheres to {$field: {$key,$query}} structure', function () {
     var q = query().on('me').populate('posts', 'id', {});
-    expect( q.qe.populate[0] ).to.have.keys( 'field', 'key', 'query');
+    expect( q.qe.populate.posts ).to.have.keys( 'key', 'query');
   });
 
-  it('supports passing ONLY a `field`', function () {
+  it('supports passing ONLY a `field` (no key or qe)', function () {
     var q = query().on('me').populate('posts');
-    expect( q.qe.populate[0] ).to.have.key( 'field' );
+    expect( q.qe.populate.posts ).to.eql( {} );
   });
 
   it('supports passing a field and a key', function () {
     var q = query().on('me').populate('posts', 'id');
-    expect( q.qe.populate[0] ).to.have.keys( 'field', 'key' );
-    expect( q.qe.populate[0].key ).to.equal('id');
+    expect( q.qe.populate.posts.key ).to.equal( 'id' );
   });
 
   it('supports passing a field and a qo', function () {
-    var q = query().on('me').populate('posts', {resource:'wat'});
-    expect( q.qe.populate[0] ).to.have.keys( 'field', 'query' );
-    expect( q.qe.populate[0].query ).to.eql( {resource:'wat'} );
+    var q = query().on('me').populate('posts', {on:'wat'});
+    expect( q.qe.populate.posts.query ).to.eql( {on:'wat'} );
   });
 
   it('overwrites existing populate fields', function () {
     var q = query().on('me').populate('posts', 'come at me');
-    expect( q.qe.populate[0].key ).to.equal('come at me');
+    expect( q.qe.populate.posts.key ).to.equal('come at me');
     q.populate('posts', 'bro');
-    expect( q.qe.populate ).to.have.length(1);
-    expect( q.qe.populate[0].key ).to.equal('bro');
+    expect( q.qe.populate.posts.key ).to.equal('bro');
   });
 
-  it('throws if subqo is not a clean "find" Qo', function (done) {
+  it('throws if subqo is not a clean "find" Qe', function (done) {
     try {
       query().on('me').populate('x', {updates:[]});
     }
