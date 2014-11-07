@@ -62,60 +62,32 @@ describe('query Core', function() {
     });
   });
 
-
-  describe('.include(fields)', function() {
-    it('sets `include` when passed a string', function() {
-      var q = query().include('id');
-      expect( q.qe.include ).to.have.length(1);
-      expect( q.qe.include[0] ).to.equal( 'id' );
+  describe('.select(fields)', function() {
+    it('sets `select` when passed a string', function() {
+      var q = query().select('id');
+      expect( q.qe.select ).to.have.length(1);
+      expect( q.qe.select[0] ).to.equal( 'id' );
     });
 
-    it('throws if not passed a string', function() {
+    it('throws if not passed a string or string array', function() {
       var err;
+      query().select( ['hello'] );
+      query().select( 'hello' );
       try {
-        var q = query().include( ['hello']);
-        expect(q).to.equal( undefined );
+        var q = query().select( true );
       }
       catch(e) {
         err = e;
       }
       expect( err ).to.be.an.instanceof( Error );
-      expect( err.message ).to.match( /include.*fields/ );
     });
 
     it('applies space separated string as multiple fields', function() {
-      var q = query().include( '1 2 3' );
-      expect( q.qe.include ).to.have.length( 3 );
-      expect( q.qe.include ).to.contain( '1','2','3' );
+      var q = query().select( '1 2 3' );
+      expect( q.qe.select ).to.have.length( 3 );
+      expect( q.qe.select ).to.contain( '1','2','3' );
     });
   });
-
-
-  describe('.exclude( fields )', function() {
-
-    it('sets `exclude` when passed a string', function() {
-      var q = query().exclude( 'name' );
-      expect( q.qe.exclude ).to.have.length( 1 );
-      expect( q.qe.exclude ).to.contain( 'name' );
-    });
-
-    it('applies space separated string as multiple onto excludes', function() {
-      var q = query().exclude( 'name !' );
-      expect( q.qe.exclude ).to.have.length( 2 );
-      expect( q.qe.exclude ).to.contain( 'name', '!' );
-    });
-
-    it('throws error if not provided Array or String', function() {
-      var err;
-      try {
-        query().exclude( 123 );
-      }
-      catch( e ) { err = e; }
-      expect( err ).to.be.an.instanceof( Error );
-    });
-
-  });
-
 
   describe('.meta(obj)', function () {
 
@@ -128,7 +100,7 @@ describe('query Core', function() {
     it('adds subsequent hashes to the meta field', function () {
       var q = query().meta({a:1}).meta({b:2,c:3});
       expect( q.qe.meta ).to.have.keys( 'a', 'b', 'c' );
-    })
+    });
 
   });
 
