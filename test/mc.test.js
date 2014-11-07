@@ -6,7 +6,7 @@ describe('MatchContainer', function () {
 
   var key = function (obj) {
     return Object.keys(obj)[0];
-  }
+  };
 
   var mc;
 

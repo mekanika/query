@@ -55,8 +55,8 @@ describe('Populate', function() {
       try {
         query().on('me').populate('x', {body:[]});
       }
-      catch (e) {
-        expect( e.message ).to.match( /invalid/i );
+      catch (e2) {
+        expect( e2.message ).to.match( /invalid/i );
         done();
       }
     }
