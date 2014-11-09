@@ -11,6 +11,11 @@ describe('query Core', function() {
     expect( query.Query ).to.be.an.instanceof( Function );
   });
 
+  it('exposes query.mc(op, mos) MatchContainer method', function () {
+    expect( query.mc ).to.be.an.instanceof( Function );
+    expect( query.mc('or') ).to.include.key('or');
+  });
+
   it('return a new query object with query()', function() {
     var q1 = query();
     var q2 = query();
