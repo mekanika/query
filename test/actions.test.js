@@ -3,6 +3,15 @@ var expect = require('chai').expect;
 
 describe('Action methods', function() {
 
+
+  describe('.do(action)', function () {
+    it('sets arbitrary action', function () {
+      var q = query().do('find');
+      expect( q.qe.do ).to.equal('find');
+    });
+  });
+
+
   // ## .create( payload, cb )
   describe('.create( payload [, cb] )', function() {
 
