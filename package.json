@@ -1,7 +1,7 @@
 {
   "name": "mekanika-query",
-  "version": "0.6.0",
-  "description": "Isomorphic fluent interface for building query objects",
+  "version": "0.7.0",
+  "description": "Query envelope (Qe) builder and adapter bridge",
   "keywords": [
     "query",
     "adapter",

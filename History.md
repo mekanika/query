@@ -1,3 +1,25 @@
+0.7.0 - 9 November 2014
+=====
+
+Supporting Qe 0.6.0
+
+Changed:
+
+- `.populate`, `.update`, `.select` to 0.6.0 spec
+- Rename `.from|resource()` to `.on()`
+- References to `Qe`, `qe` and Query envelopes
+
+Added:
+
+- Nested matching using `MatchContainer` and `query.mc(op, mos)`
+- `.body()`, `.do()` direct setting methods
+
+Internal:
+
+- Major Readme docs overhaul
+
+
+
 0.6.0 - 6 November 2014
 =====
 
