@@ -62,6 +62,20 @@ describe('query Core', function() {
     });
   });
 
+
+  describe('.body(data)', function () {
+    it('sets body contents', function () {
+      var q = query().body([{a:1}]);
+      expect( q.qe.body ).to.eql([{a:1}]);
+    });
+
+    it('forces data to an array', function () {
+      var q = query().body({a:1});
+      expect( q.qe.body ).to.eql([{a:1}]);
+    });
+  });
+
+
   describe('.select(fields)', function() {
     it('sets `select` when passed a string', function() {
       var q = query().select('id');
