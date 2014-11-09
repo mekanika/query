@@ -34,6 +34,11 @@ describe('Match', function() {
     expect( q.qe.match.or ).to.have.length(1);
   });
 
+  it('.or() modifies an existing match boolOp to OR', function () {
+    var q = query().where('yo', 'momma').or('yo', 'poppa');
+    expect( q.qe.match ).to.have.key( 'or' );
+  })
+
   describe('.{op}( condition )', function() {
 
     // Copied directly from source
