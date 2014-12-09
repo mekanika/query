@@ -1,3 +1,16 @@
+0.8.0 - 9 December 2014
+=====
+
+Changed:
+
+- License to MPLv2
+
+Internal:
+
+- Update dev dependencies
+
+
+
 0.7.0 - 9 November 2014
 =====
 
