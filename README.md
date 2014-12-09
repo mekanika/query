@@ -378,4 +378,6 @@ If you [find a bug, report it](https://github.com/mekanika/query/issues).
 
 ## License
 
-  GNU Lesser General Public License, either version 3 of the License, or (at your option) any later version ([LGPL-3.0+](https://www.gnu.org/licenses/lgpl.html)). See the `License.` files for full details.
+  Copyright (c) 2013-2014 Clint Walker
+
+  Released under [MPLv2](http://mozilla.org/MPL/2.0/) license
