@@ -361,19 +361,20 @@ Also supports adding multiple middleware methods:
 
   Ensure you have installed the development dependencies:
 
-      make install
+      npm install
 
   To run the tests:
 
-      make test
+      npm test
 
 
 ### Test Coverage
 To generate a `coverage.html` report, run:
 
-    make coverage
+    npm run coverage
 
 ### Bugs
+
 If you [find a bug, report it](https://github.com/mekanika/query/issues).
 
 ## License
