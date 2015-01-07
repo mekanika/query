@@ -13,9 +13,13 @@
   ],
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha -R spec test",
+    "browser": "browserify lib/index.js -o build/mekanika-query.js -s query",
+    "build": "npm run clean && npm run lint && npm run test && npm run browser && npm run compress",
+    "clean": "rm -rf build/ && mkdir build",
+    "compress": "uglifyjs build/mekanika-query.js -cm -o build/mekanika-query.min.js",
+    "coverage": "istanbul cover _mocha",
     "lint": "jshint --config .jshintrc lib/**/*.js test/*.js",
-    "coverage": "istanbul cover _mocha"
+    "test": "mocha -R spec test"
   },
   "repository": {
     "type": "git",
@@ -25,11 +29,13 @@
     "url": "https://github.com/mekanika/query/issues"
   },
   "devDependencies": {
-    "chai": "~1.10.0",
-    "jshint": "~2.5.11",
+    "browserify": "^8.0.3",
+    "chai": "^1.10.0",
+    "istanbul": "^0.3.5",
+    "jshint": "^2.5.11",
     "mekanika-schema": "^0.10.1",
-    "mocha": "~2.1.0",
-    "uglify-js": "~2.4.16"
+    "mocha": "^2.1.0",
+    "uglify-js": "^2.4.16"
   },
   "license": "MPL-2.0"
 }
