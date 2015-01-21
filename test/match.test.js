@@ -106,10 +106,10 @@ describe('Match', function() {
       expect( q.qe.match.and[0].id.neq ).to.equal( 'woof' );
     });
 
-    it('only accepts arrays for `in, nin, all`', function() {
+    it('only accepts arrays for `in, nin, all, any`', function() {
       var q = query().where('tags');
 
-      var ops = ['in', 'nin', 'all' ],
+      var ops = ['in', 'nin', 'all', 'any'],
           i = ops.length;
 
       while ( i-- ) {
