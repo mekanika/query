@@ -1,6 +1,6 @@
 {
   "name": "mekanika-query",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Query envelope (Qe) builder and adapter bridge",
   "keywords": [
     "query",

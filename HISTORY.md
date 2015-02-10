@@ -1,3 +1,25 @@
+0.9.0 - 10 February 2015
+=====
+
+Added: 
+
+- Support for the `any` match operator
+
+Changed:
+
+- **BREAKING** Middleware hooks now chain with `next()` (see docs)
+
+Removed:
+
+- `.toObject()` method in favour of direct access to `.qe` property
+
+Internal:
+
+- Build system switched to `npm run` from Makefile
+- Updated dev dependencies
+
+
+
 0.8.0 - 9 December 2014
 =====
 
