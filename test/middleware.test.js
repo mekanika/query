@@ -143,8 +143,8 @@ describe('Middleware', function() {
     it('executes post middleware for a given action', function( done ) {
       var ref = 0;
       var q = query()
-        .post( 'find', function(e,r) { ref=ref+3; return [e,r]; })
-        .post( 'find', function(e,r) { ref=ref+2; return [e,r]; });
+        .post( 'find', function(e,r,q,n) { ref=ref+3; n(e,r); })
+        .post( 'find', function(e,r,q,n) { ref=ref+2; n(e,r); });
 
       var cb = function() {
         expect( ref ).to.equal( 5 );
@@ -158,8 +158,8 @@ describe('Middleware', function() {
     it('executes post hooks for `all`', function (done) {
       var ref = 0;
       var q = query()
-        .post( function(e,r) { ref=ref+3; return [e,r]; })
-        .post( function(e,r) { ref=ref+2; return [e,r]; });
+        .post( function(e,r,q,n) { ref=ref+3; n(e,r); })
+        .post( function(e,r,q,n) { ref=ref+2; n(e,r); });
 
       var cb = function() {
         expect( ref ).to.equal( 5 );
@@ -171,8 +171,8 @@ describe('Middleware', function() {
     });
 
     it('throws user returned Errors', function (done) {
-      var post = [ function(e,r) {
-        return new Error('sucka');
+      var post = [ function(e,r,q,n) {
+        n(new Error('sucka'));
       } ];
 
       try {
@@ -184,10 +184,8 @@ describe('Middleware', function() {
       }
     });
 
-    it('throws on hook failing to return [err,res] or Error', function (done) {
-      var post = [ function(e,r) {
-        return undefined;
-      } ];
+    it('throws on hook failing to return (err,res) or Error', function (done) {
+      var post = [ function(e,r,q,n) { n(); } ];
 
       try {
         posthook( post, function() {}, query() )();
@@ -199,8 +197,8 @@ describe('Middleware', function() {
     });
 
     it('blocks callback execution if post hooks threw', function (done) {
-      var post = [ function(e,r) {
-        return undefined;
+      var post = [ function(e,r,q,n) {
+        n();
       } ];
 
       var callbackRan = false;
@@ -213,16 +211,16 @@ describe('Middleware', function() {
       }
     });
 
-    it('post methods are passed (err, res, query)', function( done ) {
+    it('post methods are passed (err, res, qe, next)', function( done ) {
       var arity;
       var q = query()
-        .post( 'find', function(e,r) {
+        .post( 'find', function(e,r,q,n) {
           arity = arguments.length;
-          return [e,r];
+          n(e,r);
         });
 
       var cb = function() {
-        expect( arity ).to.equal( 3 );
+        expect( arity ).to.equal( 4 );
         expect( arguments[2] ).to.include.keys( 'do', 'on' );
         done();
       };
@@ -234,15 +232,14 @@ describe('Middleware', function() {
 
     it('post middleware mutates `err,res` parameters', function( done ) {
       var q = query()
-        .post( 'find', function(err, res) {
-          err = new Error('Making bacon');
+        .post( 'find', function(err, res, q, next) {
+          err = 'Making bacon';
           res = [{newthing: true}];
-          return [err, res];
+          next(err, res);
         });
 
       function cb( err, res ) {
-        expect( err ).to.be.an.instanceof( Error );
-        expect( err.message ).to.equal( 'Making bacon' );
+        expect( err ).to.equal( 'Making bacon' );
         expect( res ).to.have.length( 1 );
         expect( res[0].newthing ).to.equal( true );
         done();
@@ -253,10 +250,10 @@ describe('Middleware', function() {
       q.on('woo').find().done( cb );
     });
 
-    it('post runs final callback with (err, res, query)', function( done ) {
+    it('post runs final callback with (err, res, qe)', function( done ) {
       var q = query()
-        .post( 'find', function() {
-          return [null, 1];
+        .post( 'find', function(e,r,q,n) {
+          n(null,1);
         });
 
       function cb() {
@@ -267,6 +264,28 @@ describe('Middleware', function() {
 
       q.useAdapter( fauxAdapter );
       q.on('^_^').find().done( cb );
+    });
+
+    it('can nest post hooks (async)', function (done) {
+      var flag = false;
+
+      var async = function (err, res, n) {
+        setTimeout( function () {
+          flag = 'green';
+          n(err, res);
+        },0);
+      };
+      var q = query().post( function (e,r,q,n) {
+        async(e,r,n);
+        // In SYNCHRONOUS mode, this would force flag to red.
+        flag = 'red';
+      });
+
+      q.useAdapter(fauxAdapter);
+      q.on('woo').find().done( function (e,r) {
+        expect(flag).to.equal('green');
+        done();
+      });
     });
 
   });

@@ -324,31 +324,42 @@ query().pre( fn1 ).pre( fn2 ); // etc
 
 ### Post
 
-  Post middleware hooks are functions that accept `(err, res, qe)` and **must return** either:
+Post-middleware enables you to **modify results from the adapter** (and trigger additional actions if needed).
 
-- `[err, res]` array tuple, OR
-- an `Error` object to throw.
+Post middleware hooks are functions that accept `(err, results, qe, next)` and **must** pass `next()` the following params, either:
 
-Failing to return either an `[err,res]` tuple or an error will cause the query to throw an `Error` and halt processing.
+- `(err, results)`  OR
+- an `(Error)` object to throw
 
-  Posts run asynchronously **after** the adapter execution is complete, and are passed the the `err` and `res` responses from the adapter, and `query` is _this query_.
+Failing to call `next()` with either `(err,res)` or `Error` will cause the query to throw an `Error` and halt processing.
 
-> **A note on Exceptions**: Post middleware runs _asynchronously_, which means if your post middleware generates an exception, _it will crash the process_ and the final query callback will fail to excute (or be caught). You **should** wrap your middleware in a `try-catch` block and handle errors appropriately.
+Posts run **after** the adapter execution is complete, and are passed the the `err` and `res` responses from the adapter, and `qe` is the _latest_ version of the Qe after `pre` middleware.
 
-  You may optionally modify the results from the server. Or simply return the no-op `[err, res]` array if your processing has nothing
+> **Important note on Exceptions!** 
+> Post middleware runs in an **_asynchronous_** loop, which means if your post middleware generates an exception, _it will crash the process_ and the final query callback will fail to execute (or be caught). You **should** wrap your middleware methods in a `try-catch` block and handle errors appropriately.
+
+You may optionally modify the results from the adapter. Simply return (the modified or not) `next(err, res)`  when ready to step to the next hook in the chain.
 
 
 ```js
-  function postHandler( err, res, qe ) {
+  function postHandler( err, res, qe, next ) {
     try {
       err = 'My modified error';
       res = 'Custom results!';
-      // MUST return [err, res] array
-      return [err, res];
+      // Call your own external hooks
+      myCustomEvent();
+
+      // MUST call `next(err, res)` to step chain
+      // Can pass to further async calls
+      if (hasAsyncStuffToDo) {
+        myOrderCriticalEvent( err,res,next );
+      }
+      // Or just step sync:
+      else next(err, res);
     }
     catch (e) {
       // Note 'return'. NOT 'throw':
-      return e; // Cause query to throw this Error
+      next(e); // Cause query to throw this Error
     }
   }
 
