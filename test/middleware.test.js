@@ -16,7 +16,7 @@ describe('Middleware', function() {
 
     it('is only applied when an adapter is present', function( done ) {
       var ref = 0;
-      var q = query().pre( 'find', function() { return ref++; } );
+      var q = query().pre( 'find', function(q,n) { ref++; n(); } );
 
       expect( q.middleware.pre.find ).to.have.length( 1 );
 
@@ -81,7 +81,7 @@ describe('Middleware', function() {
 
     it('executes pre middleware for a given action', function(done) {
       var ref = 0;
-      var q = query().pre( 'find', function() { return ref++; } );
+      var q = query().pre( 'find', function(q,n) { ref++; n(); } );
 
       var cb = function() {
         expect( ref ).to.equal( 1 );
@@ -94,7 +94,7 @@ describe('Middleware', function() {
 
     it('executes pre hooks for `all`', function (done) {
       var ref = 0;
-      var q = query().pre( function () { return ref++; } );
+      var q = query().pre( function (q,n) { ref++; n(); } );
 
       var cb = function () {
         expect( ref ).to.equal( 1 );
@@ -104,9 +104,9 @@ describe('Middleware', function() {
       q.on('woo').find().done( cb );
     });
 
-    it('pre methods are passed the Qo', function( done ) {
+    it('pre methods are passed the Qe', function( done ) {
       var ref = 0;
-      var q = query().pre( 'find', function( qi ) { ref = qi; } );
+      var q = query().pre( 'find', function (qi,n) { ref = qi; n(); } );
 
       var cb = function() {
         expect( ref ).to.include.keys('do','on');
@@ -119,8 +119,9 @@ describe('Middleware', function() {
     });
 
     it('can modify this query in pre', function( done ) {
-      var q = query().pre( 'find', function( qry ) {
+      var q = query().pre( 'find', function( qry, next ) {
         qry.do = '^_^';
+        next();
       });
 
       var cb = function(e,r,qry) {

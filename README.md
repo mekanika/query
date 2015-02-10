@@ -294,23 +294,29 @@ This enables custom modifications of _Qe_ prior to passing to an adapter, and th
 
 ### Pre
 
-  Pre-processing middleware is executed **before** the query is handed to its adapter, and are passed  `fn( query )` with _the current Qe_ as their only parameter.
+Pre-middleware enables you to **modify the query prior to adapter execution** (and trigger any other actions as needed).
 
-  This enables you to modify the query prior to adapter execution.
+Pre methods are executed **before** the Qe is handed to its adapter, and are passed  `fn( qe, next )` with _the current Qe_ as their first parameter, and the chaining method `next()` provided to step through the queue (enables running asynchronous calls that wait on `next` in order to progress).
 
-  There are no special requirements for pre-middleware functions.
+To pass data between pre-hooks, attach to [`qe.meta`](https://github.com/mekanika/qe#index-11---meta).
+
+> `next()` accepts one argument, treated as an _error_ that forces the query to halt and return `cb( param )` (error).
+
+Pre hooks _must_ call `next()` in order to progress the stack:
 
 ```js
-function preHandler( qe ) {
-  qe.on += ':magic_suffix';
+function preHandler( qe, next ) {
   // Example modification of the Qe passed to the adapter
+  qe.on += ':magic_suffix';
+  // Go to next hook (if any)
+  next();
 }
 
 query().pre( preHandler );
 // Adds `preHandler` to the pre-processing queue
 ```
 
-Also supports adding multiple middleware methods
+Supports adding multiple middleware methods
 
 ```js
 query().pre( fn1 ).pre( fn2 ); // etc
