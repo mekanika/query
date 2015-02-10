@@ -134,7 +134,8 @@ Conditions are set using the following pattern:
   - **.neq(** val **)** - Not equal to. Alias: `not()`.
   - **.in(** array **)** - Where field value is in the array.
   - **.nin(** array **)** - Where field value is _not_ in the array.
-  - **.all(** array **)** - everything in the list
+  - **.all(** array **)** - Everything in the list.
+  - **.any(** array **)** - Anything in the list.
   - **.lt(** num **)** - Less than number.
   - **.gt(** num **)** - More (greater) than than number.
   - **.lte(** num **)** - Less than or equal to number.
