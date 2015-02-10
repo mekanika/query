@@ -1,6 +1,5 @@
 # query
 
-**Alpha release version**
 [![Code Climate](https://codeclimate.com/github/mekanika/query.png)](https://codeclimate.com/github/mekanika/query)
 
 `query` is an isomorphic interface for working with [**Qe** - Query envelopes](https://github.com/mekanika/qe).
