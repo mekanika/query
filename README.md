@@ -379,6 +379,6 @@ If you [find a bug, report it](https://github.com/mekanika/query/issues).
 
 ## License
 
-  Copyright (c) 2013-2014 Clint Walker
+  Copyright (c) 2013-2015 Clint Walker
 
-  Released under [MPLv2](http://mozilla.org/MPL/2.0/) license
+  Released under the **Mozilla Public License v2.0** ([MPLv2](http://mozilla.org/MPL/2.0/))
