@@ -316,10 +316,12 @@ query().pre( preHandler );
 // Adds `preHandler` to the pre-processing queue
 ```
 
-Supports adding multiple middleware methods
+Supports adding multiple middleware methods:
 
 ```js
 query().pre( fn1 ).pre( fn2 ); // etc
+// OR
+query().pre( [fn1, fn2] );
 ```
 
 ### Post
@@ -370,7 +372,9 @@ You may optionally modify the results from the adapter. Simply return (the modif
 Also supports adding multiple middleware methods:
 
 ```js
-  query().post( fn1 ).post( fn2 ); // etc
+query().post( fn1 ).post( fn2 ); // etc
+// OR
+query().post( [fn1, fn2] );
 ```
 
 

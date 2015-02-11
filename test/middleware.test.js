@@ -73,6 +73,15 @@ describe('Middleware', function() {
       expect( q.middleware.pre.all ).to.have.length( 1 );
     });
 
+    it('can pass hooks as an Array of fns', function () {
+      var q = query()
+        .pre([
+          function () { return 1; },
+          function () { return 2; }
+        ]);
+      expect( q.middleware.pre.all ).to.have.length( 2 );
+    });
+
   });
 
 
