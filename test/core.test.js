@@ -81,6 +81,19 @@ describe('query Core', function() {
   });
 
 
+  describe('.ids(data)', function () {
+    it('sets id contents as array', function () {
+      var q = query().ids('1234');
+      expect( q.qe.ids ).to.eql(['1234']);
+    });
+
+    it('appends data as array to .ids', function () {
+      var q = query().ids('1234').ids(['abc','def']);
+      expect( q.qe.ids ).to.eql( ['1234','abc','def'] );
+    });
+  });
+
+
   describe('.select(fields)', function() {
     it('sets `select` when passed a string', function() {
       var q = query().select('id');
