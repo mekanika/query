@@ -125,4 +125,30 @@ describe('Match', function() {
     });
   });
 
+  describe('Nested match', function () {
+    it('can embed match selectors `query().where( MC )`', function () {
+      var q = query().where( query.mc().where('speed', 10) );
+      expect( q.qe.match.and[0].speed.eq ).to.equal(10);
+    });
+
+    it('can embed simple match selectors `{key:val}`', function () {
+      var q = query().where( {name:'Zim'} );
+      expect( q.qe.match.and[0].name.eq ).to.equal('Zim');
+    });
+
+    it('can use multi-key simple match selectors', function () {
+      var q = query().where( {name:'Zim', state:'awesome'} );
+      expect( q.qe.match.and[1].state.eq ).to.equal('awesome');
+    });
+
+    it('can embed a plain object MatchContainer format', function () {
+      var q = query().where( {and:[{name:{eq:'Zim'}}]} );
+      expect( q.qe.match.and[0].name.eq ).to.equal('Zim');
+
+      // Check that chaining further conditions works
+      q.where({simple:true});
+      expect( q.qe.match.and[1].simple.eq).to.equal(true);
+    });
+  });
+
 });
