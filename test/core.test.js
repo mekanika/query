@@ -46,6 +46,11 @@ describe('query Core', function() {
     expect( err.message ).to.match( /invalid.*adapter/i );
   });
 
+  it('.raw(qe) allows setting Qe manually', function () {
+    var q = query().raw({do:'nothing'});
+    expect( q.qe.do ).to.equal('nothing');
+  });
+
 
   describe('.on(resource)', function() {
 
