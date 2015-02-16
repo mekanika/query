@@ -5,9 +5,14 @@ var expect = require('chai').expect;
 
 describe('Match', function() {
 
-  it('exposes raw .match() to set .match', function () {
-    var q = query().match('demo');
-    expect( q.qe.match ).to.equal('demo');
+  it('exposes .match() to raw set .match', function () {
+    var q = query().match( {and:[{key:{eq:true}}]});
+    expect( q.qe.match.and[0].key ).to.have.key('eq');
+  });
+
+  it('.match(mc) delegates to .where() if not an MC', function () {
+      var q = query().match( {name:'zim'});
+      expect( q.qe.match.and[0].name.eq ).to.equal('zim');
   });
 
   it('.where( field ) initiates a default match container', function() {
