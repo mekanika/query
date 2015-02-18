@@ -83,6 +83,14 @@ describe('query Core', function() {
       var q = query().body({a:1});
       expect( q.qe.body ).to.eql([{a:1}]);
     });
+
+    it('no-ops on undefined data', function () {
+      expect( query().body().qe ).to.not.include.key('body');
+    });
+
+    it('no-ops on empty array data', function () {
+      expect( query().body([]).qe ).to.not.include.key('body');
+    });
   });
 
 
