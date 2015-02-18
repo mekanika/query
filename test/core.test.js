@@ -96,6 +96,14 @@ describe('query Core', function() {
       var q = query().ids('1234').ids(['abc','def']);
       expect( q.qe.ids ).to.eql( ['1234','abc','def'] );
     });
+
+    it('no-ops on undefined data', function () {
+      expect( query().ids().qe ).to.not.include.key('ids');
+    });
+
+    it('no-ops on empty array data', function () {
+      expect( query().ids([]).qe ).to.not.include.key('ids');
+    });
   });
 
 
