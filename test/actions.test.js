@@ -245,7 +245,7 @@ describe('Action methods', function() {
       expect( gotCallback ).to.equal( true );
     });
 
-    it('appends calling Qo to callback params', function() {
+    it('appends calling Qe to callback params', function() {
       // Create a faux adapter that returns `cb( err, res )`
       var a = {exec: function(q,cb) { cb('err', 'res'); } };
       var q = query().useAdapter( a );

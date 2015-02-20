@@ -225,6 +225,9 @@ describe('Middleware', function() {
       var q = query()
         .post( 'find', function(e,r,q,n) {
           arity = arguments.length;
+          expect(e).to.equal(null);
+          expect(r).to.equal('moo');
+          expect(q).to.have.keys('on', 'do');
           n(e,r);
         });
 
