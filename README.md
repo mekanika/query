@@ -28,7 +28,7 @@ query( someAdapter )
 
 ## Installation
 
-      npm install --production
+      npm install mekanika-query
 
 
 ## Usage
