@@ -1,8 +1,8 @@
 # query
 
 
-[![npm version](https://img.shields.io/npm/v/mekanika-query.svg?label=version)](https://npmjs.com/package/mekanika-query)
-[![Code Climate](https://img.shields.io/codeclimate/github/mekanika/query.svg)](https://codeclimate.com/github/mekanika/query)
+[![npm version](https://img.shields.io/npm/v/mekanika-query.svg?label=version&style=flat-square)](https://npmjs.com/package/mekanika-query)
+[![Code Climate](https://img.shields.io/codeclimate/github/mekanika/query.svg?style=flat-square)](https://codeclimate.com/github/mekanika/query)
 
 
 `query` is an isomorphic interface for working with [**Qe** - Query envelopes](https://github.com/mekanika/qe).
