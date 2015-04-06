@@ -1,3 +1,30 @@
+0.10.1 - 6 April 2015
+======
+
+Force overwrite botched publish 0.10.0. Identical release.
+
+Added:
+
+- `.ids()` method to add ids (handles empty and undefined)
+- Enable setting middleware by passing array of fns
+- `.raw(qe)` manually setting a raw Qe on chainable method
+
+Fixed:
+
+- Supports nested match conditions `.mc( mc )`
+- Post middleware chains pass `(err, res)` correctly
+
+Changed:
+
+- `.body()` handles empty and undefined values
+- Enable calling `.match(obj)` with a raw object (not just MC)
+
+Internal:
+
+- Added `.editorconfig` http://editorconfig.org
+
+
+
 0.9.0 - 10 February 2015
 =====
 
