@@ -144,6 +144,14 @@ Conditions are set using the following pattern:
   - **.lte(** num **)** - Less than or equal to number.
   - **.gte(** num **)** - More (greater) than or equal to number.
 
+> **Important note on ids**
+>
+> tl;dr Use `.ids( idsToMatch )` when filtering on id fields
+>
+> In general _do not_ use `.match` or `.where` conditions to search by or on primary id fields, rather pass them to `.ids( idsToMatch )` - this allows the adapter to perform **transforms** on those id field names (eg. mapping your primary key "userID" to the underlying datastore field, for example `_id`, which in MongoDB _also_ requires a transform of the text field to a native ObjectID object).
+
+
+
 Examples:
 
 ```js
@@ -340,7 +348,7 @@ Failing to call `next()` with either `(err,res)` or `Error` will cause the query
 
 Posts run **after** the adapter execution is complete, and are passed the the `err` and `res` responses from the adapter, and `qe` is the _latest_ version of the Qe after `pre` middleware.
 
-> **Important note on Exceptions!** 
+> **Important note on Exceptions!**
 > Post middleware runs in an **_asynchronous_** loop, which means if your post middleware generates an exception, _it will crash the process_ and the final query callback will fail to execute (or be caught). You **should** wrap your middleware methods in a `try-catch` block and handle errors appropriately.
 
 You may optionally modify the results from the adapter. Simply return (the modified or not) `next(err, res)`  when ready to step to the next hook in the chain.
