@@ -18,7 +18,7 @@
     "clean": "rm -rf build/ && mkdir build",
     "compress": "uglifyjs build/mekanika-query.js -cm -o build/mekanika-query.min.js",
     "coverage": "istanbul cover _mocha",
-    "lint": "jshint --config .jshintrc lib/**/*.js test/*.js",
+    "lint": "semistandard lib/**/*.js test/*.js",
     "test": "mocha -R spec test"
   },
   "repository": {

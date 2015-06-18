@@ -409,6 +409,14 @@ To generate a `coverage.html` report, run:
 
 If you [find a bug, report it](https://github.com/mekanika/query/issues).
 
+## Development
+
+Code conventions based on [**Semistandard**](https://github.com/Flet/semistandard).
+
+    npm install semistandard -g
+
+[![js-semistandard-style](https://cdn.rawgit.com/flet/semistandard/master/badge.svg)](https://github.com/Flet/semistandard)
+
 ## License
 
   Copyright (c) 2013-2015 Mekanika
